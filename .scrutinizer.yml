@@ -1,0 +1,111 @@
+tools:
+    php_code_coverage: true
+    php_code_sniffer: true
+    php_cpd: true
+    # php_cs_fixer: true
+    php_mess_detector: true
+    php_analyzer: true
+    sensiolabs_security_checker: true
+
+    php_cs_fixer:
+        extensions:
+
+            # Default:
+            - php
+        command:              php-cs-fixer
+        enabled:              false
+        filter:
+            paths:                []
+            excluded_paths:       []
+        config:
+            level:                all # Allowed Values: "psr0", "psr1", "psr2", "all"
+            fixers:               []
+        path_configs:
+
+            # Prototype
+            -
+                paths:                []
+                enabled:              true
+                config:
+                    level:                all # Allowed Values: "psr0", "psr1", "psr2", "all"
+                    fixers:               []
+
+    php_cpd:
+        command:              phpcpd
+
+        # Minimum number of identical lines (default: 5)
+        min_lines:            5
+
+        # Minimum number of identical tokens (default: 70)
+        min_tokens:           70
+
+        # A list of excluded directories.
+        excluded_dirs:        []
+
+        # A list of names that should be scanned (default: *.php)
+        names:
+
+            # Default:
+            - *.php
+        enabled:              false
+        filter:
+            paths:                []
+            excluded_paths:       []
+
+    # Runs PHP Code Sniffer
+    php_code_sniffer:
+        extensions:
+
+            # Default:
+            - php
+        command:              phpcs
+        enabled:              false
+        filter:
+            paths:                []
+            excluded_paths:       []
+        config:
+
+            # Built-in standards: PEAR, PHPCS, PSR1, PSR2, Squiz, Zend
+            standard:             PSR1
+            sniffs:               []
+            severity:             ~
+            error_severity:       ~
+            warning_severity:     ~
+            tab_width:            ~
+            encoding:             ~
+            config:
+
+                # Prototype
+                key:                  []
+        path_configs:
+
+            # Prototype
+            -
+                paths:                []
+                enabled:              true
+                config:
+
+                    # Built-in standards: PEAR, PHPCS, PSR1, PSR2, Squiz, Zend
+                    standard:             PSR1
+                    sniffs:               []
+                    severity:             ~
+                    error_severity:       ~
+                    warning_severity:     ~
+                    tab_width:            ~
+                    encoding:             ~
+                    config:
+
+                        # Prototype
+                        key:                  []
+
+    # Collects code coverage information about the changeset.
+    php_code_coverage:
+        config_path:          ~
+        test_command:         phpunit
+
+        # Whether code coverage information should only be generated for changesets.
+        only_changesets:      false
+        enabled:              false
+        filter:
+            paths:                []
+            excluded_paths:       []
