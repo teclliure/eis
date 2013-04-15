@@ -1,0 +1,7 @@
+parameters:
+#    teclliure_customer.example.class: Teclliure\CustomerBundle\Example
+
+services:
+#    teclliure_customer.example:
+#        class: %teclliure_customer.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
+  <head>
+    <title>Easy Invoice System - {% block title %}No title{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <!-- Bootstrap -->
+    {% stylesheets
+        '../app/Resources/public/css/bootstrap.min.css'
+        '../app/Resources/public/css/bootstrap-responsive.min.css'
+        '../app/Resources/public/css/style.css'
+    %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+    {% block stylesheets %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+    </div>
+
+    {% block javascripts %}{% endblock %}
+    {% javascripts
+        '../app/Resources/public/js/jquery-1.9.1.min.js'
+        '../app/Resources/public/js/bootstrap.min.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+  </body>
 </html>

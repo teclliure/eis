@@ -1,0 +1,3 @@
+teclliure_dashboard_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: TeclliureDashboardBundle:Default:index }

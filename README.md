@@ -1,7 +1,7 @@
 Easy Invoice System
 ===================
 
-[![Build Status](https://travis-ci.org/iteclliure/eis.png)](https://travis-ci.org/teclliure/eis)
+[![Build Status](https://travis-ci.org/teclliure/eis.png)](https://travis-ci.org/teclliure/eis)
 
 Welcome to the Easy Invoice System - a Symfony2 based easy to use invoice system.
 Application is actually in early development phase.

@@ -1,0 +1,19 @@
+teclliure_dashboard:
+    resource: "@TeclliureDashboardBundle/Resources/config/routing.yml"
+    prefix:   /
+
+teclliure_customer:
+    resource: "@TeclliureCustomerBundle/Resources/config/routing.yml"
+    prefix:   /
+
+teclliure_user:
+    resource: "@TeclliureUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+teclliure_invoice:
+    resource: "@TeclliureInvoiceBundle/Resources/config/routing.yml"
+    prefix:   /
+
+_homepage:
+    pattern:  /
+    defaults: { _controller: TeclliureDashboardBundle:Default:index }
