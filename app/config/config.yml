@@ -55,6 +55,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        resolve_target_entities:
+            Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface: Teclliure\CustomerBundle\Entity\Customer
 
 # Swiftmailer Configuration
 swiftmailer:

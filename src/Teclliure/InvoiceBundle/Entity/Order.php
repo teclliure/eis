@@ -27,6 +27,19 @@ class Order {
     private $number;
 
     /**
+     *
+     * Possible status are
+     *  - DRAFT         - 0
+     *  - INVOICED      - 1
+     *
+     * @var integer $number
+     *
+     * @ORM\Column(type="smallint")
+     *
+     */
+    private $status;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")

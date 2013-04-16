@@ -5,6 +5,7 @@ namespace Teclliure\InvoiceBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface;
 
 /**
  * @ORM\Table(name="common")
@@ -33,5 +34,11 @@ class Common {
      * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Invoice", mappedBy="common", cascade={"persist", "remove"})
      */
     private $invoice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface")
+     * @var InvoiceCustomerInterface
+     */
+    protected $customer;
 
 }

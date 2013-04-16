@@ -5,6 +5,7 @@ namespace Teclliure\CustomerBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface;
 
 /**
  * @ORM\Table(name="customer",uniqueConstraints={
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Customer {
+class Customer implements InvoiceCustomerInterface {
     /**
     * @ORM\Id
     * @ORM\Column(type="integer")
