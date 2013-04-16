@@ -1,0 +1,123 @@
+<?php
+
+namespace Teclliure\CustomerBundle\Entity;
+
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Table(name="customer",uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="unique_name", columns={"name"}),
+ *     @ORM\UniqueConstraint(name="unique_ident", columns={"identification"})
+ * })
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ */
+class Customer {
+    /**
+    * @ORM\Id
+    * @ORM\Column(type="integer")
+    * @ORM\GeneratedValue
+    */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=200, unique=true)
+     *
+     * @Assert\Length(min = 2, max = 200)
+     * @Assert\NotBlank()
+     *
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=30, unique=true)
+     *
+     * @Assert\Length(min = 5, max = 30)
+     * @Assert\NotBlank()
+     */
+    private $identification;
+
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     *
+     * @Assert\Length(min = 5, max = 200)
+     *
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     *
+     * @Assert\Length(min = 5, max = 200)
+     *
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     *
+     * @Assert\Length(min = 3, max = 10)
+     *
+     */
+    private $zip_code;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 5, max = 20000)
+     *
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     *
+     * @Assert\Length(min = 4, max = 200)
+     *
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     *
+     * @Assert\Length(min = 4, max = 200)
+     *
+     */
+    private $state;
+
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     *
+     * @Assert\Length(min = 4, max = 200)
+     *
+     */
+    private $country;
+
+      /**
+     * @var datetime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     *
+     */
+    private $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     *
+     */
+    private $updated;
+
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @Assert\Type(type="bool")
+     *
+     */
+    private $active = false;
+}
