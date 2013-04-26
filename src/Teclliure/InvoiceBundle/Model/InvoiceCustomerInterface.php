@@ -33,6 +33,11 @@ interface InvoiceCustomerInterface {
     /**
      * @return string
      */
+    public function getZipCode();
+
+    /**
+     * @return string
+     */
     public function getCity();
 
     /**

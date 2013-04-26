@@ -134,7 +134,13 @@ class Customer implements InvoiceCustomerInterface {
      * @Assert\Type(type="bool")
      *
      */
-    private $active = false;
+    private $active = true;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Common", mappedBy="customer")
+     * @var Common
+     */
+    protected $commons;
 
     /**
      * Get id
@@ -420,5 +426,68 @@ class Customer implements InvoiceCustomerInterface {
     public function getActive()
     {
         return $this->active;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commons = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set web
+     *
+     * @param string $web
+     * @return Customer
+     */
+    public function setWeb($web)
+    {
+        $this->web = $web;
+    
+        return $this;
+    }
+
+    /**
+     * Get web
+     *
+     * @return string 
+     */
+    public function getWeb()
+    {
+        return $this->web;
+    }
+
+    /**
+     * Add commons
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Common $commons
+     * @return Customer
+     */
+    public function addCommon(\Teclliure\InvoiceBundle\Entity\Common $commons)
+    {
+        $this->commons[] = $commons;
+    
+        return $this;
+    }
+
+    /**
+     * Remove commons
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Common $commons
+     */
+    public function removeCommon(\Teclliure\InvoiceBundle\Entity\Common $commons)
+    {
+        $this->commons->removeElement($commons);
+    }
+
+    /**
+     * Get commons
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommons()
+    {
+        return $this->commons;
     }
 }
