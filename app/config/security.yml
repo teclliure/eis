@@ -24,6 +24,7 @@ security:
             anonymous:    true
 
     access_control:
+        - { path: ^/_wdt, roles: 'IS_AUTHENTICATED_ANONYMOUSLY' }
         - { path: ^/*.css, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/*.js, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

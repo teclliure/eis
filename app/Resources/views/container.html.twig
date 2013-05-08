@@ -1,6 +1,9 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+
+{{ include ('TeclliureDashboardBundle:Shared:menu.html.twig') }}
+
 <div id ="mainContainer">
     {% block content %}
     {% endblock %}
