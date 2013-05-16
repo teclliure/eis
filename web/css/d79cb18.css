@@ -23,6 +23,10 @@ body {
     margin: 0px;
 }
 
+#inside_content {
+    padding: 10px;
+}
+
 .container {
     margin-left: auto;
     margin-right: auto;
@@ -44,6 +48,7 @@ body {
     min-height: 400px;
 }
 
+/* Login css */
 .form-signin {
     max-width: 300px;
     padding: 19px 29px 29px;
@@ -62,6 +67,8 @@ body {
 .form-signin .checkbox {
     margin-bottom: 10px;
 }
+/* End login css */
+
 .form-signin input[type="text"],
 .form-signin input[type="password"] {
     font-size: 16px;
@@ -69,3 +76,11 @@ body {
     margin-bottom: 15px;
     padding: 7px 9px;
 }
+
+/* List css */
+.list_primary_buttons {
+    float: right;
+    clear: both;
+    margin: 20px 10px 30px;
+}
+/* End list css */

@@ -53,6 +53,14 @@ class Common {
     private $customer_name;
 
     /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $description;
+
+    /**
      * @ORM\Column(type="string", length=30, unique=true)
      *
      * @Assert\Length(min = 5, max = 30)
@@ -409,5 +417,28 @@ class Common {
     public function getCustomer()
     {
         return $this->customer;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Common
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

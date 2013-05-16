@@ -1,7 +1,12 @@
 parameters:
-#    teclliure_invoice.example.class: Teclliure\InvoiceBundle\Example
+    teclliure_invoice_service.class: Teclliure\InvoiceBundle\Service\InvoiceService
 
 services:
+  invoice_service:
+      class: "%teclliure_invoice_service.class%"
+      arguments:
+        em: "@doctrine.orm.entity_manager"
+
 #    teclliure_invoice.example:
 #        class: %teclliure_invoice.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

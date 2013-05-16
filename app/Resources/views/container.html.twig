@@ -5,6 +5,9 @@
 {{ include ('TeclliureDashboardBundle:Shared:menu.html.twig') }}
 
 <div id ="mainContainer">
+    {% block filter %}
+    {% endblock %}
+
     {% block content %}
     {% endblock %}
 </div>

@@ -196,4 +196,44 @@ class CommonLine {
     {
         return $this->description;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->taxes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     * @return CommonLine
+     */
+    public function addTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes[] = $taxes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     */
+    public function removeTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes->removeElement($taxes);
+    }
+
+    /**
+     * Get taxes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTaxes()
+    {
+        return $this->taxes;
+    }
 }

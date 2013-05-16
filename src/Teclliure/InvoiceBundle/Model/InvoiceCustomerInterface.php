@@ -49,4 +49,14 @@ interface InvoiceCustomerInterface {
      * @return string
      */
     public function getCountry();
+
+    /**
+     * @return string
+     */
+    public function getPaymentPeriod();
+
+    /**
+     * @return string
+     */
+    public function getPaymentDay();
 }

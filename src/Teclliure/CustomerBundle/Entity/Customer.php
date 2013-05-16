@@ -111,6 +111,22 @@ class Customer implements InvoiceCustomerInterface {
     private $country;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @Assert\Length(min = 0   , max = 365)
+     *
+     */
+    private $payment_period = 30;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Assert\Length(min = 4, max = 200)
+     *
+     */
+    private $payment_day;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -489,5 +505,51 @@ class Customer implements InvoiceCustomerInterface {
     public function getCommons()
     {
         return $this->commons;
+    }
+
+    /**
+     * Set payment_period
+     *
+     * @param integer $paymentPeriod
+     * @return Customer
+     */
+    public function setPaymentPeriod($paymentPeriod)
+    {
+        $this->payment_period = $paymentPeriod;
+    
+        return $this;
+    }
+
+    /**
+     * Get payment_period
+     *
+     * @return integer 
+     */
+    public function getPaymentPeriod()
+    {
+        return $this->payment_period;
+    }
+
+    /**
+     * Set payment_day
+     *
+     * @param integer $paymentDay
+     * @return Customer
+     */
+    public function setPaymentDay($paymentDay)
+    {
+        $this->payment_day = $paymentDay;
+    
+        return $this;
+    }
+
+    /**
+     * Get payment_day
+     *
+     * @return integer 
+     */
+    public function getPaymentDay()
+    {
+        return $this->payment_day;
     }
 }

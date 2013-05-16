@@ -1,3 +1,7 @@
-teclliure_invoice_homepage:
-    pattern:  /hello/{name}
+invoice_list:
+    pattern:  /invoice/list
     defaults: { _controller: TeclliureInvoiceBundle:Default:index }
+
+invoice_add:
+    pattern:  /invoice/add
+    defaults: { _controller: TeclliureInvoiceBundle:Default:addInvoice }

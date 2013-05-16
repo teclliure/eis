@@ -20,12 +20,12 @@
         {% block body %}{% endblock %}
     </div>
 
-    {% block javascripts %}{% endblock %}
     {% javascripts
         '../app/Resources/public/js/jquery-1.9.1.min.js'
         '../app/Resources/public/js/bootstrap.min.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
+    {% block javascripts %}{% endblock %}
   </body>
 </html>

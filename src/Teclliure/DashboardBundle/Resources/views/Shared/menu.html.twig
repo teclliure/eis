@@ -4,7 +4,7 @@
         <div class="container">
             <a class="brand" href="{{ path('homepage') }}">Easy Invoice System</a>
             <div class="nav-collapse collapse" id="main-menu">
-                <ul class="nav" id="main-menu-left">
+                <ul class="nav nav-pills" id="main-menu-left">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'Quotes'|trans }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -28,7 +28,7 @@
                         <ul class="dropdown-menu">
                             <li class="divider"></li>
                             <li><a href="">{{ 'Create invoice'|trans }}</a></li>
-                            <li><a href="">{{ 'View invoices'|trans }}</a></li>
+                            <li><a href="{{ path('invoice_list') }}">{{ 'View invoices'|trans }}</a></li>
                             <li class="divider"></li>
                         </ul>
                     </li>
@@ -43,7 +43,8 @@
                     </li>
                 </ul>
                 <ul class="nav pull-right" id="main-menu-right">
-                    <li><a href=""><i class="icon-wrench"></i> {{ 'Administration'|trans }}</a></li>
+                    <li><span style="padding: 10px 15px 10px; display: inline-block">{{ 'Welcome' }}, {{ app.user.username }} !</span></li>
+                    <li><a href=""><i class="icon-wrench"></i> {{ 'Settings'|trans }}</a></li>
                     <li><a rel="tooltip" href="{{ path('fos_user_security_logout') }}"><i class="icon-off"></i> {{ 'Log out'|trans }}</a></li>
                 </ul>
             </div>

@@ -53,6 +53,14 @@ class Common {
     private $customer_name;
 
     /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $description;
+
+    /**
      * @ORM\Column(type="string", length=30, unique=true)
      *
      * @Assert\Length(min = 5, max = 30)

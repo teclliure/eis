@@ -1,0 +1,28 @@
+{% extends '::container.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/teclliureinvoice/js/lines.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="inside_content">
+        <form action="{{ path('invoice_add') }}" method="POST" {{ form_enctype(form) }}>
+
+            {{ form_row(form.issue_date) }}
+            {{ form_row(form.due_date) }}
+            {{ form_row(form.serie) }}
+            {{ form_row(form.common.description) }}
+
+            <h3>{{ 'Invoice lines' }}</h3>
+            <ul class="lines" data-prototype="{{ form_widget(form.common.common_lines.vars.prototype)|e }}">
+                {# iterate over each existing tag and render its only field: name #}
+                {% for line in form.common.common_lines %}
+                    <li>{{ form_row(line) }}</li>
+                {% endfor %}
+            </ul>
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock %}
