@@ -15,13 +15,14 @@ class CommonLineType extends AbstractType
         $builder->add('quantity');
         $builder->add('unitary_cost');
         $builder->add('discount');
-        $builder->add('taxes', 'collection', array(
+        $builder->add('taxes');
+        /*$builder->add('taxes', 'collection', array(
             'type' => new TaxType(),
             'allow_add'    => true,
             'allow_delete' => true,
             'by_reference' => false,
             )
-        );
+        );*/
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

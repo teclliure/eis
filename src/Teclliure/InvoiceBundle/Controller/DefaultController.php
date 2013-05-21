@@ -22,10 +22,16 @@ class DefaultController extends Controller
         $form = $this->createForm(new InvoiceType(), new Invoice());
 
         // process the form on POST
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('post')) {
             $form->bind($request);
             if ($form->isValid()) {
+                $invoice = $form->getData();
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($invoice);
+                $em->flush();
                 // ... maybe do some form processing, like saving the Task and Tag objects
+                return $this->redirect($this->generateUrl('homepage'));
             }
         }
 

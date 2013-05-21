@@ -7,22 +7,48 @@
 
 {% block content %}
     <div id="inside_content">
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{ form_errors(form) }}
+        </div>
         <form action="{{ path('invoice_add') }}" method="POST" {{ form_enctype(form) }}>
+            <h3>{{ 'Customer'|trans }}</h3>
+            {{ form_errors(form.common.customer_identification) }}
+            {{ form_widget(form.common.customer_identification, {'attr': { 'maxlength': 30, 'class': 'input-small', 'placeholder': 'Identification'|trans} }) }}
+            {{ form_errors(form.common.customer_name) }}
+            {{ form_widget(form.common.customer_name, { 'attr': {'maxlength': 200, 'class': 'input-xlarge', 'placeholder': 'Customer name'|trans} }) }}
+            {{ form_errors(form.common.customer_zip_code) }}
+            {{ form_widget(form.common.customer_zip_code, { 'attr': {'maxlength': 6, 'class': 'input-', 'placeholder': 'Customer name'|trans} }) }}
 
+            <h3>{{ 'Payment'|trans }}</h3>
             {{ form_row(form.issue_date) }}
             {{ form_row(form.due_date) }}
             {{ form_row(form.serie) }}
+
+            <h3>{{ 'Description'|trans }}</h3>
             {{ form_row(form.common.description) }}
 
-            <h3>{{ 'Invoice lines' }}</h3>
-            <ul class="lines" data-prototype="{{ form_widget(form.common.common_lines.vars.prototype)|e }}">
+            <h3>{{ 'Invoice lines'|trans }}</h3>
+            <ul class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
+                <li class="lineHeader not_delete">
+                    <div class="lineDesc">{{ 'Description' }}</div>
+                    <div class="lineQty">{{ 'Quantity' }}</div>
+                    <div class="lineUC">{{ 'Unitary cost' }}</div>
+                    <div class="lineDiscount">{{ 'Discount' }}</div>
+                    <div class="lineTaxes">{{ 'Taxes' }}</div>
+                </li>
                 {# iterate over each existing tag and render its only field: name #}
                 {% for line in form.common.common_lines %}
-                    <li>{{ form_row(line) }}</li>
+                    <li>
+                        {{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
+                    </li>
                 {% endfor %}
+                <li id="add_line_link_li" class="not_delete"><a href="#" class="btn btn-primary " id="add_line_link"><i class="icon-plus-sign"></i> {{ 'Add a line'|trans }}</a></li>
             </ul>
 
             {{ form_rest(form) }}
+
+            <button type="submit" class="btn">{{ 'Save'|trans }}</button>
         </form>
     </div>
 {% endblock %}

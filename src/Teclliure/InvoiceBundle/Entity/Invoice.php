@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="invoice")
+ * @ORM\Table(name="invoice", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="number_unique", columns={"number"})}
+ * )
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
@@ -37,7 +39,7 @@ class Invoice {
     /**
      * @var integer $number
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
      *
      */
     private $number;

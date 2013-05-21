@@ -64,3 +64,62 @@ body {
     margin: 20px 10px 30px;
 }
 /* End list css */
+
+/* Start invoice css */
+.lines {
+    list-style-type: none;
+    clear: both;
+    margin-left: 5px;
+}
+
+.lines li {
+    clear: both;
+    padding-left: 0;
+}
+
+.lines li div {
+    float: left;
+    /*display: inline-block;*/
+    /*margin: 5px 10px;*/
+}
+
+#add_line_link {
+    margin-top: 10px;
+}
+
+.delete_line_link {
+    margin: 0 0 0 25px;
+}
+
+.delete_line_link i {
+    line-height: 20px;
+    margin-top: 19px;
+}
+
+.lineHeader .lineDesc, .lineHeader .lineQty, .lineHeader .lineUC, .lineHeader .lineDiscount, .lineHeader .lineTaxes {
+    font-weight: bold;
+    text-align: center;
+}
+
+.lineDesc {
+    text-align: left;
+}
+
+.lineQty, .lineUC, .lineDiscount, .lineTaxes {
+    text-align: right;
+}
+
+.lineDesc, .lineQty, .lineUC, .lineTaxes, .lineDiscount {
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+
+.lineDesc {
+    width: 290px;
+}
+
+.lineQty, .lineUC, .lineTaxes, .lineDiscount {
+    width: 100px;
+}
+
+/* End invoice css */

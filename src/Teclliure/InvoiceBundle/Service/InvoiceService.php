@@ -49,16 +49,6 @@ class InvoiceService {
         return $this->em;
     }
 
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api 0.1
-     */
-    public function getAvailableLocales() {
-        return $this->availableLocales;
-    }
-
     /**
      * Get invoices
      *
@@ -92,17 +82,4 @@ class InvoiceService {
 
         return $queryBuilder->getQuery()->getResult();
     }
-
-    /**
-     * Enable/disable local cache
-     *
-     * @param boolean $useCache
-     *
-     * @api
-     */
-    public function setUseCache($useCache)
-    {
-        $this->useCache = $useCache;
-    }
-
 }

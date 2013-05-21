@@ -2,19 +2,19 @@
 var collectionHolder = $('ul.lines');
 
 // setup an "add a line" link
-var $addLineLink = $('<a href="#" class="add_line_link">Add a line</a>');
-var $newLinkLi = $('<li></li>').append($addLineLink);
+var $addLineLink = $('#add_line_link');
+var $newLinkLi = $('#add_line_link_li');
 
 jQuery(document).ready(function() {
     // add the "add a line" anchor and li to the lines ul
-    collectionHolder.append($newLinkLi);
+    // collectionHolder.append($newLinkLi);
 
     // count the current form inputs we have (e.g. 2), use that as the new
     // index when inserting a new item (e.g. 2)
     collectionHolder.data('index', collectionHolder.find(':input').length);
 
     // add a delete link to all of the existing tag form li elements
-    collectionHolder.find('li').each(function() {
+    collectionHolder.find('li:not(.not_delete)').each(function() {
         addLineFormDeleteLink($(this));
     });
 
@@ -49,8 +49,8 @@ function addLineForm(collectionHolder, $newLinkLi) {
     addLineFormDeleteLink($newFormLi);
 }
 
-function addLineFormDeleteLink($tagFormLi) {
-    var $removeFormA = $('<a href="#">Delete this line</a>');
+function addLineFormDeleteLink($lineFormLi) {
+    var $removeFormA = $('<a class="delete_line_link" href="#"><i class="icon-remove-circle"></i></a>');
     $lineFormLi.append($removeFormA);
 
     $removeFormA.on('click', function(e) {

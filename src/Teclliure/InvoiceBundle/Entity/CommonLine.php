@@ -236,4 +236,15 @@ class CommonLine {
     {
         return $this->taxes;
     }
+
+    /**
+     * Set taxes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function setTaxes($taxes)
+    {
+        $this->taxes = $taxes;
+        return $this;
+    }
 }

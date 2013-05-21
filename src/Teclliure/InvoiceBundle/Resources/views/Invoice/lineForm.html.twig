@@ -1,0 +1,23 @@
+<div id="invoice_common_common_lines{% if new == true %}___name__{% endif %}">
+    <div class="lineDesc">
+        {{ form_errors(lineForm.description) }}
+        {{ form_widget(lineForm.description, {'attr': { 'maxlength': 200, 'class': 'input-xlarge', 'placeholder': 'Description'|trans} }) }}
+    </div>
+    <div class="lineQty">
+        {{ form_errors(lineForm.quantity) }}
+        {{ form_widget(lineForm.quantity, {'attr': { 'class': 'input-mini', 'placeholder': 'Quantity'|trans} }) }}
+    </div>
+    <div class="lineUC">
+        {{ form_errors(lineForm.unitary_cost) }}
+        {{ form_widget(lineForm.unitary_cost, {'attr': { 'class': 'input-mini', 'placeholder': 'Unitary cost'|trans} }) }}
+    </div>
+    <div class="lineDiscount">
+        {{ form_errors(lineForm.discount) }}
+        {{ form_widget(lineForm.discount, {'attr': { 'class': 'input-mini', 'placeholder': 'Unitary cost'|trans} }) }}
+    </div>
+    <div class="lineTaxes">
+        {{ form_errors(lineForm.taxes) }}
+        {{ form_widget(lineForm.taxes, {'attr': { 'class': 'input-small'} }) }}
+        {{ form_rest(lineForm) }}
+    </div>
+</div>

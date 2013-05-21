@@ -36,6 +36,14 @@ class Common {
     private $invoice;
 
     /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $description;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface", inversedBy="commons")
      * @ORM\JoinColumn(name="common_id", referencedColumnName="id", onDelete="SET NULL")
      *
@@ -51,14 +59,6 @@ class Common {
      *
      */
     private $customer_name;
-
-    /**
-     * @ORM\Column(type="text")
-     *
-     * @Assert\Length(min = 2, max = 10000)
-     *
-     */
-    private $description;
 
     /**
      * @ORM\Column(type="string", length=30, unique=true)
