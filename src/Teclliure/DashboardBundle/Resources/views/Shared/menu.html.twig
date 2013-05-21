@@ -44,7 +44,17 @@
                 </ul>
                 <ul class="nav pull-right" id="main-menu-right">
                     <li><span style="padding: 10px 15px 10px; display: inline-block">{{ 'Welcome' }}, {{ app.user.username }} !</span></li>
-                    <li><a href=""><i class="icon-wrench"></i> {{ 'Settings'|trans }}</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-wrench"></i>
+                            {{ 'Settings'|trans }}
+                            <b class="caret"></b>
+                            <ul class="dropdown-menu">
+                                <li><a href="">{{ 'Your company info'|trans }}</a></li>
+                                <li><a href="{{ path('tax') }}">{{ 'Taxes'|trans }}</a></li>
+                            </ul>
+                        </a>
+                    </li>
                     <li><a rel="tooltip" href="{{ path('fos_user_security_logout') }}"><i class="icon-off"></i> {{ 'Log out'|trans }}</a></li>
                 </ul>
             </div>

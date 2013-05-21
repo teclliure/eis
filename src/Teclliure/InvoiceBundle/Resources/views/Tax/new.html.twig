@@ -1,0 +1,21 @@
+{% extends '::container.html.twig' %}
+
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('tax') }}" class="btn btn-primary"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ 'Tax creation'|trans }}</h1>
+    </div>
+
+    <form action="{{ path('tax_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button class="btn" type="submit">{{ 'Create' }}</button>
+        </p>
+    </form>
+</div>
+{% endblock %}

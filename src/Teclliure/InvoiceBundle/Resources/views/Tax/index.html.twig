@@ -1,0 +1,48 @@
+{% extends '::container.html.twig' %}
+
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('tax_new') }}" class="btn btn-primary"><i class="icon-plus"></i> {{ 'New tax'|trans }}</a>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ 'Tax list'|trans }}</h1>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped" style="margin: 25px; width: 97%;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Active</th>
+                <th>Is_default</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('tax_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.value }}</td>
+                <td>{{ entity.active }}</td>
+                <td>{{ entity.isdefault }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('tax_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('tax_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

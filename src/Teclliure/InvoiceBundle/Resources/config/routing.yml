@@ -1,7 +1,11 @@
 invoice_list:
     pattern:  /invoice/list
-    defaults: { _controller: TeclliureInvoiceBundle:Default:index }
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:index }
 
 invoice_add:
     pattern:  /invoice/add
-    defaults: { _controller: TeclliureInvoiceBundle:Default:addInvoice }
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:addInvoice }
+
+taxes:
+    resource: "@TeclliureInvoiceBundle/Controller/TaxController.php"
+    type:     annotation

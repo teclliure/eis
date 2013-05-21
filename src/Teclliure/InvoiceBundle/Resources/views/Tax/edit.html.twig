@@ -1,0 +1,24 @@
+{% extends '::container.html.twig' %}
+
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('tax') }}" class="btn btn-primary"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+        <form action="{{ path('tax_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button class="btn btn-danger" type="submit"><i class="icon-trash"></i> {{ 'Delete'|trans }}</button>
+        </form>
+    </div>
+
+
+
+    <form action="{{ path('tax_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        <input type="hidden" name="_method" value="PUT" />
+        {{ form_widget(edit_form) }}
+        <p>
+            <button class="btn" type="submit">{{ 'Edit' }}</button>
+        </p>
+    </form>
+{% endblock %}

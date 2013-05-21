@@ -8,14 +8,14 @@ use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Form\Type\InvoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class InvoiceController extends Controller
 {
     public function indexAction()
     {
         $invoiceService = $this->get('invoice_service');
         $invoices = $invoiceService->getInvoices();
 
-        return $this->render('TeclliureInvoiceBundle:Default:index.html.twig', array('invoices' => $invoices));
+        return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array('invoices' => $invoices));
     }
 
     public function addInvoiceAction(Request $request) {

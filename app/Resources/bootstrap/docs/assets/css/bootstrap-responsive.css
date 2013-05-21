@@ -1008,9 +1008,9 @@
   .nav-collapse .btn {
     padding: 4px 10px 4px;
     font-weight: normal;
-    -webkit-border-radius: 5;
-       -moz-border-radius: 5;
-            border-radius: 5;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
   }
   .nav-collapse .dropdown-menu li + li a {
     margin-bottom: 2px;
@@ -1029,7 +1029,7 @@
   .navbar-inverse .nav-collapse .nav > li > a:focus,
   .navbar-inverse .nav-collapse .dropdown-menu a:hover,
   .navbar-inverse .nav-collapse .dropdown-menu a:focus {
-    background-color: #d9230f;
+    background-color: #9d261d;
   }
   .nav-collapse.in .btn-group {
     padding: 0;
@@ -1080,8 +1080,8 @@
   }
   .navbar-inverse .nav-collapse .navbar-form,
   .navbar-inverse .nav-collapse .navbar-search {
-    border-top-color: #d9230f;
-    border-bottom-color: #d9230f;
+    border-top-color: #9d261d;
+    border-bottom-color: #9d261d;
   }
   .navbar .nav-collapse .nav.pull-right {
     float: none;
