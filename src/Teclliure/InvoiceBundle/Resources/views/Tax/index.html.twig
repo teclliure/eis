@@ -14,31 +14,26 @@
     <table class="table table-bordered table-hover table-striped" style="margin: 25px; width: 97%;">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Value</th>
-                <th>Active</th>
-                <th>Is_default</th>
-                <th>Actions</th>
+                <th>{{ 'Name'|trans }}</th>
+                <th>{{ 'Value'|trans }}</th>
+                <th>{{ 'Is active ?'|trans }}</th>
+                <th>{{ 'Is default ?'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('tax_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
+                <td><a href="{{ path('tax_edit', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
                 <td>{{ entity.value }}</td>
                 <td>{{ entity.active }}</td>
                 <td>{{ entity.isdefault }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('tax_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('tax_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    {% if entity.active %}
+                        <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Disable'|trans }}</a>
+                    {% else %}
+                        <a href="{{ path('tax_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-play-circle"></i> {{ 'Enable'|trans }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

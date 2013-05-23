@@ -5,6 +5,14 @@
 {{ include ('TeclliureDashboardBundle:Shared:menu.html.twig') }}
 
 <div id ="mainContainer">
+    <div id="alerts">
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-notice">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+    </div>
+
     {% block filter %}
     {% endblock %}
 

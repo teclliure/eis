@@ -1,5 +1,7 @@
 {% extends '::container.html.twig' %}
 
+{% form_theme form 'TeclliureInvoiceBundle:Form:fields.html.twig' %}
+
 
 {% block content %}
 <div id="inside_content">
@@ -14,8 +16,10 @@
     <form action="{{ path('tax_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <p>
-            <button class="btn" type="submit">{{ 'Create' }}</button>
+            <button class="btn" type="submit">{{ 'Create'|trans }}</button>
         </p>
     </form>
 </div>
 {% endblock %}
+
+

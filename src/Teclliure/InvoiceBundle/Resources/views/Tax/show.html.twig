@@ -1,6 +1,18 @@
-{% extends '::base.html.twig' %}
+{% extends '::container.html.twig' %}
 
-{% block body -%}
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('tax') }}" class="btn btn-primary"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+        <a href="{{ path('tax_edit', { 'id': entity.id }) }}" class="btn"><i class="icon-file"></i> Edit</a>
+        {% if entity.active %}
+            <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Disable'|trans }}</a>
+        {% else %}
+            <a href="{{ path('tax_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-play-circle"></i> {{ 'Enable'|trans }}</a>
+        {% endif %}
+    </div>
+
     <h1>Tax</h1>
 
     <table class="record_properties">
@@ -27,24 +39,4 @@
             </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('tax') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('tax_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('tax_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
 {% endblock %}

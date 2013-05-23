@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Teclliure\InvoiceBundle\Entity\Tax;
-use Teclliure\InvoiceBundle\Form\TaxType;
+use Teclliure\InvoiceBundle\Form\Type\TaxType;
 
 /**
  * Tax controller.
@@ -53,7 +53,7 @@ class TaxController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('tax_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('tax'));
         }
 
         return array(
@@ -168,27 +168,44 @@ class TaxController extends Controller
     }
 
     /**
-     * Deletes a Tax entity.
+     * Disable a Tax entity.
      *
-     * @Route("/{id}", name="tax_delete")
-     * @Method("DELETE")
+     * @Route("/disable/{id}", name="tax_disable")
+     * @Method("GET")
      */
-    public function deleteAction(Request $request, $id)
+    public function disableAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('TeclliureInvoiceBundle:Tax')->find($id);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TeclliureInvoiceBundle:Tax')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Tax entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Tax entity.');
         }
+        $entity->setActive(0);
+        $em->persist($entity);
+        // $em->remove($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('tax'));
+    }
+
+    /**
+     * Enable a Tax entity.
+     *
+     * @Route("/enable/{id}", name="tax_enable")
+     * @Method("GET")
+     */
+    public function enableAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('TeclliureInvoiceBundle:Tax')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Tax entity.');
+        }
+        $entity->setActive(1);
+        $em->persist($entity);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('tax'));
     }

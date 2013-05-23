@@ -1,0 +1,30 @@
+{% block form_row %}
+    {% spaceless %}
+        <div>
+        {% if 'checkbox' in form.vars.block_prefixes %}
+            {% if label is not sameas(false) %}
+                {% if not compound %}
+                    {% set label_attr = label_attr|merge({'for': id}) %}
+                {% endif %}
+                {% if required %}
+                    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+                {% endif %}
+                {% if label is empty %}
+                    {% set label = name|humanize %}
+                {% endif %}
+                <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                <div class="field_checkbox_label">
+                    {{ label|trans({}, translation_domain) }}
+                </div>
+                <input type="checkbox" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+                </label>
+            {% endif %}
+            {{ form_errors(form) }}
+        {% else %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+       {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}

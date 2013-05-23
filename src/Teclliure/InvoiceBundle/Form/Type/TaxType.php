@@ -10,9 +10,18 @@ class TaxType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $builder->add('id', 'hidden');
-        $builder->add('name');
+        $builder
+            ->add('name')
+            ->add('value')
+            ->add('active', 'checkbox', array(
+                'label'     => 'Is active ?',
+                'required'  => false,
+            ))
+            ->add('is_default', 'checkbox', array(
+                'label'     => 'Is default ?',
+                'required'  => false,
+            ))
+        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -24,6 +33,6 @@ class TaxType extends AbstractType
 
     public function getName()
     {
-        return 'tax';
+        return 'teclliure_invoicebundle_taxtype';
     }
 }
