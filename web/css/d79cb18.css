@@ -146,6 +146,13 @@ body {
     display: inline-block;
     width: 150px;
 }
+
+.date_input {
+    display: inline-block;
+}
+.date_input select {
+    width: 80px;
+}
 /* End invoice css */
 
 /* Start alerts css */

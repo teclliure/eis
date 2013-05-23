@@ -1,3 +1,5 @@
+{% extends 'form_div_layout.html.twig' %}
+
 {% block form_row %}
     {% spaceless %}
         <div>
@@ -28,3 +30,14 @@
         </div>
     {% endspaceless %}
 {% endblock form_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% import "TeclliureInvoiceBundle:Form:formMacro.html.twig" as macros %}
+        {% if not form.parent and not form.vars.valid %}
+            {{ macros.display_error(form) }}
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

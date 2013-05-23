@@ -41,6 +41,7 @@ class Invoice {
      *
      * @ORM\Column(type="integer", unique=true)
      *
+     *
      */
     private $number;
 
@@ -49,6 +50,9 @@ class Invoice {
      *
      * @ORM\Column(type="datetime")
      *
+     * @Assert\NotBlank()
+     * @Assert\Type(type="date")
+     *
      */
     private $issue_date;
 
@@ -56,6 +60,9 @@ class Invoice {
      * @var datetime $due_date
      *
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type(type="date")
      *
      */
     private $due_date;
@@ -90,8 +97,6 @@ class Invoice {
      *
      * @ORM\Column(type="float")
      *
-     * @Assert\NotBlank()
-     * @Assert\Type(type="float")
      *
      */
     private $base_amount;
@@ -101,8 +106,6 @@ class Invoice {
      *
      * @ORM\Column(type="float")
      *
-     * @Assert\NotBlank()
-     * @Assert\Type(type="float")
      *
      */
     private $discount_amount;
@@ -112,9 +115,6 @@ class Invoice {
      *
      * @ORM\Column(type="float")
      *
-     * @Assert\NotBlank()
-     * @Assert\Type(type="float")
-     *
      */
     private $net_amount;
 
@@ -123,8 +123,6 @@ class Invoice {
      *
      * @ORM\Column(type="float")
      *
-     * @Assert\NotBlank()
-     * @Assert\Type(type="float")
      *
      */
     private $tax_amount;
@@ -134,8 +132,6 @@ class Invoice {
      *
      * @ORM\Column(type="float")
      *
-     * @Assert\NotBlank()
-     * @Assert\Type(type="float")
      *
      */
     private $gross_amount;

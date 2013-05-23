@@ -6,9 +6,28 @@
 
 <div id ="mainContainer">
     <div id="alerts">
-        {% for flashMessage in app.session.flashbag.get('notice') %}
-            <div class="flash-notice">
+        {% for flashMessage in app.session.flashbag.get('info') %}
+            <div class="notification alert alert-info fade in">
                 {{ flashMessage }}
+                <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="notification alert alert-success fade in">
+                {{ flashMessage }}
+                <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="notification alert alert-error fade in">
+                {{ flashMessage }}
+                <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('warning') %}
+            <div class="notification alert alert-warning fade in">
+                {{ flashMessage }}
+                <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
             </div>
         {% endfor %}
     </div>

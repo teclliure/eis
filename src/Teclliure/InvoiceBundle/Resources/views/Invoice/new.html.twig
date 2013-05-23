@@ -7,29 +7,38 @@
 
 {% block content %}
     <div id="inside_content">
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            {{ form_errors(form) }}
-        </div>
-        <form action="{{ path('invoice_add') }}" method="POST" {{ form_enctype(form) }}>
+        {% if form.vars.errors|length %}
+            <div class="alert alert-block alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4>{{ 'Ups, form error !'|trans }}</h4>
+                <p>{{ 'Change a few things up and try submitting again.'|trans }}</p>
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <form action="{{ path('invoice_add') }}" method="post" {{ form_enctype(form) }}>
             <h3>{{ 'Customer'|trans }}</h3>
-            {{ form_errors(form.common.customer_identification) }}
-            {{ form_widget(form.common.customer_identification, {'attr': { 'maxlength': 30, 'class': 'input-small', 'placeholder': 'Identification'|trans} }) }}
-            {{ form_errors(form.common.customer_name) }}
-            {{ form_widget(form.common.customer_name, { 'attr': {'maxlength': 200, 'class': 'input-xlarge', 'placeholder': 'Customer name'|trans} }) }}
-            {{ form_errors(form.common.customer_zip_code) }}
-            {{ form_widget(form.common.customer_zip_code, { 'attr': {'maxlength': 6, 'class': 'input-', 'placeholder': 'Customer name'|trans} }) }}
+            {{ form_errors(form.common.customerIdentification) }}
+            {{ form_widget(form.common.customerIdentification, {'attr': { 'maxlength': 30, 'class': 'input-small', 'placeholder': 'Identification'|trans} }) }}
+            {{ form_errors(form.common.customerName) }}
+            {{ form_widget(form.common.customerName, { 'attr': {'maxlength': 200, 'class': 'input-xlarge', 'placeholder': 'Customer name'|trans} }) }}
+            {{ form_errors(form.common.customerZipCode) }}
+            {{ form_widget(form.common.customerZipCode, { 'attr': {'maxlength': 6, 'class': 'input-mini', 'placeholder': 'Customer name'|trans} }) }}
 
             <h3>{{ 'Payment'|trans }}</h3>
-            {{ form_row(form.issue_date) }}
-            {{ form_row(form.due_date) }}
-            {{ form_row(form.serie) }}
+            {{ form_errors(form.issueDate) }}
+            {{ 'Issue date'|trans }}: {{ form_widget(form.issueDate, { 'attr': {'class': 'date_input'} } ) }}
+            &nbsp;&nbsp;
+            {{ form_errors(form.dueDate) }}
+            {{ 'Due date'|trans }}: {{ form_widget(form.dueDate, { 'attr': {'class': 'date_input'} }) }}
+            &nbsp;&nbsp;
+            {{ form_errors(form.serie) }}
+            {{ 'Serie'|trans }}: {{ form_widget(form.serie, { 'attr': {'class': 'input-small'} }) }}
 
             <h3>{{ 'Description'|trans }}</h3>
             {{ form_row(form.common.description) }}
 
             <h3>{{ 'Invoice lines'|trans }}</h3>
-            <ul class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
+            <ul class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common.commonLines.vars.prototype, 'new': true}) }}{% endfilter %}">
                 <li class="lineHeader not_delete">
                     <div class="lineDesc">{{ 'Description' }}</div>
                     <div class="lineQty">{{ 'Quantity' }}</div>
@@ -38,7 +47,7 @@
                     <div class="lineTaxes">{{ 'Taxes' }}</div>
                 </li>
                 {# iterate over each existing tag and render its only field: name #}
-                {% for line in form.common.common_lines %}
+                {% for line in form.common.commonLines %}
                     <li>
                         {{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
                     </li>

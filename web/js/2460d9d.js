@@ -20,8 +20,11 @@ function notify(notify_type, msg) {
     var alertMsg = $('<div class="notification alert fade">' + msg + '<a class="close close_notification" data-dismiss="alert" href="#">&times;</a></div>');
     alerts.append(alertMsg);
 
-    if (notify_type == 'info') {
+    if (notify_type == 'success') {
         alertMsg.addClass('alert-success in');
+    }
+    else if (notify_type == 'info') {
+        alertMsg.addClass('alert-info in');
     }
     else if (notify_type == 'error') {
         alertMsg.addClass('alert-error in');

@@ -11,8 +11,8 @@ class InvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('issue_date', 'date');
-        $builder->add('due_date', 'date');
+        $builder->add('issueDate', 'date');
+        $builder->add('dueDate', 'date');
         $builder->add('serie');
         $builder->add('common', new CommonType());
     }

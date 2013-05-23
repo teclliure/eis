@@ -19,14 +19,14 @@ class InvoiceController extends Controller
     }
 
     public function addInvoiceAction(Request $request) {
-        $form = $this->createForm(new InvoiceType(), new Invoice());
+        $invoice = new Invoice();
+        $form = $this->createForm(new InvoiceType(), $invoice);
 
         // process the form on POST
         if ($request->isMethod('post')) {
             $form->bind($request);
-            if ($form->isValid()) {
-                $invoice = $form->getData();
 
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($invoice);
                 $em->flush();

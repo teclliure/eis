@@ -26,13 +26,26 @@
             <tr>
                 <td><a href="{{ path('tax_edit', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
                 <td>{{ entity.value }}</td>
-                <td>{{ entity.active }}</td>
-                <td>{{ entity.isdefault }}</td>
                 <td>
                     {% if entity.active %}
-                        <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Disable'|trans }}</a>
+                        <i class="icon-ok"></i>
                     {% else %}
-                        <a href="{{ path('tax_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-play-circle"></i> {{ 'Enable'|trans }}</a>
+                        <i class="icon-remove"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if entity.isdefault %}
+                        <i class="icon-ok"></i>
+                    {% else %}
+                        <i class="icon-remove"></i>
+                    {% endif %}
+
+                </td>
+                <td>
+                    {% if entity.active %}
+                        <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove"></i> {{ 'Disable'|trans }}</a>
+                    {% else %}
+                        <a href="{{ path('tax_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-ok"></i> {{ 'Enable'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>
