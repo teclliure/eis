@@ -247,4 +247,54 @@ class CommonLine {
         $this->taxes = $taxes;
         return $this;
     }
+
+    /**
+     * Get base amount
+     *
+     * @return float
+     */
+    public function getBaseAmount() {
+        return $this->getQuantity()*$this->getUnitaryCost();
+    }
+
+    /**
+     * Get discount
+     *
+     * @return float
+     */
+    public function getDiscountAmount() {
+        return ($this->getBaseAmount()*$this->getDiscount())/100;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return float
+     */
+    public function getNetAmount() {
+        return $this->getBaseAmount()-$this->getDiscountAmount();
+    }
+
+    /**
+     * Get taxes
+     *
+     * @return float
+     */
+    public function getTaxesAmount() {
+        $taxTotal = 0;
+        $taxes = $this->getTaxes();
+        foreach ($taxes as $tax) {
+            $taxTotal += ($this->getNetAmount()*$tax->getValue())/100;
+        }
+        return $taxTotal;
+    }
+
+    /**
+     * Get base amount - discount + taxes
+     *
+     * @return float
+     */
+    public function getTotalAmount() {
+        return $this->getNetAmount()+$this->getTaxesAmount();
+    }
 }

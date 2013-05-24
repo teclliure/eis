@@ -5,12 +5,7 @@
 <div id="inside_content">
     <div class="list_primary_buttons">
         <a href="{{ path('tax') }}" class="btn btn-primary"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-        <a href="{{ path('tax_edit', { 'id': entity.id }) }}" class="btn"><i class="icon-file"></i> Edit</a>
-        {% if entity.active %}
-            <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Disable'|trans }}</a>
-        {% else %}
-            <a href="{{ path('tax_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-play-circle"></i> {{ 'Enable'|trans }}</a>
-        {% endif %}
+        <a href="{{ path('tax_edit', { 'id': entity.id }) }}" class="btn"><i class="icon-file"></i> {{ 'Edit'|trans }}</a>
     </div>
 
     <h1>Tax</h1>
@@ -18,23 +13,23 @@
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ 'Id'|trans }}</th>
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
+                <th>{{ 'Name'|trans }}</th>
                 <td>{{ entity.name }}</td>
             </tr>
             <tr>
-                <th>Value</th>
+                <th>{{ 'Value'|trans }}</th>
                 <td>{{ entity.value }}</td>
             </tr>
             <tr>
-                <th>Active</th>
+                <th>{{ 'Is active ?'|trans }}</th>
                 <td>{{ entity.active }}</td>
             </tr>
             <tr>
-                <th>Is_default</th>
+                <th>{{ 'Is default ?'|trans }}</th>
                 <td>{{ entity.isdefault }}</td>
             </tr>
         </tbody>

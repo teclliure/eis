@@ -4,7 +4,7 @@ namespace Teclliure\InvoiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Teclliure\InvoiceBundle\Service\InvoiceService;
-use Teclliure\InvoiceBundle\Entity\Invoice;
+use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Form\Type\InvoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,19 +19,25 @@ class InvoiceController extends Controller
     }
 
     public function addInvoiceAction(Request $request) {
-        $invoice = new Invoice();
+        $invoice = new Common();
         $form = $this->createForm(new InvoiceType(), $invoice);
 
         // process the form on POST
         if ($request->isMethod('post')) {
             $form->bind($request);
 
+            $t = $this->get('translator');
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($invoice);
                 $em->flush();
-                // ... maybe do some form processing, like saving the Task and Tag objects
+
+                $this->get('session')->getFlashBag()->add('success', $t->trans('Invoice saved!'));
+
                 return $this->redirect($this->generateUrl('homepage'));
+            }
+            else {
+                $this->get('session')->getFlashBag()->add('error', $t->trans('Invoice NOT saved. Error in form: '.$form->getErrorsAsString()));
             }
         }
 

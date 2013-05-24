@@ -5,6 +5,7 @@ namespace Teclliure\InvoiceBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Teclliure\InvoiceBundle\Entity\Common;
 
 /**
  * @ORM\Table(name="invoice", uniqueConstraints={
@@ -16,10 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Invoice {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common", inversedBy="invoice", cascade={"persist"})
-     * @ORM\JoinColumn(name="common_id", referencedColumnName="id")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
-    private $common;
+    private $id;
 
     /**
      *
@@ -34,21 +35,20 @@ class Invoice {
      * @ORM\Column(type="smallint")
      *
      */
-    private $status;
+    private $status = 0;
 
     /**
      * @var integer $number
      *
-     * @ORM\Column(type="integer", unique=true)
-     *
+     * @ORM\Column(type="integer", unique=true, nullable=true )
      *
      */
     private $number;
 
     /**
-     * @var datetime $issue_date
+     * @var date $issue_date
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="date")
@@ -57,9 +57,9 @@ class Invoice {
     private $issue_date;
 
     /**
-     * @var datetime $due_date
+     * @var date $due_date
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="date")
@@ -132,9 +132,58 @@ class Invoice {
      *
      * @ORM\Column(type="float")
      *
-     *
      */
     private $gross_amount;
+
+    public function calculateBaseAmount(Common $common)
+    {
+        $amount = 0;
+        $lines = $common->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getBaseAmount();
+        }
+        return $amount;
+    }
+
+    public function calculateDiscountAmount(Common $common)
+    {
+        $amount = 0;
+        $lines = $common->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getDiscountAmount();
+        }
+        return $amount;
+    }
+
+    public function calculateNetAmount(Common $common)
+    {
+        $amount = 0;
+        $lines = $common->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getNetAmount();
+        }
+        return $amount;
+    }
+
+    public function calculateTaxAmount(Common $common)
+    {
+        $amount = 0;
+        $lines = $common->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getTaxAmount();
+        }
+        return $amount;
+    }
+
+    public function calculateGrossAmount(Common $common)
+    {
+        $amount = 0;
+        $lines = $common->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getTotalAmount();
+        }
+        return $amount;
+    }
 
     /**
      * Set status
@@ -272,29 +321,6 @@ class Invoice {
     public function getUpdated()
     {
         return $this->updated;
-    }
-
-    /**
-     * Set common
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Common $common
-     * @return Invoice
-     */
-    public function setCommon(\Teclliure\InvoiceBundle\Entity\Common $common)
-    {
-        $this->common = $common;
-    
-        return $this;
-    }
-
-    /**
-     * Get common
-     *
-     * @return \Teclliure\InvoiceBundle\Entity\Common 
-     */
-    public function getCommon()
-    {
-        return $this->common;
     }
 
     /**

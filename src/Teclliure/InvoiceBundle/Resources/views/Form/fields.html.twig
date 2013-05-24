@@ -35,7 +35,12 @@
     {% spaceless %}
         {% import "TeclliureInvoiceBundle:Form:formMacro.html.twig" as macros %}
         {% if not form.parent and not form.vars.valid %}
-            {{ macros.display_error(form) }}
+            <div class="alert alert-block alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4>{{ 'Ups, form error !'|trans }}</h4>
+                <p>{{ 'Change a few things up and try submitting again.'|trans }}</p>
+                {{ macros.display_error(form) }}
+            </div>
         {% else %}
             {{ parent() }}
         {% endif %}

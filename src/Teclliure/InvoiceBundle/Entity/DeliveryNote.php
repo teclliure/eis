@@ -7,16 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="order")
+ * @ORM\Table(name="delivery_note")
  * @ORM\Entity
  */
-class Order {
+class DeliveryNote {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common", inversedBy="order", cascade={"persist"})
-     * @ORM\JoinColumn(name="common_id", referencedColumnName="id")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
-    private $common;
+    private $id;
 
     /**
      * @var integer $number

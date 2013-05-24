@@ -21,17 +21,18 @@ class Common {
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Quote", mappedBy="common", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Quote", cascade={"persist", "remove"})
      */
     private $quote;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Order", mappedBy="common", cascade={"persist", "remove"})
-     */
-    private $order;
 
     /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Invoice", mappedBy="common", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\DeliveryNote", cascade={"persist", "remove"})
+     */
+    private $delivery_note;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Invoice", cascade={"persist", "remove"})
      */
     private $invoice;
 
@@ -61,7 +62,7 @@ class Common {
     private $customer_name;
 
     /**
-     * @ORM\Column(type="string", length=30, unique=true)
+     * @ORM\Column(type="string", length=30)
      *
      * @Assert\Length(min = 5, max = 30)
      * @Assert\NotBlank()
@@ -103,7 +104,6 @@ class Common {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
      * @Assert\Country
      *
      */
@@ -318,29 +318,6 @@ class Common {
     }
 
     /**
-     * Set order
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Order $order
-     * @return Common
-     */
-    public function setOrder(\Teclliure\InvoiceBundle\Entity\Order $order = null)
-    {
-        $this->order = $order;
-    
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return \Teclliure\InvoiceBundle\Entity\Order 
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
      * Set invoice
      *
      * @param \Teclliure\InvoiceBundle\Entity\Invoice $invoice
@@ -440,5 +417,21 @@ class Common {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Update amount based con invoice lines
+     *
+     * @ORM\PrePersist()
+     */
+    public function doOnPrePersist()
+    {
+        if ($this->getInvoice()) {
+            $this->getInvoice()->setBaseAmount($this->getInvoice()->calculateBaseAmount($this));
+            $this->getInvoice()->setDiscountAmount($this->getInvoice()->calculateDiscountAmount($this));
+            $this->getInvoice()->setNetAmount($this->getInvoice()->calculateNetAmount($this));
+            $this->getInvoice()->setTaxAmount($this->getInvoice()->calculateTaxAmount($this));
+            $this->getInvoice()->setGrossAmount($this->getInvoice()->calculateGrossAmount($this));
+        }
     }
 }

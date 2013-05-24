@@ -11,15 +11,16 @@ class CommonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // $builder->add('id', 'hidden');
         $builder->add('description');
-        $builder->add('customerName');
-        $builder->add('customerIdentification');
-        $builder->add('customerZipCode');
-        $builder->add('customerAddress');
-        $builder->add('customerCity');
-        $builder->add('customerState');
-        $builder->add('customerCountry');
-        $builder->add('commonLines', 'collection', array(
+        $builder->add('customer_name');
+        $builder->add('customer_identification');
+        $builder->add('customer_zip_code');
+        $builder->add('customer_address');
+        $builder->add('customer_city');
+        $builder->add('customer_state');
+        $builder->add('customer_country');
+        $builder->add('common_lines', 'collection', array(
             'type' => new CommonLineType(),
             'allow_add'    => true,
             'allow_delete' => true,

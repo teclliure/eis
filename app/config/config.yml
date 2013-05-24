@@ -80,3 +80,11 @@ fos_user:
         address:        noreply@teclliure.net
         sender_name:    EIS Demo App
 
+stof_doctrine_extensions:
+    default_locale: en
+    translation_fallback: true
+    orm:
+        default:
+            timestampable: true
+            translatable: true
+
