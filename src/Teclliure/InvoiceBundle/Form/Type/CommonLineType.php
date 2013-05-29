@@ -10,12 +10,24 @@ class CommonLineType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden');
+        //$builder->add('id', 'hidden');
         $builder->add('description');
         $builder->add('quantity');
         $builder->add('unitary_cost');
         $builder->add('discount');
-        $builder->add('taxes');
+        /*$builder->add('taxes');*/
+        $builder->add('taxes','entity', array(
+            'class'     => 'TeclliureInvoiceBundle:Tax',
+            'expanded'  => true,
+            'multiple'  => true
+        ));
+        /*$builder->add('taxes', 'collection', array(
+            'by_reference' => false,
+            'options' => array(
+                'expanded' => true,
+                'multiple' => true
+            )
+        ));*/
         /*$builder->add('taxes', 'collection', array(
             'type' => new TaxType(),
             'allow_add'    => true,

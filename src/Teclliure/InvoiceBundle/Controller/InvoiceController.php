@@ -18,8 +18,14 @@ class InvoiceController extends Controller
         return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array('invoices' => $invoices));
     }
 
-    public function addInvoiceAction(Request $request) {
-        $invoice = new Common();
+    public function addEditInvoiceAction(Request $request) {
+        if ($request->get('id')) {
+            $invoiceService = $this->get('invoice_service');
+            $invoice = $invoiceService->getInvoice($request->get('id'));
+        }
+        else {
+            $invoice = new Common();
+        }
         $form = $this->createForm(new InvoiceType(), $invoice);
 
         // process the form on POST
@@ -29,20 +35,22 @@ class InvoiceController extends Controller
             $t = $this->get('translator');
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+                /*foreach ($invoice->getCommonLines() as $line) {
+                    print (count($line->getTaxes()));
+                }
+                exit();*/
                 $em->persist($invoice);
                 $em->flush();
 
                 $this->get('session')->getFlashBag()->add('success', $t->trans('Invoice saved!'));
 
-                return $this->redirect($this->generateUrl('homepage'));
-            }
-            else {
-                $this->get('session')->getFlashBag()->add('error', $t->trans('Invoice NOT saved. Error in form: '.$form->getErrorsAsString()));
+                return $this->redirect($this->generateUrl('invoice_list'));
             }
         }
 
-        return $this->render('TeclliureInvoiceBundle:Invoice:new.html.twig', array(
+        return $this->render('TeclliureInvoiceBundle:Invoice:invoiceForm.html.twig', array(
             'form' => $form->createView(),
+            'common' => $invoice
         ));
     }
 }

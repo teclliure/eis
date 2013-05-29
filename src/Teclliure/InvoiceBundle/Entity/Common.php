@@ -55,7 +55,7 @@ class Common {
     /**
      * @ORM\Column(type="string", length=200)
      *
-     * @Assert\Length(min = 2, max = 200)
+     * @Assert\Length(min = 4, max = 200)
      * @Assert\NotBlank()
      *
      */
@@ -348,6 +348,7 @@ class Common {
      */
     public function addCommonLine(\Teclliure\InvoiceBundle\Entity\CommonLine $commonLines)
     {
+        $commonLines->setCommon($this);
         $this->common_lines[] = $commonLines;
     
         return $this;
@@ -433,5 +434,28 @@ class Common {
             $this->getInvoice()->setTaxAmount($this->getInvoice()->calculateTaxAmount($this));
             $this->getInvoice()->setGrossAmount($this->getInvoice()->calculateGrossAmount($this));
         }
+    }
+
+    /**
+     * Set delivery_note
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\DeliveryNote $deliveryNote
+     * @return Common
+     */
+    public function setDeliveryNote(\Teclliure\InvoiceBundle\Entity\DeliveryNote $deliveryNote = null)
+    {
+        $this->delivery_note = $deliveryNote;
+
+        return $this;
+    }
+
+    /**
+     * Get delivery_note
+     *
+     * @return \Teclliure\InvoiceBundle\Entity\DeliveryNote 
+     */
+    public function getDeliveryNote()
+    {
+        return $this->delivery_note;
     }
 }

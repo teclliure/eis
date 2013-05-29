@@ -174,4 +174,14 @@ class Quote {
     {
         return $this->common;
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

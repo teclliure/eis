@@ -1,0 +1,96 @@
+{% extends '::container.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/teclliureinvoice/js/lines.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/inputPlaceholderUF.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="inside_content">
+        <form id="invoiceForm" action="{% if common.id %}{{ path('invoice_edit', {'id': common.id }) }}{% else %}{{ path('invoice_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+            {{ form_errors(form) }}
+
+            <h3>{{ 'Customer'|trans }}</h3>
+            <div class="inputDiv control-group {% if form.customer_identification.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_widget(form.customer_identification, {'attr': { 'maxlength': 30, 'class': 'input-small uf-placeholder', 'placeholder': 'Identification'|trans} }) }}
+            {{ form_errors(form.customer_identification) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_name.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_name) }}
+            {{ form_widget(form.customer_name, { 'attr': {'maxlength': 200, 'class': 'input-xlarge uf-placeholder', 'placeholder': 'Name'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_zip_code.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_zip_code) }}
+            {{ form_widget(form.customer_zip_code, { 'attr': {'maxlength': 6, 'class': 'input-mini uf-placeholder', 'placeholder': 'Zip code'|trans} }) }}
+            </div>
+            <br />
+            <div class="inputDiv control-group {% if form.customer_address.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_address) }}
+            {{ form_widget(form.customer_address, { 'attr': {'class': 'input-xxlarge uf-placeholder', 'placeholder': 'Invoicing address'|trans} }) }}
+            </div>
+            <br />
+            <div class="inputDiv control-group {% if form.customer_city.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_city) }}
+            {{ form_widget(form.customer_city, { 'attr': {'maxlength': 6, 'class': 'input-small uf-placeholder', 'placeholder': 'City'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_state.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_state) }}
+            {{ form_widget(form.customer_state, { 'attr': {'maxlength': 6, 'class': 'input-small uf-placeholder', 'placeholder': 'State'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_country.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_country) }}
+            {{ form_widget(form.customer_country, { 'attr': {'maxlength': 6, 'class': 'input-small uf-placeholder', 'placeholder': 'Country'|trans} }) }}
+            </div>
+
+            <h3>{{ 'Payment'|trans }}</h3>
+            <div class="inputDivInline control-group {% if form.invoice.issue_date.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.invoice.issue_date) }}
+            {{ 'Issue date'|trans }}: {{ form_widget(form.invoice.issue_date, { 'attr': {'class': 'date_input'} } ) }}
+            </div>
+            &nbsp;&nbsp;
+            <div class="inputDivInline control-group {% if form.invoice.due_date.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.invoice.due_date) }}
+            {{ 'Due date'|trans }}: {{ form_widget(form.invoice.due_date, { 'attr': {'class': 'date_input'} }) }}
+            </div>
+            &nbsp;&nbsp;
+            <div class="inputDivInline control-group {% if form.invoice.serie.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.invoice.serie) }}
+            {{ 'Serie'|trans }}: {{ form_widget(form.invoice.serie, { 'attr': {'class': 'input-small'} }) }}
+            </div>
+
+            <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
+            <h3>{{ 'Description'|trans }}</h3>
+            {{ form_row(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge', 'placeholder': 'Description'|trans} }) }}
+            </div>
+
+            <h3>{{ 'Invoice lines'|trans }}</h3>
+            <table class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
+                <thead>
+                    <tr class="lineHeader not_delete">
+                        <th class="lineDesc">{{ 'Description' }}</th>
+                        <th class="lineQty">{{ 'Quantity' }}</th>
+                        <th class="lineUC">{{ 'Unitary cost' }}</th>
+                        <th class="lineDiscount">{{ 'Discount' }}</th>
+                        <th class="lineTaxes">{{ 'Taxes' }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {# iterate over each existing tag and render its only field: name #}
+                {% for line in form.common_lines %}
+                    {{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
+                {% endfor %}
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="5">
+                            <a href="#" class="btn btn-primary " id="add_line_link"><i class="icon-plus-sign"></i> {{ 'Add a line'|trans }}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {{ form_rest(form) }}
+
+            <button type="submit" class="btn">{{ 'Save'|trans }}</button>
+        </form>
+    </div>
+{% endblock %}

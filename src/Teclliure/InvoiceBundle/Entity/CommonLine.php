@@ -68,7 +68,7 @@ class CommonLine {
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax")
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", cascade={"persist", "remove"})
      */
     private $taxes;
 
@@ -204,49 +204,6 @@ class CommonLine {
         $this->taxes = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
-    /**
-     * Add taxes
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
-     * @return CommonLine
-     */
-    public function addTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
-    {
-        $this->taxes[] = $taxes;
-    
-        return $this;
-    }
-
-    /**
-     * Remove taxes
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
-     */
-    public function removeTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
-    {
-        $this->taxes->removeElement($taxes);
-    }
-
-    /**
-     * Get taxes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTaxes()
-    {
-        return $this->taxes;
-    }
-
-    /**
-     * Set taxes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function setTaxes($taxes)
-    {
-        $this->taxes = $taxes;
-        return $this;
-    }
 
     /**
      * Get base amount
@@ -280,7 +237,7 @@ class CommonLine {
      *
      * @return float
      */
-    public function getTaxesAmount() {
+    public function getTaxAmount() {
         $taxTotal = 0;
         $taxes = $this->getTaxes();
         foreach ($taxes as $tax) {
@@ -295,6 +252,39 @@ class CommonLine {
      * @return float
      */
     public function getTotalAmount() {
-        return $this->getNetAmount()+$this->getTaxesAmount();
+        return $this->getNetAmount()+$this->getTaxAmount();
+    }
+
+    /**
+     * Add taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     * @return CommonLine
+     */
+    public function addTax(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes[] = $taxes;
+
+        return $this;
+    }
+
+    /**
+     * Remove taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     */
+    public function removeTax(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes->removeElement($taxes);
+    }
+
+    /**
+     * Get taxes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTaxes()
+    {
+        return $this->taxes;
     }
 }

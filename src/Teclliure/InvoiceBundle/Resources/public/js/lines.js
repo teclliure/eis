@@ -1,5 +1,5 @@
 // Get the ul that holds the collection of lines
-var collectionHolder = $('ul.lines');
+var collectionHolder = $('table.lines');
 
 // setup an "add a line" link
 var $addLineLink = $('#add_line_link');
@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
     collectionHolder.data('index', collectionHolder.find(':input').length);
 
     // add a delete link to all of the existing tag form li elements
-    collectionHolder.find('li:not(.not_delete)').each(function() {
+    collectionHolder.find('tr:not(.not_delete)').each(function() {
         addLineFormDeleteLink($(this));
     });
 
@@ -42,7 +42,7 @@ function addLineForm(collectionHolder, $newLinkLi) {
     collectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a line" link li
-    var $newFormLi = $('<li></li>').append(newForm);
+    var $newFormLi = $(newForm);
     $newLinkLi.before($newFormLi);
 
     // add a delete link to the new form
@@ -51,7 +51,7 @@ function addLineForm(collectionHolder, $newLinkLi) {
 
 function addLineFormDeleteLink($lineFormLi) {
     var $removeFormA = $('<a class="delete_line_link" href="#"><i class="icon-remove-circle"></i></a>');
-    $lineFormLi.append($removeFormA);
+    $lineFormLi.children('.lineDesc').prepend($removeFormA);
 
     $removeFormA.on('click', function(e) {
         // prevent the link from creating a "#" on the URL

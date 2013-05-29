@@ -460,4 +460,14 @@ class Invoice {
     {
         return $this->gross_amount;
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

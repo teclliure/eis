@@ -82,4 +82,23 @@ class InvoiceService {
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /**
+     * Get invoice
+     *
+     * @param integer $commonId
+     *
+     * @api 0.1
+     */
+    public function getInvoice($commonId) {
+        // $query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Common c LEFT JOIN c.invoice i :where ORDER BY :order');
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('c, i')
+            ->from('TeclliureInvoiceBundle:Common','c')
+            ->innerJoin('c.invoice','i')
+            ->where('c.id = :commonId')
+            ->setParameter('commonId', $commonId);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
 }

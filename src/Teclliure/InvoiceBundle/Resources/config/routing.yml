@@ -4,7 +4,11 @@ invoice_list:
 
 invoice_add:
     pattern:  /invoice/add
-    defaults: { _controller: TeclliureInvoiceBundle:Invoice:addInvoice }
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:addEditInvoice }
+
+invoice_edit:
+    pattern:  /invoice/edit/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:addEditInvoice }
 
 taxes:
     resource: "@TeclliureInvoiceBundle/Controller/TaxController.php"

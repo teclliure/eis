@@ -22,13 +22,19 @@
             <tbody>
                 {% for common in invoices %}
                 <tr>
-                    <td>{{ common.invoice.number }}</td>
+                    <td>
+                        {{ common.invoice.number }}
+                    </td>
                     <td>{{ common.customerName }}</td>
                     <td>{{ common.invoice.issueDate|date('d/m/Y') }}</td>
                     <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
                     <td>{{ 'Pending'|trans }}</td>
                     <td>{{ common.invoice.grossAmount }}</td>
-                    <td>{{ 'Pay'|trans }}</td>
+                    <td>
+                        {{ 'Pay'|trans }}
+                        &nbsp;
+                        <a href="{{ path('invoice_edit', {'id': common.id }) }} class="btn btn-small"><i class="icon-edit"></i></a>
+                    </td>
                 </tr>
                 {% endfor %}
                 <tr>

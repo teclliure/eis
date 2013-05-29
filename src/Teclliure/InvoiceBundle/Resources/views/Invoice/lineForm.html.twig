@@ -1,23 +1,33 @@
-<div id="invoice_common_common_lines{% if new == true %}___name__{% endif %}">
-    <div class="lineDesc">
+<tr {% if new == true %}id="invoice_common_common_lines___name__"{% endif %}>
+    <td class="lineDesc">
+        <div class="inputDiv">
         {{ form_errors(lineForm.description) }}
-        {{ form_widget(lineForm.description, {'attr': { 'maxlength': 200, 'class': 'input-xlarge', 'placeholder': 'Description'|trans} }) }}
-    </div>
-    <div class="lineQty">
+        {{ form_widget(lineForm.description, {'attr': { 'maxlength': 200, 'class': 'input-xlarge uf-placeholder', 'placeholder': 'Description'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineQty">
+        <div class="inputDiv">
         {{ form_errors(lineForm.quantity) }}
-        {{ form_widget(lineForm.quantity, {'attr': { 'class': 'input-mini', 'placeholder': 'Quantity'|trans} }) }}
-    </div>
-    <div class="lineUC">
+        {{ form_widget(lineForm.quantity, {'attr': { 'class': 'input-mini uf-placeholder', 'placeholder': 'Quantity'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineUC">
+        <div class="inputDiv">
         {{ form_errors(lineForm.unitary_cost) }}
-        {{ form_widget(lineForm.unitary_cost, {'attr': { 'class': 'input-mini', 'placeholder': 'Unitary cost'|trans} }) }}
-    </div>
-    <div class="lineDiscount">
+        {{ form_widget(lineForm.unitary_cost, {'attr': { 'class': 'input-mini  uf-placeholder', 'placeholder': 'Unitary cost'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineDiscount">
+        <div class="inputDiv">
         {{ form_errors(lineForm.discount) }}
-        {{ form_widget(lineForm.discount, {'attr': { 'class': 'input-mini', 'placeholder': 'Unitary cost'|trans} }) }}
-    </div>
-    <div class="lineTaxes">
+        {{ form_widget(lineForm.discount, {'attr': { 'class': 'input-mini  uf-placeholder', 'placeholder': 'Unitary cost'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineTaxes">
+        <div class="inputDiv">
         {{ form_errors(lineForm.taxes) }}
-        {{ form_widget(lineForm.taxes, {'attr': { 'class': 'input-small'} }) }}
+        {{ form_widget(lineForm.taxes) }}
+        </div>
         {{ form_rest(lineForm) }}
-    </div>
-</div>
+    </td>
+</tr>

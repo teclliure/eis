@@ -24,7 +24,7 @@ body {
 }
 
 #inside_content {
-    padding: 20px 10px 10px 10px;
+    padding: 20px 10px 20px 30px;
 }
 
 .container {
@@ -108,12 +108,12 @@ body {
 }
 
 .delete_line_link {
-    margin: 0 0 0 25px;
+    /*margin: 0 0 0 25px;*/
 }
 
 .delete_line_link i {
-    line-height: 20px;
-    margin-top: 19px;
+    /*line-height: 20px;*/
+    /*margin-top: 19px;*/
 }
 
 .lineHeader .lineDesc, .lineHeader .lineQty, .lineHeader .lineUC, .lineHeader .lineDiscount, .lineHeader .lineTaxes {
@@ -129,17 +129,25 @@ body {
     text-align: right;
 }
 
+.checkbox.inline+.checkbox.inline {
+    margin-left: 0;
+}
+
 .lineDesc, .lineQty, .lineUC, .lineTaxes, .lineDiscount {
     border: 1px solid #ccc;
     padding: 4px;
 }
 
 .lineDesc {
-    width: 290px;
+    width: 310px;
 }
 
-.lineQty, .lineUC, .lineTaxes, .lineDiscount {
+.lineQty, .lineUC, .lineDiscount {
     width: 100px;
+}
+
+.lineTaxes {
+    width: 250px;
 }
 
 .field_checkbox_label {
@@ -153,6 +161,70 @@ body {
 .date_input select {
     width: 80px;
 }
+
+div.inputDiv {
+    position: relative;
+    display: inline-block;
+}
+
+div.inputDivInline {
+    display: inline;
+}
+
+div.labelPlaceholder {
+    top: -15px;
+    left: 3px;
+    background: #0979cc;
+    color: white;
+    position: absolute;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 4px 5px 3px;
+    z-index: 10000;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+div.formErrors {
+    left: 2px;
+    top: 27px;
+    background: #cc000a;
+    color: white;
+    position: absolute;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 4px 5px 3px;
+    z-index: 10000;
+    -webkit-border-bottom-left-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+#invoiceForm .radio input[type="radio"], #invoiceForm .checkbox input[type="checkbox"] {
+    margin-left: 0px;
+}
+
+#invoiceForm .checkbox {
+    min-height: 20px;
+    padding-left: 5px;
+}
+
+td.lineTaxes {
+    text-align: left;
+}
+td.lineTaxes label {
+    width: 47%;
+    float: left;
+    font-size: 0.8em;
+}
+
 /* End invoice css */
 
 /* Start alerts css */

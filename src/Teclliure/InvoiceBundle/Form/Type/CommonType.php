@@ -21,10 +21,12 @@ class CommonType extends AbstractType
         $builder->add('customer_state');
         $builder->add('customer_country');
         $builder->add('common_lines', 'collection', array(
-            'type' => new CommonLineType(),
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'by_reference' => false,
+            'type'          => new CommonLineType(),
+            'allow_add'     => true,
+            'allow_delete'  => true,
+            'by_reference'  => false,
+            'required'      => true,
+            'label'         => false
             )
         );
     }

@@ -13,10 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Quote {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common", inversedBy="quote", cascade={"persist"})
-     * @ORM\JoinColumn(name="common_id", referencedColumnName="id")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
-    private $common;
+    private $id;
 
     /**
      * @var integer $number
@@ -173,5 +173,15 @@ class Quote {
     public function getCommon()
     {
         return $this->common;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

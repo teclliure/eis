@@ -68,7 +68,7 @@ class CommonLine {
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax")
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", cascade={"persist", "remove"})
      */
     private $taxes;
 
@@ -204,36 +204,54 @@ class CommonLine {
         $this->taxes = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+
     /**
-     * Add taxes
+     * Get base amount
      *
-     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
-     * @return CommonLine
+     * @return float
      */
-    public function addTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
-    {
-        $this->taxes[] = $taxes;
-    
-        return $this;
+    public function getBaseAmount() {
+        return $this->getQuantity()*$this->getUnitaryCost();
     }
 
     /**
-     * Remove taxes
+     * Get discount
      *
-     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     * @return float
      */
-    public function removeTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
-    {
-        $this->taxes->removeElement($taxes);
+    public function getDiscountAmount() {
+        return ($this->getBaseAmount()*$this->getDiscount())/100;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return float
+     */
+    public function getNetAmount() {
+        return $this->getBaseAmount()-$this->getDiscountAmount();
     }
 
     /**
      * Get taxes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return float
      */
-    public function getTaxes()
-    {
-        return $this->taxes;
+    public function getTaxAmount() {
+        $taxTotal = 0;
+        $taxes = $this->getTaxes();
+        foreach ($taxes as $tax) {
+            $taxTotal += ($this->getNetAmount()*$tax->getValue())/100;
+        }
+        return $taxTotal;
+    }
+
+    /**
+     * Get base amount - discount + taxes
+     *
+     * @return float
+     */
+    public function getTotalAmount() {
+        return $this->getNetAmount()+$this->getTaxAmount();
     }
 }
