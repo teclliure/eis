@@ -68,7 +68,7 @@ class CommonLine {
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", inversedBy="lines", cascade={"persist", "remove"})
      */
     private $taxes;
 

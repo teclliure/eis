@@ -26,7 +26,7 @@ class Customer implements InvoiceCustomerInterface {
     /**
      * @ORM\Column(type="string", length=200, unique=true)
      *
-     * @Assert\Length(min = 2, max = 200)
+     * @Assert\Length(min = 4, max = 200)
      * @Assert\NotBlank()
      *
      */

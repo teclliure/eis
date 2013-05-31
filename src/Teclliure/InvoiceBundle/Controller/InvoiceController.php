@@ -5,7 +5,6 @@ namespace Teclliure\InvoiceBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Teclliure\InvoiceBundle\Service\InvoiceService;
 use Teclliure\InvoiceBundle\Entity\Common;
-use Teclliure\InvoiceBundle\Form\Type\InvoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
 class InvoiceController extends Controller
@@ -19,14 +18,14 @@ class InvoiceController extends Controller
     }
 
     public function addEditInvoiceAction(Request $request) {
+        $invoiceService = $this->get('invoice_service');
         if ($request->get('id')) {
-            $invoiceService = $this->get('invoice_service');
             $invoice = $invoiceService->getInvoice($request->get('id'));
         }
         else {
-            $invoice = new Common();
+            $invoice = $invoiceService->createInvoice();
         }
-        $form = $this->createForm(new InvoiceType(), $invoice);
+        $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
 
         // process the form on POST
         if ($request->isMethod('post')) {
@@ -35,10 +34,6 @@ class InvoiceController extends Controller
             $t = $this->get('translator');
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                /*foreach ($invoice->getCommonLines() as $line) {
-                    print (count($line->getTaxes()));
-                }
-                exit();*/
                 $em->persist($invoice);
                 $em->flush();
 

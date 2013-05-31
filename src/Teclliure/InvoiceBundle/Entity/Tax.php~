@@ -58,6 +58,11 @@ class Tax {
     private $is_default = false;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", mappedBy="taxes")
+     */
+    private $lines;
+
+    /**
      * Get id
      *
      * @return integer 

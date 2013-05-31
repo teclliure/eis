@@ -58,6 +58,11 @@ class Tax {
     private $is_default = false;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\CommonLIne", mappedBy="taxes")
+     */
+    private $lines;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -167,5 +172,45 @@ class Tax {
     public function getIsDefault()
     {
         return $this->is_default;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->lines = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add lines
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $lines
+     * @return Tax
+     */
+    public function addLine(\Teclliure\InvoiceBundle\Entity\Tax $lines)
+    {
+        $this->lines[] = $lines;
+
+        return $this;
+    }
+
+    /**
+     * Remove lines
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $lines
+     */
+    public function removeLine(\Teclliure\InvoiceBundle\Entity\Tax $lines)
+    {
+        $this->lines->removeElement($lines);
+    }
+
+    /**
+     * Get lines
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLines()
+    {
+        return $this->lines;
     }
 }

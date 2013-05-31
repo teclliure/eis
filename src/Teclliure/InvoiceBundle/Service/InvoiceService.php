@@ -11,6 +11,7 @@
 namespace Teclliure\InvoiceBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Teclliure\InvoiceBundle\Entity\Common;
 
 
 /**
@@ -57,6 +58,8 @@ class InvoiceService {
      * @param array   $filter
      * @param array   $order
      *
+     * @return array
+     *
      * @api 0.1
      */
     public function getInvoices($limit = 10, $offset = 0, $filter = array(), $order = array()) {
@@ -88,6 +91,8 @@ class InvoiceService {
      *
      * @param integer $commonId
      *
+     * @return mixed Common or null
+     *
      * @api 0.1
      */
     public function getInvoice($commonId) {
@@ -100,5 +105,18 @@ class InvoiceService {
             ->setParameter('commonId', $commonId);
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * Create invoice
+     *
+     * @return Common
+     *
+     * @api 0.1
+     */
+    public function createInvoice() {
+        $invoice = new Common();
+
+        return $invoice;
     }
 }

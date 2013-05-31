@@ -7,9 +7,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Teclliure\InvoiceBundle\Form\Type\CommonType;
 use Teclliure\InvoiceBundle\Form\Type\InvoiceSubType;
+use Doctrine\ORM\EntityManager;
 
 class InvoiceType extends CommonType
 {
+    protected $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
