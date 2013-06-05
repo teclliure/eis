@@ -15,6 +15,7 @@ class CommonType extends AbstractType
     {
         // $builder->add('id', 'hidden');
         $builder->add('description');
+        $builder->add('customer', 'hidden');
         $builder->add('customer_name');
         $builder->add('customer_identification');
         $builder->add('customer_zip_code');

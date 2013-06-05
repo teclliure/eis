@@ -28,5 +28,8 @@
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
     {% block javascripts %}{% endblock %}
+    <script type="text/javascript">
+        basePath = '{{app.request.baseurl}}';
+    </script>
   </body>
 </html>

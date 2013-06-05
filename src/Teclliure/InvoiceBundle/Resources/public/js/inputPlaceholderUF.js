@@ -5,6 +5,6 @@ jQuery(document).ready(function() {
         }
     });
     $('body').on('blur', '.uf-placeholder', function() {
-        $(this).next('div.labelPlaceholder').remove();
+        $('div.labelPlaceholder').remove();
     });
 });

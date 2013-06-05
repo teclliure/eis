@@ -5,6 +5,7 @@ namespace Teclliure\InvoiceBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  *  @ORM\Table(name="tax",uniqueConstraints={
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("name")
  */
 class Tax {
     /**
@@ -58,7 +60,7 @@ class Tax {
     private $is_default = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\CommonLIne", mappedBy="taxes")
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\CommonLine", mappedBy="taxes")
      */
     private $lines;
 

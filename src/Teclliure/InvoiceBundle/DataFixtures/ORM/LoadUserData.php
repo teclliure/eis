@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Teclliure\invoiceBundle\DataFixtures\ORM;
+namespace Teclliure\InvoiceBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
