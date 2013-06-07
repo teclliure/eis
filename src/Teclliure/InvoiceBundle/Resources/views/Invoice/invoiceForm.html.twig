@@ -46,25 +46,25 @@
             </div>
             <div class="inputDiv control-group {% if form.customer_country.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.customer_country) }}
-            {{ form_widget(form.customer_country, { 'attr': {'maxlength': 6, 'class': 'input-small uf-placeholder', 'placeholder': 'Country'|trans} }) }}
+            {{ form_widget(form.customer_country, { 'attr': {'maxlength': 6, 'class': 'input-large uf-placeholder', 'placeholder': 'Country'|trans} }) }}
             </div>
 
             <h3>{{ 'Payment'|trans }}</h3>
             <div class="inputDivInline control-group {% if form.invoice.issue_date.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.invoice.issue_date) }}
-            {{ 'Issue date'|trans }}: {{ form_widget(form.invoice.issue_date, { 'attr': {'class': 'date_input'} } ) }}
+            {{ 'Issue date'|trans }}: {{ form_widget(form.invoice.issue_date, { 'attr': {'class': 'input-small date_input'} } ) }}
             </div>
             &nbsp;&nbsp;
             <div class="inputDivInline control-group {% if form.invoice.due_date.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.invoice.due_date) }}
-            {{ 'Due date'|trans }}: {{ form_widget(form.invoice.due_date, { 'attr': {'class': 'date_input'} }) }}
+            {{ 'Due date'|trans }}: {{ form_widget(form.invoice.due_date, { 'attr': {'class': 'input-small date_input'} }) }}
             </div>
             &nbsp;&nbsp;
             <div class="inputDivInline control-group {% if form.invoice.serie.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.invoice.serie) }}
             {{ 'Serie'|trans }}: {{ form_widget(form.invoice.serie, { 'attr': {'class': 'input-small'} }) }}
             </div>
-
+            <br />
             <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
             <h3>{{ 'Description'|trans }}</h3>
             {{ form_row(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge', 'placeholder': 'Description'|trans} }) }}
@@ -77,8 +77,9 @@
                         <th class="lineDesc">{{ 'Description' }}</th>
                         <th class="lineQty">{{ 'Quantity' }}</th>
                         <th class="lineUC">{{ 'Unitary cost' }}</th>
-                        <th class="lineDiscount">{{ 'Discount' }}</th>
                         <th class="lineTaxes">{{ 'Taxes' }}</th>
+                        <th class="lineDiscount">{{ 'Discount' }}</th>
+                        <th class="lineDiscount">{{ 'Price' }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,7 +97,21 @@
 
             {{ form_rest(form) }}
 
-            <button type="submit" class="btn">{{ 'Save'|trans }}</button>
+            <div class="list_primary_buttons">
+                {% if (common.id) and (common.invoice) and (common.invoice.status == 0)  %}
+                    <a href="{{ path('invoice_delete', {'id': common.id}) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Delete'|trans }}</a>
+                    &nbsp;
+                    &nbsp;
+                {% endif %}
+                {% if (not common.invoice) or (common.invoice.status == 0)  %}
+                    <button type="submit" name="action" value="save_and_close" class="btn btn-info"><i class="icon-folder-close"></i> {{ 'Save and close'|trans }}</button>
+                    <button type="submit" name="action" value="save" class="btn"><i class="icon-file"></i> {{ 'Save'|trans }}</button>
+                {% endif %}
+                {% if (common.invoice) and (common.invoice.status != 0)  %}
+                    <a href="{{ path('invoice_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+                {% endif %}
+            </div>
+            <div style="clear:both;"></div>
         </form>
     </div>
 {% endblock %}

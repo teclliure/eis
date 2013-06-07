@@ -38,9 +38,9 @@ class Invoice {
     private $status = 0;
 
     /**
-     * @var integer $number
+     * @var string $number
      *
-     * @ORM\Column(type="integer", unique=true, nullable=true )
+     * @ORM\Column(type="string", length=25, unique=true, nullable=true )
      *
      */
     private $number;
@@ -211,7 +211,7 @@ class Invoice {
     /**
      * Set number
      *
-     * @param integer $number
+     * @param string $number
      * @return Invoice
      */
     public function setNumber($number)
@@ -224,7 +224,7 @@ class Invoice {
     /**
      * Get number
      *
-     * @return integer 
+     * @return string
      */
     public function getNumber()
     {
@@ -469,5 +469,28 @@ class Invoice {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     *
+     * Get status name
+     *
+     *
+     * @return string
+     *
+     */
+    public function getStatusName() {
+        if ($this->getStatus() == 0) {
+            return 'Draft';
+        }
+        elseif ($this->getStatus() == 1) {
+            return 'Closed';
+        }
+        elseif ($this->getStatus() == 2) {
+            return 'Overdue';
+        }
+        elseif ($this->getStatus() == 3) {
+            return 'Paid';
+        }
     }
 }

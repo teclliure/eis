@@ -11,8 +11,14 @@ class InvoiceSubType extends CommonType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('issue_date', 'date');
-        $builder->add('due_date', 'date');
+        $builder->add('issue_date', 'date', array(
+            'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy'
+        ));
+        $builder->add('due_date', 'date', array(
+            'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy'
+        ));
         $builder->add('serie');
     }
 

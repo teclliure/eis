@@ -427,13 +427,13 @@ class Common {
      */
     public function doOnPrePersist()
     {
-        if ($this->getInvoice()) {
+        /*if ($this->getInvoice()) {
             $this->getInvoice()->setBaseAmount($this->getInvoice()->calculateBaseAmount($this));
             $this->getInvoice()->setDiscountAmount($this->getInvoice()->calculateDiscountAmount($this));
             $this->getInvoice()->setNetAmount($this->getInvoice()->calculateNetAmount($this));
             $this->getInvoice()->setTaxAmount($this->getInvoice()->calculateTaxAmount($this));
             $this->getInvoice()->setGrossAmount($this->getInvoice()->calculateGrossAmount($this));
-        }
+        }*/
     }
 
     /**

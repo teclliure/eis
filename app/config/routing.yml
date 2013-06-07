@@ -17,3 +17,7 @@ teclliure_invoice:
 homepage:
     pattern:  /
     defaults: { _controller: TeclliureDashboardBundle:Default:index }
+
+craue_config_settings:
+  resource: "@CraueConfigBundle/Resources/config/routing/settings.xml"
+  prefix: /settings

@@ -5,6 +5,7 @@ namespace Teclliure\InvoiceBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  *  @ORM\Table(name="tax",uniqueConstraints={
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("name")
  */
 class Tax {
     /**
@@ -58,7 +60,7 @@ class Tax {
     private $is_default = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", mappedBy="taxes")
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\CommonLine", mappedBy="taxes")
      */
     private $lines;
 
@@ -172,5 +174,45 @@ class Tax {
     public function getIsDefault()
     {
         return $this->is_default;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->lines = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add lines
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $lines
+     * @return Tax
+     */
+    public function addLine(\Teclliure\InvoiceBundle\Entity\Tax $lines)
+    {
+        $this->lines[] = $lines;
+
+        return $this;
+    }
+
+    /**
+     * Remove lines
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $lines
+     */
+    public function removeLine(\Teclliure\InvoiceBundle\Entity\Tax $lines)
+    {
+        $this->lines->removeElement($lines);
+    }
+
+    /**
+     * Get lines
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLines()
+    {
+        return $this->lines;
     }
 }

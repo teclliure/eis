@@ -24,7 +24,7 @@ body {
 }
 
 #inside_content {
-    padding: 20px 10px 20px 30px;
+    padding: 30px 10px 20px 30px;
 }
 
 .container {
@@ -81,7 +81,7 @@ body {
 .list_primary_buttons {
     float: right;
     clear: both;
-    margin: 20px 10px 30px;
+    margin: 35px 10px 30px;
 }
 /* End list css */
 
@@ -125,7 +125,7 @@ body {
     text-align: left;
 }
 
-.lineQty, .lineUC, .lineDiscount, .lineTaxes {
+.lineQty, .lineUC, .lineDiscount, .lineTaxes, .linePrice {
     text-align: right;
 }
 
@@ -133,8 +133,9 @@ body {
     margin-left: 0;
 }
 
-.lineDesc, .lineQty, .lineUC, .lineTaxes, .lineDiscount {
-    border: 1px solid #ccc;
+.lineDesc, .lineQty, .lineUC, .lineTaxes, .lineDiscount, .linePrice {
+    border: 1px solid #DCDCDC !important;
+    vertical-align: middle;
     padding: 4px;
 }
 
@@ -168,7 +169,8 @@ div.inputDiv {
 }
 
 div.inputDivInline {
-    display: inline;
+    position: relative;
+    display: inline-block;
 }
 
 div.labelPlaceholder {
@@ -230,7 +232,7 @@ td.lineTaxes label {
 /* Start alerts css */
 #alerts {
     position: relative;
-    margin: 0 auto 0 auto;
+    margin: 10px auto 10px auto;
     /*margin: 20px;*/
 }
 

@@ -33,11 +33,19 @@ class InvoiceController extends Controller
 
             $t = $this->get('translator');
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($invoice);
-                $em->flush();
+                $invoiceService->saveInvoice($invoice);
 
-                $this->get('session')->getFlashBag()->add('success', $t->trans('Invoice saved!'));
+                $action = $request->get('action');
+                if ($action == 'save_and_close') {
+                    $invoiceService->closeInvoice($invoice);
+                    $this->get('session')->getFlashBag()->add('success', $t->trans('Invoice saved and closed!'));
+                }
+                elseif ($action == 'save') {
+                    $this->get('session')->getFlashBag()->add('success', $t->trans('Invoice saved!'));
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('warning', $t->trans('Nothing done!'));
+                }
 
                 return $this->redirect($this->generateUrl('invoice_list'));
             }
@@ -47,5 +55,28 @@ class InvoiceController extends Controller
             'form' => $form->createView(),
             'common' => $invoice
         ));
+    }
+
+    public function openInvoiceAction(Request $request) {
+        $t = $this->get('translator');
+        $invoiceService = $this->get('invoice_service');
+        $invoice = $invoiceService->getInvoice($request->get('id'));
+        $invoiceService->openInvoice($invoice);
+
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Invoice re-opened!'));
+
+        return $this->redirect($this->generateUrl('invoice_edit', array ('id'=>$invoice->getId())));
+    }
+
+    protected function notFoundRedirect ($id) {
+        $t = $this->get('translator');
+        $this->get('session')->getFlashBag()->add('error', $t->trans('Invoice with id ('.$id.') not found!'));
+        return $this->redirect($this->generateUrl('invoice_list'));
+    }
+
+    protected function notEditableRedirect ($id) {
+        $t = $this->get('translator');
+        $this->get('session')->getFlashBag()->add('error', $t->trans('Invoice with id ('.$id.') cannot be edited!'));
+        return $this->redirect($this->generateUrl('invoice_list'));
     }
 }

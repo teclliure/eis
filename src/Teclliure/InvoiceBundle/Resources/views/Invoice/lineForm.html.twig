@@ -17,17 +17,20 @@
         {{ form_widget(lineForm.unitary_cost, {'attr': { 'class': 'input-mini  uf-placeholder', 'placeholder': 'Unitary cost'|trans} }) }}
         </div>
     </td>
-    <td class="lineDiscount">
-        <div class="inputDiv">
-        {{ form_errors(lineForm.discount) }}
-        {{ form_widget(lineForm.discount, {'attr': { 'class': 'input-mini  uf-placeholder', 'placeholder': 'Unitary cost'|trans} }) }}
-        </div>
-    </td>
     <td class="lineTaxes">
         <div class="inputDiv">
         {{ form_errors(lineForm.taxes) }}
         {{ form_widget(lineForm.taxes) }}
         </div>
+
+    </td>
+    <td class="lineDiscount">
+        <div class="inputDiv">
+            {{ form_errors(lineForm.discount) }}
+            {{ form_widget(lineForm.discount, {'attr': { 'class': 'input-mini  uf-placeholder', 'placeholder': 'Unitary cost'|trans} }) }}
+        </div>
+    </td>
+    <td class="linePrice">
         {{ form_rest(lineForm) }}
     </td>
 </tr>

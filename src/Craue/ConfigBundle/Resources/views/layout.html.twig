@@ -1,0 +1,16 @@
+{% extends '::container.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@CraueConfigBundle/Resources/assets/css/form.css' %}
+    <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+
+{% block content %}
+    <div id="inside_content">
+        {% block craue_config_content %}
+        {% endblock %}
+    </div>
+{% endblock %}

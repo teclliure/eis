@@ -15,6 +15,7 @@
                     <th>{{ 'Date'|trans }}</th>
                     <th>{{ 'Due date'|trans }}</th>
                     <th>{{ 'Due'|trans }}</th>
+                    <th>{{ 'Status'|trans }}</th>
                     <th>{{ 'Total'|trans }}</th>
                     <th class="clear"></th>
                 </tr>
@@ -29,22 +30,19 @@
                     <td>{{ common.invoice.issueDate|date('d/m/Y') }}</td>
                     <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
                     <td>{{ 'Pending'|trans }}</td>
+                    <td>{{ common.invoice.statusName|trans }}</td>
                     <td>{{ common.invoice.grossAmount }}</td>
                     <td>
-                        {{ 'Pay'|trans }}
+                        <a href="#" alt="{{ 'Pay'|trans }}" class="btn btn-small"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</a>
                         &nbsp;
-                        <a href="{{ path('invoice_edit', {'id': common.id }) }} class="btn btn-small"><i class="icon-edit"></i></a>
+                        <a href="{{ path('invoice_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
                     </td>
                 </tr>
                 {% endfor %}
                 <tr>
-                    <td>{{ 'Invoice number'|trans }}</td>
-                    <td>{{ 'Customer name'|trans }}</td>
-                    <td>{{ 'Date'|trans }}</td>
-                    <td>{{ 'Due date'|trans }}</td>
-                    <td>{{ 'Due'|trans }}</td>
-                    <td>{{ 'Total'|trans }}</td>
-                    <td>{{ 'Payments'|trans }}</td>
+                    <td colspan="8">
+                        {{ invoices|length }} {{ 'invoices' }}
+                    </td>
                 </tr>
             </tbody>
         </table>
