@@ -5,6 +5,7 @@ namespace Craue\ConfigBundle\Form;
 use Craue\ConfigBundle\Form\Type\SettingType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -12,20 +13,12 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class ModifySettingsForm extends AbstractType {
-
-    protected $em;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder->add('settings', 'collection', array(
-			'type' => new SettingType($this->em),
+			'type' => new SettingType(),
 		));
 	}
 

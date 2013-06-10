@@ -6,7 +6,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * Registration of the extension via DI.
@@ -21,12 +21,12 @@ class CraueConfigExtension extends Extension {
 	 * {@inheritDoc}
 	 */
 	public function load(array $config, ContainerBuilder $container) {
-		$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+		$loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('twig.xml');
 		$loader->load('util.xml');
 
-        $loader2 = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader2->load('services.yml');
+        $loaderYml = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loaderYml->load('services.yml');
 	}
 
 }

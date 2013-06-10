@@ -36,8 +36,7 @@ class Setting {
      * text
      * textarea
      * choice
-     * entity
-     * ...
+     * entity_object
      *
      * http://symfony.com/doc/current/reference/forms/types.html
      *

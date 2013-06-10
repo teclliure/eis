@@ -45,7 +45,7 @@ class Common {
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface", inversedBy="commons")
+     * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface",  cascade={"persist"}, inversedBy="commons")
      * @ORM\JoinColumn(name="common_id", referencedColumnName="id", onDelete="SET NULL")
      *
      * @var InvoiceCustomerInterface
@@ -88,7 +88,7 @@ class Common {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
+     * @Assert\Length(min = 2, max = 200)
      *
      */
     private $customer_city;
@@ -96,7 +96,7 @@ class Common {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
+     * @Assert\Length(min = 2, max = 200)
      *
      */
     private $customer_state;

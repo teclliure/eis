@@ -21,7 +21,7 @@ class SettingsController extends Controller {
 			'settings' => $allStoredSettings,
 		);
 
-		$form = $this->createForm('teclliure.form.type.config', $formData);
+		$form = $this->createForm(new ModifySettingsForm(), $formData);
 		$request = $this->get('request');
 		if ($request->getMethod() === 'POST') {
 			$form->bind($request);

@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Entity\Serie;
+use Craue\ConfigBundle\Util\Config;
+use Teclliure\CustomerBundle\Entity\Customer;
 
 
 /**
@@ -36,13 +38,21 @@ class InvoiceService {
     protected $em;
 
     /**
+     * Config
+     *
+     * @var Object
+     */
+    protected $config;
+
+    /**
      * Constructor.
      *
      * @param EntityManager
      *
      */
-    public function __construct(EntityManager $em) {
+    public function __construct(EntityManager $em, Config $config) {
         $this->em = $em;
+        $this->config = $config;
     }
 
     /**
@@ -53,6 +63,16 @@ class InvoiceService {
      */
     public function getEntityManager() {
         return $this->em;
+    }
+
+    /**
+     * Return config
+     *
+     * @return Config
+     *
+     */
+    public function getConfig() {
+        return $this->config;
     }
 
     /**
@@ -126,6 +146,12 @@ class InvoiceService {
         $invoice = new Invoice();
         $invoice->setIssueDate($issueDate);
         $invoice->setDueDate($dueDate->modify('+1 month'));
+        if ($this->getConfig()->get('default_serie')) {
+            $serie = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Serie')->find($this->getConfig()->get('default_serie'));
+            if ($serie) {
+                $invoice->setSerie($serie);
+            }
+        }
         $common->setInvoice($invoice);
 
         return $common;
@@ -154,6 +180,8 @@ class InvoiceService {
         else {
             throw new Exception('Only invoices with status draft could be edited');
         }
+        $this->updateCustomerFromCommon($common);
+
         $em = $this->getEntityManager();
         $em->persist($common);
         $em->flush();
@@ -261,5 +289,57 @@ class InvoiceService {
         // die ($result);
 
         return $number;
+    }
+
+    /**
+     * Create a new customer
+     *
+     * Create a new customer if the identification doesn't exists
+     *
+     * @param Customer
+     *
+     * @api 0.1
+     */
+    protected function updateCustomerFromCommon(Common $common) {
+        // FIXME: Change this call to a CustomerService call and don't use Customer class directly
+        $customer = $common->getCustomer();
+        if (!$customer) {
+            $customer = $this->getEntityManager()->getRepository('TeclliureCustomerBundle:Customer')->findOneBy(array('identification'=>$common->getCustomerIdentification()));
+            if ($customer) {
+                $common->setCustomer($customer);
+            }
+            else {
+                $customer = new Customer();
+                $customer->setIdentification($common->getCustomerIdentification());
+                $customer->setName($common->getCustomerName());
+                $customer->setAddress($common->getCustomerAddress());
+                $customer->setZipCode($common->getCustomerZipCode());
+                $customer->setCity($common->getCustomerCity());
+                $customer->setState($common->getCustomerState());
+                $customer->setCountry($common->getCustomerCountry());
+
+                $common->setCustomer($customer);
+            }
+        }
+        else {
+            if (!$customer->getName()) {
+                $customer->setName($common->getCustomerName());
+            }
+            if (!$customer->getAddress()) {
+                $customer->setAddress($common->getCustomerAddress());
+            }
+            if (!$customer->getZipCode()) {
+                $customer->setZipCode($common->getCustomerZipCode());
+            }
+            if (!$customer->getCity()) {
+                $customer->setCity($common->getCustomerCity());
+            }
+            if (!$customer->getState()) {
+                $customer->setState($common->getCustomerState());
+            }
+            if (!$customer->getCountry()) {
+                $customer->setCountry($common->getCustomerCountry());
+            }
+        }
     }
 }

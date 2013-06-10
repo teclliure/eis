@@ -38,7 +38,7 @@
             <br />
             <div class="inputDiv control-group {% if form.customer_city.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.customer_city) }}
-            {{ form_widget(form.customer_city, { 'attr': {'maxlength': 6, 'class': 'input-small uf-placeholder', 'placeholder': 'City'|trans} }) }}
+            {{ form_widget(form.customer_city, { 'attr': {'maxlength': 6, 'class': 'uf-placeholder', 'placeholder': 'City'|trans} }) }}
             </div>
             <div class="inputDiv control-group {% if form.customer_state.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.customer_state) }}

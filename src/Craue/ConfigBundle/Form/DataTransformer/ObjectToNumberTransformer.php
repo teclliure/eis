@@ -20,7 +20,7 @@ class ObjectToNumberTransformer implements DataTransformerInterface
     /**
     * @param ObjectManager $om
     */
-    public function __construct(ObjectManager $om, \String $class)
+    public function __construct(ObjectManager $om, $class)
     {
         $this->om = $om;
         $this->class = $class;
@@ -32,11 +32,12 @@ class ObjectToNumberTransformer implements DataTransformerInterface
     * @param  Object|null $object
     * @return string
     */
-    public function transform($object)
+    public function reverseTransform($object)
     {
         if (null === $object) {
             return "";
         }
+
 
         return $object->getId();
     }
@@ -50,7 +51,7 @@ class ObjectToNumberTransformer implements DataTransformerInterface
     *
     * @throws TransformationFailedException if object (object) is not found.
     */
-    public function reverseTransform($number)
+    public function transform($number)
     {
         if (!$number) {
             return null;

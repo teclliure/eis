@@ -1,10 +1,12 @@
 parameters:
 
 services:
-  teclliure.form.type.config:
-        class: Craue\ConfigBundle\Form\ModifySettingsForm
-        arguments:
-            - @doctrine.orm.entity_manager
+  craue.form.type.entity.object:
+      class: Craue\ConfigBundle\Form\Type\EntityObjectType
+      arguments:
+          - @doctrine.orm.entity_manager
+      tags:
+          - { name: form.type, alias: entity_object }
 #    teclliure_invoice.example:
 #        class: %teclliure_invoice.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

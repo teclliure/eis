@@ -7,6 +7,8 @@ services:
       class: "%teclliure_invoice_service.class%"
       arguments:
         em: "@doctrine.orm.entity_manager"
+        config: "@craue_config"
+
   customer_service:
         class: "%teclliure_customer_service.class%"
         arguments:

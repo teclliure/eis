@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Craue\ConfigBundle\Form\DataTransformer\ObjectToNumberTransformer;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -16,14 +17,6 @@ use Craue\ConfigBundle\Form\DataTransformer\ObjectToNumberTransformer;
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class SettingType extends AbstractType {
-
-    protected $em;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -31,18 +24,19 @@ class SettingType extends AbstractType {
 		$builder->add('name', 'hidden');
 		$builder->add('section', 'hidden');
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+//        $factory = $builder->getFormFactory();
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($builder) {
             $form = $event->getForm();
             $data = $event->getData();
 
             if ($data) {
                 if ($data->getType() == 'entity') {
-                    $transformer = new ObjectToNumberTransformer($this->em);
                     $form->add(
-                        $form->create('value', $data->getType(), array_merge(
+                        'value', 'entity_object', array_merge(
                             $data->getTypeOptions(),
                             array('required'=>false)
-                        ))->addModelTransformer($transformer)
+                        )
                     );
                 }
                 else {
