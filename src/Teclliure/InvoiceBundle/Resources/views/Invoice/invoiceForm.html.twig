@@ -21,6 +21,7 @@
             <div class="inputDiv control-group {% if form.customer_identification.vars.errors|length > 0 %}error{% endif %}">
             {{ form_widget(form.customer_identification, {'attr': { 'maxlength': 30, 'class': 'input-medium uf-placeholder', 'placeholder': 'Identification'|trans} }) }}
             {{ form_errors(form.customer_identification) }}
+            <div class="ajax_loader input_inside_ajax_load"> </div>
             </div>
             <div class="inputDiv control-group {% if form.customer_name.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.customer_name) }}
@@ -71,7 +72,7 @@
             </div>
 
             <h3>{{ 'Invoice lines'|trans }}</h3>
-            <table class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
+            <table id="commonLines" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
                 <thead>
                     <tr class="lineHeader not_delete">
                         <th class="lineDesc">{{ 'Description' }}</th>
@@ -82,17 +83,43 @@
                         <th class="lineDiscount">{{ 'Price' }}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody_lines">
                 {# iterate over each existing tag and render its only field: name #}
-                {% for line in form.common_lines %}
+                {% for key,line in form.common_lines %}
                     {{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
                 {% endfor %}
+                </tbody>
+                <tfoot>
                     <tr id="add_line_link_li" class="not_delete">
-                        <td colspan="5">
+                        <td colspan="4" rowspan="2">
                             <a href="#" class="btn btn-primary " id="add_line_link"><i class="icon-plus-sign"></i> {{ 'Add a line'|trans }}</a>
                         </td>
+                        <th class="border_total">{{ 'Base'|trans }}</th>
+                        <td class="border_total common_totals" id="total_base_amount">{{ common.baseAmount|number_format(2, '.', ',') }}€</td>
                     </tr>
-                </tbody>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <th class="border_total">{{ 'Discount'|trans }}</th>
+                        <td class="border_total common_totals" id="total_discount">{{ common.discountAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ 'Subtotal'|trans }}</th>
+                        <td class="border_total common_totals" id="total_subtotal">{{ common.netAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ 'Taxes'|trans }}</th>
+                        <td class="border_total common_totals" id="total_taxes">{{ common.taxAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ 'Total'|trans }}</th>
+                        <td class="border_total common_totals" id="total_total">{{ common.grossAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                </tfoot>
             </table>
 
             {{ form_rest(form) }}

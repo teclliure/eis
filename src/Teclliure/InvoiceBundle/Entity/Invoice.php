@@ -135,56 +135,6 @@ class Invoice {
      */
     private $gross_amount;
 
-    public function calculateBaseAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getBaseAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateDiscountAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getDiscountAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateNetAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getNetAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateTaxAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getTaxAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateGrossAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getTotalAmount();
-        }
-        return $amount;
-    }
-
     /**
      * Set status
      *

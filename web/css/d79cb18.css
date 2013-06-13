@@ -117,8 +117,9 @@ body {
 }
 
 .lineHeader .lineDesc, .lineHeader .lineQty, .lineHeader .lineUC, .lineHeader .lineDiscount, .lineHeader .lineTaxes {
-    font-weight: bold;
+    /*font-weight: bold;*/
     text-align: center;
+    font-style: italic;
 }
 
 .lineDesc {
@@ -139,6 +140,24 @@ body {
     padding: 4px;
 }
 
+.border_total {
+    border: 1px solid #DCDCDC !important;
+}
+
+.lines th {
+    background-color: #e9e9e9;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+th.border_total {
+    background-color: #e9e9e9;
+    text-align: left;
+    padding: 4px;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
 .lineDesc {
     width: 310px;
 }
@@ -149,6 +168,10 @@ body {
 
 .lineTaxes {
     width: 250px;
+}
+
+.common_totals {
+    text-align: right;
 }
 
 .field_checkbox_label {
@@ -221,10 +244,39 @@ div.formErrors {
 td.lineTaxes {
     text-align: left;
 }
+
 td.lineTaxes label {
+    text-align: left;
+    font-size: 0.8em;
+    display: inline-block;
+}
+
+td.lineTaxes div.tax {
     width: 47%;
     float: left;
-    font-size: 0.8em;
+}
+
+.ajax_loader {
+    display: none;
+    background-image: url(../img/ajax-loader.gif);
+    background-repeat: no-repeat;
+    height: 16px;
+    width: 16px;
+}
+
+.ui-autocomplete-loading { background:url('../img/ajax-loader.gif') no-repeat right center }
+
+.input_outside_ajax_load {
+    float: right;
+    position: absolute;
+    top: 8px;
+    left: -21px;
+}
+.input_inside_ajax_load {
+    float: right;
+    position: absolute;
+    top: 8px;
+    left: -10px;
 }
 
 /* End invoice css */

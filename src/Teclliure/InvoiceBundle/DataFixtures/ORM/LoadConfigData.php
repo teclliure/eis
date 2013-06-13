@@ -68,6 +68,14 @@ class LoadConfigData implements FixtureInterface
         $setting->setTypeOptions(array('class' => 'TeclliureInvoiceBundle:Serie'));
         $manager->persist($setting);
 
+        $setting = new Setting();
+        $setting->setName('default_country');
+        $setting->setType('country');
+        $setting->setValue('ES');
+        $setting->setSection('web');
+        $setting->setTypeOptions(array());
+        $manager->persist($setting);
+
         $manager->flush();
     }
 }

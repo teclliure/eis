@@ -3,6 +3,8 @@
 namespace Teclliure\InvoiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Service\InvoiceService;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +20,15 @@ class InvoiceController extends Controller
     }
 
     public function addEditInvoiceAction(Request $request) {
+        $originalLines = array();
         $invoiceService = $this->get('invoice_service');
         if ($request->get('id')) {
             $invoice = $invoiceService->getInvoice($request->get('id'));
+
+            // Create an array of the current CommonLines objects in the database
+            foreach ($invoice->getCommonLines() as $commonLine) {
+                $originalLines[] = $commonLine;
+            }
         }
         else {
             $invoice = $invoiceService->createInvoice();
@@ -33,7 +41,7 @@ class InvoiceController extends Controller
 
             $t = $this->get('translator');
             if ($form->isValid()) {
-                $invoiceService->saveInvoice($invoice);
+                $invoiceService->saveInvoice($invoice, $originalLines);
 
                 $action = $request->get('action');
                 if ($action == 'save_and_close') {

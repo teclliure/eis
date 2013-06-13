@@ -152,6 +152,9 @@ class InvoiceService {
                 $invoice->setSerie($serie);
             }
         }
+        if ($this->getConfig()->get('default_country')) {
+            $common->setCustomerCountry($this->getConfig()->get('default_country'));
+        }
         $common->setInvoice($invoice);
 
         return $common;
@@ -166,13 +169,28 @@ class InvoiceService {
      *
      * @api 0.1
      */
-    public function saveInvoice(Common $common) {
+    public function saveInvoice(Common $common, $originalLines = array()) {
+        if ($originalLines)  {
+            foreach ($common->getCommonLines() as $commonLine) {
+                foreach ($originalLines as $key => $toDel) {
+                    if ($toDel->getId() === $commonLine->getId()) {
+                        unset($originalLines[$key]);
+                    }
+                }
+            }
+
+            // remove the relationship between the line and the common
+            foreach ($originalLines as $line) {
+                $this->getEntityManager()->remove($line);
+            }
+        }
+
         if ($common->getInvoice() && !$common->getInvoice()->getStatus()) {
-            $common->getInvoice()->setBaseAmount($common->getInvoice()->calculateBaseAmount($common));
-            $common->getInvoice()->setDiscountAmount($common->getInvoice()->calculateDiscountAmount($common));
-            $common->getInvoice()->setNetAmount($common->getInvoice()->calculateNetAmount($common));
-            $common->getInvoice()->setTaxAmount($common->getInvoice()->calculateTaxAmount($common));
-            $common->getInvoice()->setGrossAmount($common->getInvoice()->calculateGrossAmount($common));
+            $common->getInvoice()->setBaseAmount($common->getBaseAmount());
+            $common->getInvoice()->setDiscountAmount($common->getDiscountAmount());
+            $common->getInvoice()->setNetAmount($common->getNetAmount());
+            $common->getInvoice()->setTaxAmount($common->getTaxAmount());
+            $common->getInvoice()->setGrossAmount($common->getGrossAmount());
         }
         elseif (!$common->getInvoice()) {
             throw new Exception('Common is not an invoice');
@@ -183,6 +201,7 @@ class InvoiceService {
         $this->updateCustomerFromCommon($common);
 
         $em = $this->getEntityManager();
+        // print count($common->getCommonLines());
         $em->persist($common);
         $em->flush();
     }

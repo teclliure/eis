@@ -458,4 +458,54 @@ class Common {
     {
         return $this->delivery_note;
     }
+
+    public function getBaseAmount()
+    {
+        $amount = 0;
+        $lines = $this->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getBaseAmount();
+        }
+        return $amount;
+    }
+
+    public function getDiscountAmount()
+    {
+        $amount = 0;
+        $lines = $this->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getDiscountAmount();
+        }
+        return $amount;
+    }
+
+    public function getNetAmount()
+    {
+        $amount = 0;
+        $lines = $this->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getNetAmount();
+        }
+        return $amount;
+    }
+
+    public function getTaxAmount()
+    {
+        $amount = 0;
+        $lines = $this->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getTaxAmount();
+        }
+        return $amount;
+    }
+
+    public function getGrossAmount()
+    {
+        $amount = 0;
+        $lines = $this->getCommonLines();
+        foreach ($lines as $line) {
+            $amount += $line->getTotalAmount();
+        }
+        return $amount;
+    }
 }

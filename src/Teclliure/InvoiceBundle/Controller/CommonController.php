@@ -7,6 +7,8 @@ use Teclliure\InvoiceBundle\Service\InvoiceService;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Teclliure\InvoiceBundle\Entity\CommonLine;
 
 class CommonController extends Controller
 {
@@ -34,6 +36,43 @@ class CommonController extends Controller
         $callback = $request->get('callback');
         $response = new JsonResponse($returnArray, 200, array());
         $response->setCallback($callback);
+        return $response;
+    }
+
+    public function updatePricesAction (Request $request) {
+        $invoiceData = $request->get('invoice');
+        $invoiceService = $this->get('invoice_service');
+        if ($request->get('id')) {
+            $invoice = $invoiceService->getInvoice($request->get('id'));
+        }
+        else {
+            $invoice = $invoiceService->createInvoice();
+        }
+        $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
+        $form->bind($request);
+
+        $taxRepository = $this->getDoctrine()->getRepository('TeclliureInvoiceBundle:Tax');
+        $lines = array();
+        foreach ($invoiceData['common_lines'] as $key=>$line) {
+            $commonLine = new CommonLine();
+            $commonLine->setQuantity($line['quantity']);
+            $commonLine->setDiscount($line['discount']);
+            $commonLine->setUnitaryCost($line['unitary_cost']);
+
+            foreach ($line['taxes'] as $tax) {
+                $tax = $taxRepository->find($tax);
+                if ($tax) {
+                    $commonLine->addTax($tax);
+                }
+            }
+            $lines['invoice_common_common_lines_'.$key] = $commonLine;
+        }
+        // print_r ($invoice->getCommonLines());
+
+        $renderedJs = $this->renderView('TeclliureInvoiceBundle:Common:updatePrice.js.twig', array('invoice'=>$invoice, 'lines'=>$lines));
+        $response = new Response( $renderedJs );
+        $response->headers->set( 'Content-Type', 'text/javascript' );
+
         return $response;
     }
 }

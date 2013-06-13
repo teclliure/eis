@@ -26,6 +26,10 @@ search_customer:
     pattern: /searchCustomer
     defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomer }
 
+update_prices:
+    pattern: /updatePrices
+    defaults: { _controller: TeclliureInvoiceBundle:Common:updatePrices }
+
 taxes:
     resource: "@TeclliureInvoiceBundle/Controller/TaxController.php"
     type:     annotation

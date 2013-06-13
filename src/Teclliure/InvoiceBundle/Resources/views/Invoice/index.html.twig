@@ -31,7 +31,7 @@
                     <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
                     <td>{{ 'Pending'|trans }}</td>
                     <td>{{ common.invoice.statusName|trans }}</td>
-                    <td>{{ common.invoice.grossAmount }}</td>
+                    <td>{{ common.invoice.grossAmount|number_format(2, '.', ',') }} €</td>
                     <td>
                         <a href="#" alt="{{ 'Pay'|trans }}" class="btn btn-small"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</a>
                         &nbsp;

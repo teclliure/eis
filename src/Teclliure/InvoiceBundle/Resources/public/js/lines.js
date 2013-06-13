@@ -1,20 +1,20 @@
 // Get the ul that holds the collection of lines
-var collectionHolder = $('table.lines');
+var collectionHolder = $('table#commonLines tbody');
 
 // setup an "add a line" link
 var $addLineLink = $('#add_line_link');
-var $newLinkLi = $('#add_line_link_li');
+var $tbody = $('#tbody_lines');
 
 jQuery(document).ready(function() {
     // add the "add a line" anchor and li to the lines ul
-    // collectionHolder.append($newLinkLi);
+    // collectionHolder.append($tbody);
 
     // count the current form inputs we have (e.g. 2), use that as the new
     // index when inserting a new item (e.g. 2)
-    collectionHolder.data('index', collectionHolder.find(':input').length);
+    collectionHolder.data('index', collectionHolder.find('tr.invoiceLine').length);
 
     // add a delete link to all of the existing tag form li elements
-    collectionHolder.find('tr:not(.not_delete)').each(function() {
+    collectionHolder.find('tr').each(function() {
         addLineFormDeleteLink($(this));
     });
 
@@ -23,27 +23,34 @@ jQuery(document).ready(function() {
         e.preventDefault();
 
         // add a new line form (see next code block)
-        addLineForm(collectionHolder, $newLinkLi);
+        addLineForm(collectionHolder, $tbody);
+    });
+
+    collectionHolder.on("change", ".updatePrice", function(event) {
+        var that = $(this);
+        updatePrice(that);
+
+        event.preventDefault();
     });
 });
 
-function addLineForm(collectionHolder, $newLinkLi) {
+function addLineForm(collectionHolder, $tbody) {
     // Get the data-prototype explained earlier
-    var prototype = collectionHolder.data('prototype');
+    var prototype = collectionHolder.parent().data('prototype');
 
     // get the new index
-    var index = collectionHolder.data('index');
+    var index = collectionHolder.data('index')+1;
 
     // Replace '$$name$$' in the prototype's HTML to
     // instead be a number based on how many items we have
-    var newForm = prototype.replace(/\$\$name\$\$/g, index);
+    var newForm = prototype.replace(/__name__/g, 'new'+index);
 
     // increase the index with one for the next item
     collectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a line" link li
     var $newFormLi = $(newForm);
-    $newLinkLi.before($newFormLi);
+    $tbody.append($newFormLi);
 
     // add a delete link to the new form
     addLineFormDeleteLink($newFormLi);
@@ -59,5 +66,22 @@ function addLineFormDeleteLink($lineFormLi) {
 
         // remove the li for the line form
         $lineFormLi.remove();
+        updatePrice();
+    });
+}
+
+function updatePrice(that) {
+    $.ajax({
+        type: "POST",
+        url: basePath + "/updatePrices",
+        data: $('#invoiceForm').serialize(),
+        beforeSend: function() {
+            //that.$element is a variable that stores the element the plugin was called on
+            that.parent().children('.ajax_loader').fadeIn();
+        },
+        complete: function() {
+            that.parent().children('.ajax_loader').fadeOut();
+        },
+        dataType: "script"
     });
 }

@@ -1,0 +1,8 @@
+$('#total_base_amount').html('{{ invoice.baseAmount|number_format(2, '.', ',') }}€');
+$('#total_discount').html('{{ invoice.discountAmount|number_format(2, '.', ',') }}€');
+$('#total_subtotal').html('{{ invoice.netAmount|number_format(2, '.', ',') }}€');
+$('#total_taxes').html('{{ invoice.taxAmount|number_format(2, '.', ',') }}€');
+$('#total_total').html('{{ invoice.grossAmount|number_format(2, '.', ',') }}€');
+{% for key,line in lines %}
+$('#{{ key }}').find('.linePrice').html('{{ line.totalAmount|number_format(2, '.', ',') }}€');
+{% endfor %}
