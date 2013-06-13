@@ -4,7 +4,7 @@
 {% block content %}
 <div id="inside_content">
     <div class="list_primary_buttons">
-        <a href="{{ path('tax_new') }}" class="btn btn-primary"><i class="icon-plus"></i> {{ 'New tax'|trans }}</a>
+        <a href="{{ path('tax_new') }}" id="newTaxLink" class="btn btn-primary"><i class="icon-plus"></i> {{ 'New tax'|trans }}</a>
     </div>
 
     <div class="page-header">
@@ -43,9 +43,12 @@
                 </td>
                 <td>
                     {% if entity.active %}
-                        <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove"></i> {{ 'Disable'|trans }}</a>
+                        <a href="{{ path('tax_disable', { 'id': entity.id }) }}" class="btn btn-warning"><i class="icon-remove"></i> {{ 'Disable'|trans }}</a>
                     {% else %}
                         <a href="{{ path('tax_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-ok"></i> {{ 'Enable'|trans }}</a>
+                    {% endif %}
+                    {% if entity.lines|length == 0 %}
+                        <a href="{{ path('tax_delete', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove"></i> {{ 'Delete'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>

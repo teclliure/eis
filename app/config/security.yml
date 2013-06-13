@@ -11,6 +11,8 @@ security:
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     providers:
+        provider_test:
+            memory: ~
         fos_userbundle:
             id: fos_user.user_provider.username_email
 

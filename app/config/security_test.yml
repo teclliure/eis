@@ -1,0 +1,18 @@
+security:
+    providers:
+        provider_test:
+            memory:
+                users:
+                    user:  { password: userP, roles: 'ROLE_USER' }
+                    admin: { password: adminP, roles: 'ROLE_ADMIN' }
+    firewalls:
+        main:
+            provider: provider_test
+            stateless: true
+            http_basic:
+                realm: "Secured Demo Area"
+                provider: provider_test
+
+#                http://user:userP@localhost/eis/app_test.php/tax
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

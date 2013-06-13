@@ -44,6 +44,7 @@ class TaxController extends Controller
      */
     public function createAction(Request $request)
     {
+        $t = $this->get('translator');
         $entity  = new Tax();
         $form = $this->createForm(new TaxType(), $entity);
         $form->bind($request);
@@ -53,8 +54,12 @@ class TaxController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('info', $t->trans('Tax saved'));
+
             return $this->redirect($this->generateUrl('tax'));
         }
+
+        $this->get('session')->getFlashBag()->add('error', $t->trans('Error saving Tax'));
 
         return array(
             'entity' => $entity,
@@ -134,7 +139,7 @@ class TaxController extends Controller
      * Edits an existing Tax entity.
      *
      * @Route("/{id}", name="tax_update")
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("TeclliureInvoiceBundle:Tax:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
@@ -202,6 +207,34 @@ class TaxController extends Controller
         $entity->setActive(1);
         $em->persist($entity);
         $em->flush();
+
+        return $this->redirect($this->generateUrl('tax'));
+    }
+
+    /**
+     * Delete a Tax entity.
+     *
+     * @Route("/delete/{id}", name="tax_delete")
+     * @Method("GET")
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $t = $this->get('translator');
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('TeclliureInvoiceBundle:Tax')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Tax entity.');
+        }
+        if (count ($entity->getLines()) > 0) {
+            $this->get('session')->getFlashBag()->add('error', $t->trans('Error deleting Tax: this Tax is used in lines.'));
+        }
+        else {
+            $em->remove($entity);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', $t->trans('Tax removed'));
+        }
 
         return $this->redirect($this->generateUrl('tax'));
     }
