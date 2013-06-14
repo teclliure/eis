@@ -58,10 +58,37 @@ body {
 }
 
 /* List css */
+#formFilter, #advancedSearchBtn {
+    display: inline-block;
+}
+
+.searchBox {
+    padding: 0px 0px 0px 0px;
+    border: 1px solid #DCDCDC;
+    background-color: #F6F6F6;
+    margin-bottom: 1em;
+}
+
+#search_i_status {
+    display: inline-block;
+}
+
+.form-search {
+    margin: 0.8em 0.8em 0.8em 0.8em;
+}
+
+#advancedSearch {
+    display: none;
+}
+
 .list_primary_buttons {
     float: right;
-    clear: both;
-    margin: 35px 10px 30px;
+    margin: 30px 28px 0px 28px;
+}
+
+.list_secondary_buttons {
+    float: left;
+    margin: 30px 28px 0px 28px;
 }
 /* End list css */
 

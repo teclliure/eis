@@ -8,6 +8,8 @@ use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Service\InvoiceService;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Symfony\Component\HttpFoundation\Request;
+use Teclliure\InvoiceBundle\Form\Type\SearchType;
+use Teclliure\InvoiceBundle\Form\Type\ExtendedSearchType;
 
 class InvoiceController extends Controller
 {
@@ -16,7 +18,14 @@ class InvoiceController extends Controller
         $invoiceService = $this->get('invoice_service');
         $invoices = $invoiceService->getInvoices();
 
-        return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array('invoices' => $invoices));
+        $basicSearchForm = $this->createForm(new SearchType(), array());
+        $extendedSearchForm = $this->createForm(new ExtendedSearchType(), array());
+
+        return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array(
+            'invoices'              => $invoices,
+            'basicSearchForm'       => $basicSearchForm->createView(),
+            'extendedSearchForm'    => $extendedSearchForm->createView()
+        ));
     }
 
     public function addEditInvoiceAction(Request $request) {
