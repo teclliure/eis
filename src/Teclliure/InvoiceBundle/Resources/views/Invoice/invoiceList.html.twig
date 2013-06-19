@@ -1,8 +1,8 @@
-<table  class="table table-bordered table-hover table-striped" style="margin: 25px; width: 97%;">
+<table  class="table table-bordered table-hover" style="margin: 25px; width: 97%;">
     <thead>
     <tr>
-        <th>{{ 'Invoice number'|trans }}</th>
-        <th>{{ 'Customer name'|trans }}</th>
+        <th {% if invoices.isSorted('i.number') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Invoice number'|trans, 'i.number') }}</th>
+        <th {% if invoices.isSorted('c.customer_name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Customer name'|trans, 'c.customer_name') }}</th>
         <th>{{ 'Date'|trans }}</th>
         <th>{{ 'Due date'|trans }}</th>
         <th>{{ 'Due'|trans }}</th>
@@ -30,10 +30,12 @@
             </td>
         </tr>
     {% endfor %}
+    </tbody>
+    <tfoot>
     <tr>
         <td colspan="8">
-            {{ invoices|length }} {{ 'invoices' }}
+            {{ knp_pagination_render(invoices, 'TeclliureInvoiceBundle:Common:simple_pagination.html.twig') }}
         </td>
     </tr>
-    </tbody>
+    </tfoot>
 </table>

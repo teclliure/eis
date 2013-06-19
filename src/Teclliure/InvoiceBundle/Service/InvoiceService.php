@@ -13,12 +13,13 @@ namespace Teclliure\InvoiceBundle\Service;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Acl\Exception\Exception;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Entity\Serie;
 use Craue\ConfigBundle\Util\Config;
 use Teclliure\CustomerBundle\Entity\Customer;
+use Knp\Component\Pager\Paginator;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 
 
 /**
@@ -28,7 +29,7 @@ use Teclliure\CustomerBundle\Entity\Customer;
  *
  * @api
  */
-class InvoiceService {
+class InvoiceService implements PaginatorAwareInterface {
 
     /**
      * EntityManager
@@ -43,6 +44,11 @@ class InvoiceService {
      * @var Object
      */
     protected $config;
+
+    /**
+     * @var Paginator
+     */
+    private $paginator;
 
     /**
      * Constructor.
@@ -76,6 +82,30 @@ class InvoiceService {
     }
 
     /**
+     * Sets the KnpPaginator instance.
+     *
+     * @param Paginator $paginator
+     *
+     * @return PaginatorAware
+     */
+    public function setPaginator(Paginator $paginator)
+    {
+        $this->paginator = $paginator;
+
+        return $this;
+    }
+
+    /**
+     * Returns the KnpPaginator instance.
+     *
+     * @return Paginator
+     */
+    public function getPaginator()
+    {
+        return $this->paginator;
+    }
+
+    /**
      * Get invoices
      *
      * @param integer $limit
@@ -87,19 +117,12 @@ class InvoiceService {
      *
      * @api 0.1
      */
-    public function getInvoices($limit = 10, $offset = 0, $filters = array(), $order = array()) {
+    public function getInvoices($limit = 10, $page = 1, $filters = array()) {
         //$query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Common c LEFT JOIN c.invoice i :where ORDER BY :order');
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
                         ->select('c, i')
                         ->from('TeclliureInvoiceBundle:Common','c')
                         ->leftJoin('c.invoice','i');
-
-        if ($order) {
-            foreach ($order as $key=>$ascDesc) {
-                $queryBuilder->addOrderBy($key, $ascDesc);
-            }
-        }
-        $queryBuilder->addOrderBy('i.issue_date', 'DESC');
 
         if ($filters) {
             if (isset($filters['search']) && $filters['search']) {
@@ -144,11 +167,15 @@ class InvoiceService {
                 }
             }
         }
+        $query = $queryBuilder->getQuery();
 
-        $queryBuilder->setMaxResults($limit);
-        $queryBuilder->setFirstResult($offset);
+        $pagination = $this->getPaginator()->paginate(
+            $query,
+            $page,
+            $limit
+        );
 
-        return $queryBuilder->getQuery()->getResult();
+        return $pagination;
     }
 
     /**

@@ -27,7 +27,7 @@ class InvoiceController extends Controller
             $searchData = $extendedSearchForm->getData();
         }
         $invoiceService = $this->get('invoice_service');
-        $invoices = $invoiceService->getInvoices(10, 0, $searchData);
+        $invoices = $invoiceService->getInvoices(2,  $this->get('request')->query->get('page', 1), $searchData);
         if ($request->isXmlHttpRequest()) {
             return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
                 'invoices'              => $invoices
@@ -60,7 +60,7 @@ class InvoiceController extends Controller
 
         // process the form on POST
         if ($request->isMethod('post')) {
-            $form->bind($request);
+            $form->handleRequest($request);
 
             $t = $this->get('translator');
             if ($form->isValid()) {

@@ -8,6 +8,8 @@ services:
       arguments:
         em: "@doctrine.orm.entity_manager"
         config: "@craue_config"
+      tags:
+        - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
   customer_service:
         class: "%teclliure_customer_service.class%"

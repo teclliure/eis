@@ -1,0 +1,68 @@
+{#
+/**
+ * @file
+ * Twitter Bootstrap Sliding pagination control implementation.
+ *
+ * View that can be used with the pagination module 
+ * from the Twitter Bootstrap CSS Toolkit
+ * http://twitter.github.com/bootstrap/
+ *
+ * This view has been ported from Pagerfanta progect
+ * https://github.com/whiteoctober/Pagerfanta/
+ * https://github.com/whiteoctober/Pagerfanta/blob/master/src/Pagerfanta/View/TwitterBootstrapView.php
+ *
+ * @author Pablo Díez <pablodip@gmail.com>
+ * @author Jan Sorgalla <jsorgalla@gmail.com>
+ * @author Artem Ponomarenko <imenem@inbox.ru>
+ */
+#}
+
+<div class="datagrid-footer-left" style="visibility: visible;">
+    <div class="grid-controls">
+        <span>
+            <span class="grid-start">
+                {% if current > 1  %}
+                    {{ ((current-1)*numItemsPerPage) }}
+                {% else %}
+                    1
+                {% endif %}
+            </span> -
+            <span class="grid-end">
+                {% if current*numItemsPerPage > totalCount %}
+                    {{ totalCount }}
+                {% else  %}
+                    {{ current*numItemsPerPage }}
+                {% endif %}
+            </span> {{ 'of'|trans }}
+            <span class="grid-count">
+                {{ totalCount }} {{ 'items'|trans }}
+            </span>
+        </span>
+    </div>
+</div>
+<div class="datagrid-footer-right" style="visibility: visible;">
+    <div class="grid-pager">
+        {% if previous is defined %}
+            <a class="btn grid-prevpage" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"><i class="icon-chevron-left"></i></a>
+        {% else %}
+            <button type="button" class="btn grid-prevpage" disabled="disabled"><i class="icon-chevron-left"></i></button>
+        {% endif %}
+        <span>{{ 'Page'|trans }}</span>
+
+        <div class="input-append dropdown combobox">
+            <input class="span1" type="text" {% if current == last %}disabled="disabled"{% endif %} value="{{ current }}">
+            <button type="button" class="btn" {% if current == last %}disabled="disabled"{% endif %} data-toggle="dropdown"><i class="caret"></i></button>
+            <ul class="dropdown-menu">
+                {% for i in range(first, last) %}
+                <li><a>{{ i }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <span>{{ 'of'|trans }} <span class="grid-pages">{{ endPage }}</span></span>
+        {% if next is defined %}
+            <a class="btn grid-nextpage" href="{{ path(route, query|merge({(pageParameterName): next})) }}"><i class="icon-chevron-right"></i></a>
+        {% else %}
+            <button type="button" class="btn grid-nextpage" {% if current == last  %}disabled="disabled"{% endif  %}><i class="icon-chevron-right"></i></button>
+        {% endif %}
+    </div>
+</div>

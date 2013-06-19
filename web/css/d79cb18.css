@@ -135,6 +135,84 @@ body {
     float: left;
     margin: 30px 28px 0px 28px;
 }
+
+#results_datagrid table tfoot {
+    background-color: #f9f9f9;
+}
+
+#results_datagrid table tfoot .datagrid-footer-left {
+    float: left;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-left .grid-controls {
+    margin-top: 7px;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-left .grid-controls select {
+    width: 60px;
+    margin: 0 5px 1px;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-left .grid-controls .grid-pagesize {
+    display: inline-block;
+    margin-bottom: 5px;
+    vertical-align: middle;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-left .grid-controls .grid-pagesize .dropdown-menu {
+    top: auto;
+    left: auto;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-left .grid-controls span {
+    font-weight: normal;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-right {
+    float: right;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-right .grid-pager > span {
+    position: relative;
+    top: 8px;
+    font-weight: normal;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-right .grid-pager .dropdown-menu {
+    min-width: 50px;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-right .grid-pager .combobox {
+    position: relative;
+    top: -2px;
+    display: inline-block;
+    margin-bottom: 4px;
+    vertical-align: baseline;
+}
+
+#results_datagrid table  tfoot .datagrid-footer-right .grid-pager > .btn {
+    position: relative;
+    top: 7px;
+}
+
+#results_datagrid table thead {
+    background-color: #f9f9f9;
+}
+
+#results_datagrid table thead .sorted {
+    color: #333333;
+    background-color: #f1f1f1;
+    background-image: -moz-linear-gradient(top, #f9f9f9, #e5e5e5);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f9f9f9), to(#e5e5e5));
+    background-image: -webkit-linear-gradient(top, #f9f9f9, #e5e5e5);
+    background-image: -o-linear-gradient(top, #f9f9f9, #e5e5e5);
+    background-image: linear-gradient(to bottom, #f9f9f9, #e5e5e5);
+    background-repeat: repeat-x;
+    border-color: #e5e5e5 #e5e5e5 #bebebe;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#ffe5e5e5', GradientType=0);
+}
+
 /* End list css */
 
 /* Start invoice css */
