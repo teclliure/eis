@@ -58,7 +58,7 @@ class CustomerService {
      *
      * @api 0.1
      */
-    public function searchCustomers($search, $limit = 10, $offset = 0) {
+    public function searchCustomers($search, $limit = 10, $offset = 0, $andOr = 'AND') {
         //$query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Common c LEFT JOIN c.invoice i :where ORDER BY :order');
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
                         ->select('c')
@@ -66,7 +66,12 @@ class CustomerService {
 
         if ($search) {
             foreach ($search as $key => $find) {
-                $queryBuilder->andWhere('c.'.$key. ' LIKE :find');
+                if ($andOr == 'AND') {
+                    $queryBuilder->andWhere('c.'.$key. ' LIKE :find');
+                }
+                else {
+                    $queryBuilder->orWhere('c.'.$key. ' LIKE :find');
+                }
                 $queryBuilder->setParameter('find', '%'.$find.'%');
             }
         }

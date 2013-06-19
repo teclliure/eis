@@ -13,19 +13,33 @@ use Teclliure\InvoiceBundle\Form\Type\ExtendedSearchType;
 
 class InvoiceController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $invoiceService = $this->get('invoice_service');
-        $invoices = $invoiceService->getInvoices();
-
+        $searchData = array();
         $basicSearchForm = $this->createForm(new SearchType(), array());
+        $basicSearchForm->handleRequest($request);
         $extendedSearchForm = $this->createForm(new ExtendedSearchType(), array());
-
-        return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array(
-            'invoices'              => $invoices,
-            'basicSearchForm'       => $basicSearchForm->createView(),
-            'extendedSearchForm'    => $extendedSearchForm->createView()
-        ));
+        $extendedSearchForm->handleRequest($request);
+        if ($basicSearchForm->isValid()) {
+            $searchData = $basicSearchForm->getData();
+        }
+        else if ($extendedSearchForm->isValid()) {
+            $searchData = $extendedSearchForm->getData();
+        }
+        $invoiceService = $this->get('invoice_service');
+        $invoices = $invoiceService->getInvoices(10, 0, $searchData);
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
+                'invoices'              => $invoices
+            ));
+        }
+        else {
+            return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array(
+                'invoices'              => $invoices,
+                'basicSearchForm'       => $basicSearchForm->createView(),
+                'extendedSearchForm'    => $extendedSearchForm->createView()
+            ));
+        }
     }
 
     public function addEditInvoiceAction(Request $request) {

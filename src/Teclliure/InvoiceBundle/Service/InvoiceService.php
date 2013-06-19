@@ -87,7 +87,7 @@ class InvoiceService {
      *
      * @api 0.1
      */
-    public function getInvoices($limit = 10, $offset = 0, $filter = array(), $order = array()) {
+    public function getInvoices($limit = 10, $offset = 0, $filters = array(), $order = array()) {
         //$query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Common c LEFT JOIN c.invoice i :where ORDER BY :order');
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
                         ->select('c, i')
@@ -96,15 +96,55 @@ class InvoiceService {
 
         if ($order) {
             foreach ($order as $key=>$ascDesc) {
-                $queryBuilder->addOrderBy($key,$ascDesc);
+                $queryBuilder->addOrderBy($key, $ascDesc);
             }
         }
         $queryBuilder->addOrderBy('i.issue_date', 'DESC');
 
-        if ($filter) {
+        if ($filters) {
+            if (isset($filters['search']) && $filters['search']) {
+                $queryBuilder->where('i.number LIKE :search OR c.customer_name LIKE :search2')
+                    ->setParameters(array(
+                        'search'    => '%'.$filters['search'].'%',
+                        'search2'   => '%'.$filters['search'].'%'
+                ));
+                unset ($filters['search']);
+            }
 
+            if (isset($filters['start_issue_date']) && $filters['start_issue_date']) {
+                $queryBuilder->andWhere('i.issue_date >= :start_issue_date')
+                    ->setParameter('start_issue_date', $filters['start_issue_date'],  \Doctrine\DBAL\Types\Type::DATETIME);
+                unset ($filters['start_issue_date']);
+            }
+            if (isset($filters['end_issue_date']) && $filters['end_issue_date']) {
+                $queryBuilder->andWhere('i.issue_date <= :end_issue_date')
+                    ->setParameter('end_issue_date', $filters['end_issue_date'], \Doctrine\DBAL\Types\Type::DATETIME);
+                unset ($filters['end_issue_date']);
+            }
+
+            foreach ($filters as $key=>$filter) {
+                if ($filter) {
+                    $fieldName = preg_replace('/^i_/', 'i.',preg_replace('/^c_/', 'c.', $key));
+                    $value = $filter;
+                    if (is_array($filter)) {
+                        $queryBuilder->andWhere($fieldName.' IN (:where'.$key.')')
+                            ->setParameter('where'.$key, $value);
+                    }
+                    else {
+                        if (is_object($value)) {
+                            $value = $value->getId();
+                            $queryBuilder->andWhere($fieldName.' = :where'.$key)
+                                ->setParameter('where'.$key, $value);
+                        }
+                        else {
+                            $queryBuilder->andWhere($fieldName.' LIKE :where'.$key)
+                                ->setParameter('where'.$key, '%'.$value.'%');
+                        }
+                    }
+                }
+            }
         }
-        // $queryBuilder->setParameter('where', $where);
+
         $queryBuilder->setMaxResults($limit);
         $queryBuilder->setFirstResult($offset);
 

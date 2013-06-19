@@ -39,6 +39,24 @@ class CommonController extends Controller
         return $response;
     }
 
+    public function searchCustomerNameAction(Request $request)
+    {
+        $customerService = $this->get('customer_service');
+        $customers = $customerService->searchCustomers(array('name'=>$request->get('term'), 'identification'=>$request->get('term')), 10, 0, 'OR');
+
+        $returnArray = array();
+        foreach ($customers as $customer) {
+            $customerArray = array();
+            $customerArray['label'] = $customer->getName();
+            $returnArray[] = $customerArray;
+        }
+
+        $callback = $request->get('callback');
+        $response = new JsonResponse($returnArray, 200, array());
+        $response->setCallback($callback);
+        return $response;
+    }
+
     public function updatePricesAction (Request $request) {
         $invoiceData = $request->get('invoice');
         $invoiceService = $this->get('invoice_service');

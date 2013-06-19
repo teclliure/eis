@@ -2,34 +2,37 @@
 
 namespace Teclliure\InvoiceBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Teclliure\InvoiceBundle\Form\Type\SearchType;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\EventDispatcher\Event;
 
 class ExtendedSearchType extends SearchType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /*$options['constraints'] = array(
+            new Callback(array(array($this,'checkIssueStartEnd')))
+        );*/
         parent::buildForm($builder, $options);
         $builder
-            ->add('i_start_issue_date','date',array(
+            ->add('start_issue_date','date',array(
                 'widget'        => 'single_text',
                 'format'        => 'dd/MM/yyyy',
                 'label'         => 'Issue start date',
+                'required' => false,
                 'constraints'   => array(
-                    new Date(),
-                    new Callback(array(
-                        'methods' => array('Teclliure\InvoiceBundle\Form\StaticValidation'=>'checkIssueStartEnd'),
-                    )))
+                    new Date()
+                    )
                 )
             )
-            ->add('i_end_issue_date','date',array(
+            ->add('end_issue_date','date',array(
                 'widget'        => 'single_text',
                 'format'        => 'dd/MM/yyyy',
                 'label'         => 'Issue end date',
+                'required' => false,
                 'constraints'   => array(
                     new Date()
                     )
@@ -37,7 +40,9 @@ class ExtendedSearchType extends SearchType
             )
             ->add('i_serie','entity',array(
                 'class'     => 'Teclliure\InvoiceBundle\Entity\Serie',
-                'label'     => 'Serie'
+                'label'     => 'Serie',
+                'empty_value' => '',
+                'required' => false,
                 )
             )
             ->add('i_status','choice',array(
@@ -49,11 +54,27 @@ class ExtendedSearchType extends SearchType
                 ),
                 'label'     => 'Status',
                 'multiple'  => true,
-                'expanded'  => true
+                'expanded'  => true,
+                'required' => false,
             ))
             ->add('c_customer_name','text', array(
                 'label'     => 'Customer',
+                'required' => false
             ))
             ;
     }
+
+    public function getName()
+    {
+        return 'extended_search';
+    }
+
+//    public static function checkIssueStartEnd($data, ExecutionContextInterface $context)
+//    {
+//        print_r ($data);
+//        if (isset($data['i_start_issue_date']) && isset($data['i_end_issue_date'])) {
+//            $context->addViolationAt('i_start_issue_date', 'Start date must be bigger than end date!', array(), null);
+//        }
+//        return $data;
+//    }
 }

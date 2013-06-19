@@ -13,6 +13,7 @@ class SearchType extends AbstractType
     {
         $builder
             ->add('search','search',array(
+                'required' => false,
                 'constraints' => array(
                     new Length(array(
                             'min'=>3

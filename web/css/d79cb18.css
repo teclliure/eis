@@ -78,8 +78,19 @@ body {
 }
 
 /* List css */
-#formFilter, #advancedSearchBtn {
+#formFilter, #advancedSearchBtnDiv {
     display: inline-block;
+}
+
+.statusCheckbox label {
+    margin: -10px 0px 0px 0px;
+}
+
+.statusCheckbox .checkbox label {
+    margin-right: 14px;
+    margin-left: 5px;
+    font-size: 0.9em;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .searchBox {
@@ -89,8 +100,22 @@ body {
     margin-bottom: 1em;
 }
 
-#search_i_status {
+#searchBtn {
+    float: right;
+}
+
+#aSearchBtns {
+    margin-top: 5px;
+}
+
+#extended_search_i_status {
     display: inline-block;
+}
+
+.resetSearchBtn {
+    display: none;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .form-search {
