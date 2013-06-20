@@ -1,13 +1,13 @@
 <table  class="table table-bordered table-hover" style="margin: 25px; width: 97%;">
     <thead>
     <tr>
-        <th {% if invoices.isSorted('i.number') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Invoice number'|trans, 'i.number') }}</th>
-        <th {% if invoices.isSorted('c.customer_name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Customer name'|trans, 'c.customer_name') }}</th>
-        <th>{{ 'Date'|trans }}</th>
-        <th>{{ 'Due date'|trans }}</th>
-        <th>{{ 'Due'|trans }}</th>
-        <th>{{ 'Status'|trans }}</th>
-        <th>{{ 'Total'|trans }}</th>
+        <th {% if invoices.isSorted('i.number') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Invoice number'|trans, 'i.number', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if invoices.isSorted('c.customer_name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Customer name'|trans, 'c.customer_name', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if invoices.isSorted('i.issue_date') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Date'|trans, 'i.issue_date', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if invoices.isSorted('i.due_date') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Due date'|trans, 'i.due_date', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th> {{ 'Due'|trans }}</th>
+        <th {% if invoices.isSorted('i.status') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Status'|trans, 'i.status', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if invoices.isSorted('i.gross_amount') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(invoices, 'Total'|trans, 'i.gross_amount', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
         <th class="clear"></th>
     </tr>
     </thead>
@@ -24,7 +24,9 @@
             <td>{{ common.invoice.statusName|trans }}</td>
             <td>{{ common.invoice.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
+                {% if common.invoice.status == 1  %}
                 <a href="#" alt="{{ 'Pay'|trans }}" class="btn btn-small"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</a>
+                {%  endif  %}
                 &nbsp;
                 <a href="{{ path('invoice_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
             </td>

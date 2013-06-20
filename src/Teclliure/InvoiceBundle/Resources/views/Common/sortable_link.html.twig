@@ -1,0 +1,1 @@
+<a{% for attr, value in options %} {{ attr }}="{{ value }}"{% endfor %}>{{ title }} {% if direction == 'desc' %}<i class="sortIcon icon-chevron-up"></i>{% elseif direction == 'asc' %}<i class="sortIcon icon-chevron-down"></i>{% endif %}</a>
