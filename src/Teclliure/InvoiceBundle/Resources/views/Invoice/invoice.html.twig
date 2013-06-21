@@ -1,0 +1,104 @@
+
+    <div id="inside_content">
+        <h3>{{ 'Customer'|trans }}</h3>
+        <div class="inputDiv control-group">
+            {{ common.customerIdentification }}
+        </div>
+        <div class="inputDiv control-group">
+            {{ common.customerName }}
+        </div>
+        <div class="inputDiv control-group">
+            {{ common.customerZipCode }}
+        </div>
+        <br />
+        <div class="inputDiv control-group">
+            {{ common.customerAddress }}
+        </div>
+        <br />
+        <div class="inputDiv control-group">
+            {{ common.customerCity }}
+        </div>
+        <div class="inputDiv control-group">
+            {{ common.customerState }}
+        </div>
+        <div class="inputDiv control-group">
+            {{ common.customerCountry }}
+        </div>
+
+        <h3>{{ 'Payment'|trans }}</h3>
+        <div class="inputDivInline control-group">
+            <b>{{ 'Issue date'|trans }}</b>: {{ common.invoice.issueDate|date("d/m/Y") }}
+        </div>
+        &nbsp;&nbsp;
+        <div class="inputDivInline control-group">
+            <b>{{ 'Due date'|trans }}</b>: {{ common.invoice.dueDate|date("d/m/Y") }}
+        </div>
+        &nbsp;&nbsp;
+        <div class="inputDivInline control-group">
+            <b>{{ 'Serie'|trans }}</b>: {{ common.invoice.serie }}
+        </div>
+        <br />
+        <div class="inputDiv control-group">
+            <h3>{{ 'Description'|trans }}</h3>
+            {{ common.description }}
+        </div>
+
+        <h3>{{ 'Invoice lines'|trans }}</h3>
+        <table id="commonLines" class="lines">
+            <thead>
+            <tr class="lineHeader not_delete">
+                <th class="lineDesc">{{ 'Description' }}</th>
+                <th class="lineQty">{{ 'Quantity' }}</th>
+                <th class="lineUC">{{ 'Unitary cost' }}</th>
+                <th class="lineTaxes">{{ 'Taxes' }}</th>
+                <th class="lineDiscount">{{ 'Discount' }}</th>
+                <th class="lineDiscount">{{ 'Price' }}</th>
+            </tr>
+            </thead>
+            <tbody id="tbody_lines">
+            {% for line in common.commonLines %}
+                {{ include('TeclliureInvoiceBundle:Invoice:line.html.twig', {'line': line}) }}
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr id="add_line_link_li" class="not_delete">
+                <td colspan="4" rowspan="2">
+                </td>
+                <th class="border_total">{{ 'Base'|trans }}</th>
+                <td class="border_total common_totals" id="total_base_amount">{{ common.baseAmount|number_format(2, '.', ',') }}€</td>
+            </tr>
+            <tr id="add_line_link_li" class="not_delete">
+                <th class="border_total">{{ 'Discount'|trans }}</th>
+                <td class="border_total common_totals" id="total_discount">{{ common.discountAmount|number_format(2, '.', ',') }}€</td>
+            </tr>
+            <tr id="add_line_link_li" class="not_delete">
+                <td colspan="4">
+                </td>
+                <th class="border_total">{{ 'Subtotal'|trans }}</th>
+                <td class="border_total common_totals" id="total_subtotal">{{ common.netAmount|number_format(2, '.', ',') }}€</td>
+            </tr>
+            <tr id="add_line_link_li" class="not_delete">
+                <td colspan="4">
+                </td>
+                <th class="border_total">{{ 'Taxes'|trans }}</th>
+                <td class="border_total common_totals" id="total_taxes">{{ common.taxAmount|number_format(2, '.', ',') }}€</td>
+            </tr>
+            <tr id="add_line_link_li" class="not_delete">
+                <td colspan="4">
+                </td>
+                <th class="border_total">{{ 'Total'|trans }}</th>
+                <td class="border_total common_totals" id="total_total">{{ common.grossAmount|number_format(2, '.', ',') }}€</td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="list_primary_buttons">
+            {% if (common.invoice) and (common.invoice.status != 0) and (print != true) %}
+                <a href="{{ path('invoice_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+            {% endif %}
+            {% if (print != true) %}
+                <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+            {% endif %}
+        </div>
+        <div style="clear:both;"></div>
+    </div>

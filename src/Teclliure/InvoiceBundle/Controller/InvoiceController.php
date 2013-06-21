@@ -88,6 +88,46 @@ class InvoiceController extends Controller
         ));
     }
 
+    public function viewInvoiceAction(Request $request) {
+        $t = $this->get('translator');
+        $invoiceService = $this->get('invoice_service');
+        $invoice = $invoiceService->getInvoice($request->get('id'));
+
+        if (!$invoice) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Invoice does not exists!'));
+            return $this->redirect($this->generateUrl('invoice_list'));
+        }
+
+        return $this->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
+            'common' => $invoice,
+            'print'  => false
+        ));
+    }
+
+    public function printInvoiceAction(Request $request) {
+        $t = $this->get('translator');
+        $invoiceService = $this->get('invoice_service');
+        $invoice = $invoiceService->getInvoice($request->get('id'));
+
+        if (!$invoice) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Invoice does not exists!'));
+            return $this->redirect($this->generateUrl('invoice_list'));
+        }
+
+        $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
+            'common' => $invoice,
+            'print'  => true
+        ));
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            200,
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'attachment; filename="invoice'.$invoice->getInvoice()->getIssueDate()->format('d-m-Y').$invoice->getInvoice()->getNumber().'.pdf"'
+            )
+        );
+    }
     public function openInvoiceAction(Request $request) {
         $t = $this->get('translator');
         $invoiceService = $this->get('invoice_service');

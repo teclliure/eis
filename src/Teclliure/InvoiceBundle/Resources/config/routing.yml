@@ -10,6 +10,14 @@ invoice_edit:
     pattern:  /invoice/edit/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Invoice:addEditInvoice }
 
+invoice_view:
+    pattern:  /invoice/view/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:viewInvoice }
+
+invoice_print:
+    pattern:  /invoice/print/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:printInvoice }
+
 invoice_delete:
     pattern:  /invoice/delete/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Invoice:deleteInvoice }

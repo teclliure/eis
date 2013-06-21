@@ -27,8 +27,12 @@
                 {% if common.invoice.status == 1  %}
                 <a href="#" alt="{{ 'Pay'|trans }}" class="btn btn-small"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</a>
                 {%  endif  %}
-                &nbsp;
+                {% if common.invoice.status == 0  %}
                 <a href="{{ path('invoice_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                {% else %}
+                <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View'|trans }}" class="btn btn-small"><i class="icon-zoom-in"></i> {{ 'View'|trans }}</a>
+                <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

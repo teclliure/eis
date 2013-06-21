@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Easy Invoice System - {% block title %}No title{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {% set baseUrl = app.request.getScheme ~ '://' ~ app.request.getHttpHost %}
+    <!-- Bootstrap -->
+    {% stylesheets
+        '../app/Resources/public/css/bootstrap.min.css'
+        '../app/Resources/public/css/bootstrap-responsive.min.css'
+        '../app/Resources/public/css/style.css'
+    %}
+        <link href="{{ baseUrl ~ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+    {% block stylesheets %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+
+    {% javascripts
+        '../app/Resources/public/js/jquery-1.9.1.min.js'
+        '../app/Resources/public/js/bootstrap.min.js'
+        '../app/Resources/public/js/alerts.js'
+    %}
+        <script src="{{ baseUrl ~ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    {% block javascripts %}{% endblock %}
+    <script type="text/javascript">
+        basePath = '{{app.request.baseurl}}';
+    </script>
+  </body>
+</html>

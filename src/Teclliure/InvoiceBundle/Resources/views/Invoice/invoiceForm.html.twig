@@ -131,6 +131,10 @@
                     &nbsp;
                     &nbsp;
                 {% endif %}
+
+                {% if (common.id) %}
+                    <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small btn-success"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                {% endif %}
                 {% if (not common.invoice) or (common.invoice.status == 0)  %}
                     <button type="submit" name="action" value="save_and_close" class="btn btn-info"><i class="icon-folder-close"></i> {{ 'Save and close'|trans }}</button>
                     <button type="submit" name="action" value="save" class="btn"><i class="icon-file"></i> {{ 'Save'|trans }}</button>
