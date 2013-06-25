@@ -26,6 +26,7 @@ class LoadConfigData implements FixtureInterface
         $setting->setType('text');
         $setting->setSection('company_info');
         $setting->setTypeOptions(array());
+        $setting->setValue('Test company name');
         $setting->setSortOrder(0);
         $manager->persist($setting);
 
@@ -35,6 +36,7 @@ class LoadConfigData implements FixtureInterface
         $setting->setSection('company_info');
         $setting->setTypeOptions(array());
         $setting->setSortOrder(1);
+        $setting->setValue('1231231234T');
         $manager->persist($setting);
 
         $setting = new Setting();
@@ -43,6 +45,7 @@ class LoadConfigData implements FixtureInterface
         $setting->setSection('company_info');
         $setting->setTypeOptions(array());
         $setting->setSortOrder(3);
+        $setting->setValue('http://www.test.net');
         $manager->persist($setting);
 
         $setting = new Setting();
@@ -51,6 +54,7 @@ class LoadConfigData implements FixtureInterface
         $setting->setSection('company_info');
         $setting->setTypeOptions(array());
         $setting->setSortOrder(2);
+        $setting->setValue('sales@test.net');
         $manager->persist($setting);
 
         $setting = new Setting();
@@ -59,6 +63,7 @@ class LoadConfigData implements FixtureInterface
         $setting->setSection('company_info');
         $setting->setTypeOptions(array());
         $setting->setSortOrder(4);
+        $setting->setValue("1123 Wilson Way.\n World");
         $manager->persist($setting);
 
         $setting = new Setting();

@@ -1,0 +1,52 @@
+<table  class="table table-bordered table-hover" style="margin: 25px; width: 97%;">
+    <thead>
+    <tr>
+        <th {% if quotes.isSorted('q.number') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(quotes, 'Quote number'|trans, 'i.number', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if quotes.isSorted('c.customer_name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(quotes, 'Customer name'|trans, 'c.customer_name', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if quotes.isSorted('q.created') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(quotes, 'Created date'|trans, 'q.created', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if quotes.isSorted('q.status') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(quotes, 'Status'|trans, 'q.status', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th>{{ 'Total'|trans }}</th>
+        <th class="clear"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for common in quotes %}
+        <tr>
+            <td>
+                {{ common.quote.number }}
+            </td>
+            <td>{{ common.customerName }}</td>
+            <td>{{ common.quote.created|date('d/m/Y') }}</td>
+            <td>{{ common.quote.statusName|trans }}</td>
+            <td>{{ common.grossAmount|number_format(2, '.', ',') }} €</td>
+            <td>
+                {% if common.quote.status == 0  %}
+                <a href="{{ path('quote_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                <a href="{{ path('quote_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
+                {% elseif (common.quote.status == 1) or (common.quote.status == 2) %}
+                <a href="{{ path('quote_open', {'id': common.id }) }}" alt="{{ 'Open'|trans }}" class="btn btn-small"><i class="icon-folder-open"></i> {{ 'Open'|trans }}</a>
+                {% endif %}
+                {% if (common.quote.status == 0) or  (common.quote.status == 1) %}
+                {% if not common.deliveryNote %}
+                <a href="{{ path('quote_order', {'id': common.id }) }}" alt="{{ 'Make order'|trans }}" class="btn btn-small btn-success"><i class="icon-file"></i> {{ 'Make order'|trans }}</a>
+                {% endif %}
+                {% if not common.invoice %}
+                <a href="{{ path('quote_invoice', {'id': common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-small btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
+                {% endif %}
+                <a href="{{ path('quote_deny', {'id': common.id }) }}" alt="{{ 'Mark as denied'|trans }}" class="btn btn-small btn-danger"><i class="icon-lock"></i> {{ 'Mark as denied'|trans }}</a>
+                {% endif %}
+                {% if common.invoice %}
+                {% endif %}
+                <a href="{{ path('quote_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="8">
+            {{ knp_pagination_render(quotes, 'TeclliureInvoiceBundle:Common:simple_pagination.html.twig') }}
+        </td>
+    </tr>
+    </tfoot>
+</table>

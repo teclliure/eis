@@ -1,0 +1,85 @@
+{% extends '::container.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/teclliureinvoice/js/jquery-ui-1.10.3.custom.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/search.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/datePicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/autocompleteCustomerName.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/inputPlaceholderUF.js') }}" type="text/javascript"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/teclliureinvoice/css/smoothness/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <!--/* http://exacttarget.github.io/fuelux/#datagrid */-->
+    <div id="inside_content">
+        <div id="filter_datagrid"></div>
+        <div class="list_primary_buttons">
+            <a href="{{ path('quote_add') }}" class="btn btn-primary"><i class="icon-plus"></i> {{ 'New quote'|trans }}</a>
+        </div>
+        <div class="list_secondary_buttons">
+            <div id="basicSearch" class="searchBox">
+                {{ form_start(basicSearchForm, {'action': path('quote_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilter' }}) }}
+
+                {{ form_errors(basicSearchForm) }}
+                <div class="input-append">
+                    {{ form_widget(basicSearchForm.search, { 'attr': {'class': 'span2 search-query uf-placeholder', 'placeholder': 'Search'|trans }}) }}
+                    <button type="submit" class="btn btn-success"><i class="icon-search"></i></button>
+                </div>
+                <div id="advancedSearchBtnDiv">
+                    <button id="advancedSearchBtn" class="btn btn-mini btn-info">{{ 'Advanced search'|trans }} <i class="icon-filter"></i></button>
+                    <div class="resetSearchBtn"><button class="btn btn-mini btn-danger"><i class="icon-remove-circle"></i> {{ 'Reset'|trans }}</button></div>
+                </div>
+                {{ form_end(basicSearchForm) }}
+
+
+            </div>
+            <div id="advancedSearch" class="searchBox">
+                {{ form_start(extendedSearchForm, {'action': path('quote_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilterAdvanced' }}) }}
+                <div class="inputDivInline control-group {% if extendedSearchForm.search.vars.errors|length > 0 %}error{% endif %}">
+                    {{ form_errors(extendedSearchForm.search) }}
+                    {{ form_widget(extendedSearchForm.search, { 'attr': {'maxlength': 200, 'class': 'input-medium uf-placeholder', 'placeholder': 'Search'|trans} }) }}
+                </div>
+                <label>{{ 'from'|trans }}</label>
+                <div class="inputDivInline control-group {% if extendedSearchForm.start_issue_date.vars.errors|length > 0 %}error{% endif %}">
+                    {{ form_errors(extendedSearchForm.start_issue_date) }}
+                    {{ form_widget(extendedSearchForm.start_issue_date, { 'attr': {'class': 'input-small date_input'} }) }}
+                </div>
+                <label>{{ 'to'|trans }}</label>
+                <div class="inputDivInline control-group {% if extendedSearchForm.end_issue_date.vars.errors|length > 0 %}error{% endif %}">
+                    {{ form_errors(extendedSearchForm.end_issue_date) }}
+                    {{ form_widget(extendedSearchForm.end_issue_date, { 'attr': {'class': 'input-small date_input'} }) }}
+                </div>
+                <div class="inputDivInline control-group {% if extendedSearchForm.i_serie.vars.errors|length > 0 %}error{% endif %}">
+                    <label>{{ 'Serie'|trans }}</label>
+                    {{ form_errors(extendedSearchForm.i_serie) }}
+                    {{ form_widget(extendedSearchForm.i_serie, { 'attr': {'class': 'input-small'} }) }}
+                </div>
+                <br />
+                <div class="inputDivInline statusCheckbox control-group {% if extendedSearchForm.i_status.vars.errors|length > 0 %}error{% endif %}">
+                    <label>{{ 'Status'|trans }}:</label>
+                    {{ form_errors(extendedSearchForm.i_status) }}
+                    {{ form_widget(extendedSearchForm.i_status, { 'attr': {'class': 'checkbox'}}) }}
+                </div>
+                <div class="inputDivInline control-group {% if extendedSearchForm.c_customer_name.vars.errors|length > 0 %}error{% endif %}">
+                    {{ form_errors(extendedSearchForm.c_customer_name) }}
+                    {{ form_widget(extendedSearchForm.c_customer_name, { 'attr': {'class': 'input-medium uf-placeholder customerAutocomplete', 'placeholder': 'Customer'|trans} }) }}
+                </div>
+                <div id="aSearchBtns">
+                    <div id="searchBtn"><button type="submit" class="btn btn-success"><i class="icon-search"></i> {{ 'Search'|trans }}</button></div>
+                    <div id="simpleSearchBtnDiv">
+                        <button id="simpleSearchBtn" class="btn btn-mini btn-warning">{{ 'Basic search'|trans }} <i class="icon-filter"></i></button>
+                        <div class="resetSearchBtn"><button class="btn btn-mini btn-danger"><i class="icon-remove-circle"></i> {{ 'Reset'|trans }}</button></div>
+                    </div>
+                </div>
+                {{ form_end(extendedSearchForm) }}
+            </div>
+        </div>
+        <div id="results_datagrid">
+            {{ include('TeclliureInvoiceBundle:Quote:quoteList.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

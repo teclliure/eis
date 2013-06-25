@@ -30,6 +30,50 @@ invoice_close:
     pattern:  /invoice/close/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Invoice:closeInvoice }
 
+quote_list:
+    pattern:  /quote/list
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:index }
+
+quote_add:
+    pattern:  /quote/add
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:addEditQuote }
+
+quote_edit:
+    pattern:  /quote/edit/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:addEditQuote }
+
+quote_view:
+    pattern:  /quote/view/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:viewQuote }
+
+quote_print:
+    pattern:  /quote/print/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:printQuote }
+
+quote_delete:
+    pattern:  /quote/delete/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:deleteQuote }
+
+quote_open:
+    pattern:  /quote/open/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:openQuote }
+
+quote_close:
+    pattern:  /quote/close/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:closeQuote }
+
+quote_deny:
+    pattern:  /quote/deny/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:denyQuote }
+
+quote_invoice:
+    pattern:  /quote/invoice/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:invoiceQuote }
+
+quote_order:
+    pattern:  /quote/order/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:orderQuote }
+
 search_customer:
     pattern: /searchCustomer
     defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomer }

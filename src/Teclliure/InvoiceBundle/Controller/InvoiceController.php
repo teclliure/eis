@@ -4,9 +4,6 @@ namespace Teclliure\InvoiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Teclliure\InvoiceBundle\Entity\Invoice;
-use Teclliure\InvoiceBundle\Service\InvoiceService;
-use Teclliure\InvoiceBundle\Entity\Common;
 use Symfony\Component\HttpFoundation\Request;
 use Teclliure\InvoiceBundle\Form\Type\SearchType;
 use Teclliure\InvoiceBundle\Form\Type\ExtendedSearchType;
@@ -27,7 +24,7 @@ class InvoiceController extends Controller
             $searchData = $extendedSearchForm->getData();
         }
         $invoiceService = $this->get('invoice_service');
-        $invoices = $invoiceService->getInvoices(2,  $this->get('request')->query->get('page', 1), $searchData);
+        $invoices = $invoiceService->getInvoices(10,  $this->get('request')->query->get('page', 1), $searchData);
         if ($request->isXmlHttpRequest()) {
             return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
                 'invoices'              => $invoices
@@ -100,6 +97,7 @@ class InvoiceController extends Controller
 
         return $this->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
             'common' => $invoice,
+            'config' => $this->get('craue_config')->all(),
             'print'  => false
         ));
     }
@@ -116,6 +114,7 @@ class InvoiceController extends Controller
 
         $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
             'common' => $invoice,
+            'config' => $this->get('craue_config')->all(),
             'print'  => true
         ));
 

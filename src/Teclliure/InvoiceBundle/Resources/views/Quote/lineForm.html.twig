@@ -1,0 +1,44 @@
+<tr id="{% if new == true %}invoice_common_common_lines___name__{% else %}invoice_common_common_lines_{{ key }}{% endif %}" class="invoiceLine">
+    <td class="lineDesc">
+        <div class="inputDiv">
+        {{ form_errors(lineForm.description) }}
+        {{ form_widget(lineForm.description, {'attr': { 'maxlength': 200, 'class': 'input-xlarge uf-placeholder', 'placeholder': 'Description'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineQty">
+        <div class="inputDiv">
+        {{ form_errors(lineForm.quantity) }}
+        {{ form_widget(lineForm.quantity, {'attr': { 'class': 'input-mini uf-placeholder updatePrice', 'placeholder': 'Quantity'|trans} }) }}
+        <div class="ajax_loader input_outside_ajax_load"> </div>
+        </div>
+    </td>
+    <td class="lineUC">
+        <div class="inputDiv">
+        {{ form_errors(lineForm.unitary_cost) }}
+        {{ form_widget(lineForm.unitary_cost, {'attr': { 'class': 'input-mini  uf-placeholder updatePrice', 'placeholder': 'Unitary cost'|trans} }) }}
+        <div class="ajax_loader input_outside_ajax_load"> </div>
+        </div>
+    </td>
+    <td class="lineTaxes">
+        <div>
+        {{ form_errors(lineForm.taxes) }}
+        {% for tax in lineForm.taxes %}
+            <div class="tax">
+            {{ form_widget(tax, {'attr': { 'class': 'updatePrice' }}) }}
+            {{ form_label(tax) }}
+            </div>
+        {% endfor %}
+        </div>
+    </td>
+    <td class="lineDiscount">
+        <div class="inputDiv">
+            {{ form_errors(lineForm.discount) }}
+            {{ form_widget(lineForm.discount, {'attr': { 'class': 'input-mini  uf-placeholder updatePrice', 'placeholder': 'Unitary cost'|trans} }) }}
+            <div class="ajax_loader input_outside_ajax_load"> </div>
+        </div>
+    </td>
+    <td class="linePrice">
+        {{ lineForm.vars.data.totalAmount|number_format(2, '.', ',') }}€
+        {{ form_rest(lineForm) }}
+    </td>
+</tr>

@@ -15,6 +15,7 @@ class CommonController extends Controller
     public function searchCustomerAction(Request $request)
     {
         $field = str_replace('invoice_customer_', '', $request->get('field'));
+        $field = str_replace('quote_customer_', '', $request->get('field'));
         $customerService = $this->get('customer_service');
         $customers = $customerService->searchCustomers(array($field=>$request->get('term')), 10);
 
@@ -58,20 +59,23 @@ class CommonController extends Controller
     }
 
     public function updatePricesAction (Request $request) {
-        $invoiceData = $request->get('invoice');
-        $invoiceService = $this->get('invoice_service');
+        $baseObject = $request->get('baseObject');
+        $data = $request->get($baseObject);
+        $commonService = $this->get($baseObject.'_service');
         if ($request->get('id')) {
-            $invoice = $invoiceService->getInvoice($request->get('id'));
+            $methodName = 'get'.ucfirst($baseObject);
+            $common = $commonService->$methodName($request->get('id'));
         }
         else {
-            $invoice = $invoiceService->createInvoice();
+            $methodName = 'create'.ucfirst($baseObject);
+            $common = $commonService->$methodName();
         }
-        $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
+        $form = $this->createForm($this->get('teclliure.form.type.'.$baseObject), $common);
         $form->bind($request);
 
         $taxRepository = $this->getDoctrine()->getRepository('TeclliureInvoiceBundle:Tax');
         $lines = array();
-        foreach ($invoiceData['common_lines'] as $key=>$line) {
+        foreach ($data['common_lines'] as $key=>$line) {
             $commonLine = new CommonLine();
             $commonLine->setQuantity($line['quantity']);
             $commonLine->setDiscount($line['discount']);
@@ -85,9 +89,8 @@ class CommonController extends Controller
             }
             $lines['invoice_common_common_lines_'.$key] = $commonLine;
         }
-        // print_r ($invoice->getCommonLines());
 
-        $renderedJs = $this->renderView('TeclliureInvoiceBundle:Common:updatePrice.js.twig', array('invoice'=>$invoice, 'lines'=>$lines));
+        $renderedJs = $this->renderView('TeclliureInvoiceBundle:Common:updatePrice.js.twig', array('common'=>$common, 'lines'=>$lines));
         $response = new Response( $renderedJs );
         $response->headers->set( 'Content-Type', 'text/javascript' );
 

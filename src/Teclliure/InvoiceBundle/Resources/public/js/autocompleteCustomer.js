@@ -1,7 +1,7 @@
 $(function() {
     var autocompleteSelected = false;
     var xhr;
-    $( "#invoice_customer_identification, #invoice_customer_name" ).autocomplete({
+    $('#'+ baseObject +'_customer_identification, #'+ baseObject +'_customer_name').autocomplete({
         minLength: 2,
         delay: 500,
         source: function(request, response) {
@@ -19,21 +19,20 @@ $(function() {
         },
         change: function( event, ui ) {
             if (autocompleteSelected == false) {
-                $('#invoice_customer').val('');
+                $('#' + baseObject + '_customer').val('');
             }
             else {
                 autocompleteSelected = false;
             }
         },
         select: function( event, ui ) {
-            $('#invoice_customer').val(ui.item.id);
-            $('#invoice_customer_identification').val(ui.item.identification);
-            $('#invoice_customer_zip_code').val(ui.item.zip_code);
-            $('#invoice_customer_address').val(ui.item.address);
-            $('#invoice_customer_city').val(ui.item.city);
-            $('#invoice_customer_state').val(ui.item.state);
-            $('#invoice_customer_country').val(ui.item.country);
-            $('#invoice_customer_name').val(ui.item.name);
+            $('#'+ baseObject +'_customer').val(ui.item.id);
+            $('#'+ baseObject +'_customer_identification').val(ui.item.identification);
+            $('#'+ baseObject +'_customer_address').val(ui.item.address);
+            $('#'+ baseObject +'_customer_city').val(ui.item.city);
+            $('#'+ baseObject +'_customer_state').val(ui.item.state);
+            $('#'+ baseObject +'_customer_country').val(ui.item.country);
+            $('#'+ baseObject +'_customer_name').val(ui.item.name);
             autocompleteSelected = true;
             return false;
         }

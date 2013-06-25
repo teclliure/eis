@@ -9,8 +9,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'Quotes'|trans }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li class="divider"></li>
-                            <li><a href="">{{ 'Create quote'|trans }}</a></li>
-                            <li><a href="">{{ 'View quotes'|trans }}</a></li>
+                            <li><a href="{{ path('quote_add') }}">{{ 'Create quote'|trans }}</a></li>
+                            <li><a href="{{ path('quote_list') }}">{{ 'View quotes'|trans }}</a></li>
                             <li class="divider"></li>
                         </ul>
                     </li>

@@ -30,8 +30,8 @@ class Quote {
      *
      * Possible status are
      *  - DRAFT         - 0
-     *  - REJECTED      - 1
-     *  - PENDING       - 2
+     *  - PENDING       - 1
+     *  - REJECTED      - 2
      *  - APPROVED      - 3
      *
      * @var integer $number
@@ -183,5 +183,29 @@ class Quote {
     public function getId()
     {
         return $this->id;
+    }
+
+
+    /**
+     *
+     * Get status name
+     *
+     *
+     * @return string
+     *
+     */
+    public function getStatusName() {
+        if ($this->getStatus() == 0) {
+            return 'Draft';
+        }
+        elseif ($this->getStatus() == 1) {
+            return 'Pending';
+        }
+        elseif ($this->getStatus() == 2) {
+            return 'Rejected';
+        }
+        elseif ($this->getStatus() == 3) {
+            return 'Approved';
+        }
     }
 }
