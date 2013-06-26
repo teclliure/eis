@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Teclliure\InvoiceBundle\Form\Type\SearchType;
-use Teclliure\InvoiceBundle\Form\Type\ExtendedSearchType;
+use Teclliure\InvoiceBundle\Form\Type\QuoteExtendedSearchType as ExtendedSearchType;
 
 class QuoteController extends Controller
 {
@@ -90,6 +90,7 @@ class QuoteController extends Controller
 
         return $this->render('TeclliureInvoiceBundle:Quote:quoteForm.html.twig', array(
             'form' => $form->createView(),
+            'config' => $this->get('craue_config')->all(),
             'common' => $quote
         ));
     }
@@ -132,7 +133,7 @@ class QuoteController extends Controller
             200,
             array(
                 'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'attachment; filename="quote'.$quote->getQuote()->getIssueDate()->format('d-m-Y').$quote->getQuote()->getNumber().'.pdf"'
+                'Content-Disposition'   => 'attachment; filename="quote'.$quote->getQuote()->getCreated()->format('d-m-Y').$quote->getQuote()->getNumber().'.pdf"'
             )
         );
     }
@@ -141,9 +142,19 @@ class QuoteController extends Controller
         $t = $this->get('translator');
         $quoteService = $this->get('quote_service');
         $quote = $quoteService->getQuote($request->get('id'));
-        $quoteService->openQuote($quote);
 
-        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote re-opened!'));
+        if ($quote->getDeliveryNote()) {
+            $this->get('session')->getFlashBag()->add('error', $t->trans('Quote cannot be re-opened! It already generated an order.'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        else if ($quote->getInvoice()) {
+            $this->get('session')->getFlashBag()->add('error', $t->trans('Quote cannot be re-opened! It already generated an invoice.'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        else {
+            $quoteService->openQuote($quote);
+            $this->get('session')->getFlashBag()->add('info', $t->trans('Quote re-opened!'));
+        }
 
         return $this->redirect($this->generateUrl('quote_edit', array ('id'=>$quote->getId())));
     }
@@ -157,6 +168,25 @@ class QuoteController extends Controller
         $this->get('session')->getFlashBag()->add('info', $t->trans('Quote closed!'));
 
         return $this->redirect($this->generateUrl('quote_list'));
+    }
+
+    public function denyQuoteAction(Request $request) {
+        $t = $this->get('translator');
+        $quoteService = $this->get('quote_service');
+        $quote = $quoteService->getQuote($request->get('id'));
+        $quoteService->denyQuote($quote);
+
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote rejected!'));
+
+        return $this->redirect($this->generateUrl('quote_list'));
+    }
+
+    public function invoiceQuoteAction(Request $request) {
+        $t = $this->get('translator');
+        $quoteService = $this->get('quote_service');
+        $quote = $quoteService->getQuote($request->get('id'));
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to invoice!'));
+        return $this->redirect($this->generateUrl('invoice_edit', array('id'=>$quote->getId(), 'new'=>true)));
     }
 
     protected function notFoundRedirect ($id) {

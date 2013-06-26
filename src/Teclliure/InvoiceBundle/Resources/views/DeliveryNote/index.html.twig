@@ -22,7 +22,7 @@
         </div>
         <div class="list_secondary_buttons">
             <div id="basicSearch" class="searchBox">
-                {{ form_start(basicSearchForm, {'action': path('quote_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilter' }}) }}
+                {{ form_start(basicSearchForm, {'action': path('delivery_note_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilter' }}) }}
 
                 {{ form_errors(basicSearchForm) }}
                 <div class="input-append">
@@ -36,7 +36,7 @@
                 {{ form_end(basicSearchForm) }}
             </div>
             <div id="advancedSearch" class="searchBox">
-                {{ form_start(extendedSearchForm, {'action': path('quote_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilterAdvanced' }}) }}
+                {{ form_start(extendedSearchForm, {'action': path('delivery_note_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilterAdvanced' }}) }}
                 <div class="inputDivInline control-group {% if extendedSearchForm.search.vars.errors|length > 0 %}error{% endif %}">
                     {{ form_errors(extendedSearchForm.search) }}
                     {{ form_widget(extendedSearchForm.search, { 'attr': {'maxlength': 200, 'class': 'input-medium uf-placeholder', 'placeholder': 'Search'|trans} }) }}
@@ -52,10 +52,10 @@
                     {{ form_widget(extendedSearchForm.end_issue_date, { 'attr': {'class': 'input-small date_input'} }) }}
                 </div>
                 <br />
-                <div class="inputDivInline statusCheckbox control-group {% if extendedSearchForm.q_status.vars.errors|length > 0 %}error{% endif %}">
+                <div class="inputDivInline statusCheckbox control-group {% if extendedSearchForm.d_status.vars.errors|length > 0 %}error{% endif %}">
                     <label>{{ 'Status'|trans }}:</label>
-                    {{ form_errors(extendedSearchForm.q_status) }}
-                    {{ form_widget(extendedSearchForm.q_status, { 'attr': {'class': 'checkbox'}}) }}
+                    {{ form_errors(extendedSearchForm.d_status) }}
+                    {{ form_widget(extendedSearchForm.d_status, { 'attr': {'class': 'checkbox'}}) }}
                 </div>
                 <div class="inputDivInline control-group {% if extendedSearchForm.c_customer_name.vars.errors|length > 0 %}error{% endif %}">
                     {{ form_errors(extendedSearchForm.c_customer_name) }}
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div id="results_datagrid">
-            {{ include('TeclliureInvoiceBundle:Quote:quoteList.html.twig') }}
+            {{ include('TeclliureInvoiceBundle:DeliveryNote:deliveryNoteList.html.twig') }}
         </div>
     </div>
 {% endblock %}

@@ -108,15 +108,20 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function getInvoice($commonId) {
+    public function getInvoice($commonId, $new = false) {
         // $query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Common c LEFT JOIN c.invoice i :where ORDER BY :order');
+
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('c, i')
             ->from('TeclliureInvoiceBundle:Common','c')
-            ->innerJoin('c.invoice','i')
             ->where('c.id = :commonId')
             ->setParameter('commonId', $commonId);
-
+        if ($new) {
+            $queryBuilder->leftJoin('c.invoice','i');
+        }
+        else {
+            $queryBuilder->innerJoin('c.invoice','i');
+        }
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
@@ -129,23 +134,40 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      */
     public function createInvoice() {
         $common = new Common();
-        $issueDate = new \DateTime('now');
-        $dueDate = new \DateTime('now');
-        $invoice = new Invoice();
-        $invoice->setIssueDate($issueDate);
-        $invoice->setDueDate($dueDate->modify('+1 month'));
-        if ($this->getConfig()->get('default_serie')) {
-            $serie = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Serie')->find($this->getConfig()->get('default_serie'));
-            if ($serie) {
-                $invoice->setSerie($serie);
+        $this->putDefaults($common);
+        return $common;
+    }
+
+    public function putDefaults(Common $common) {
+        $invoice = $common->getInvoice();
+        if (!$invoice) {
+            $invoice = new Invoice();
+        }
+
+        if (!$invoice->getIssueDate) {
+            $issueDate = new \DateTime('now');
+            $invoice->setIssueDate($issueDate);
+        }
+        if (!$invoice->getDueDate()) {
+            $dueDate = new \DateTime('now');
+            $invoice->setDueDate($dueDate->modify('+1 month'));
+        }
+        if (!$invoice->getSerie()) {
+            if ($this->getConfig()->get('default_serie')) {
+                $serie = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Serie')->find($this->getConfig()->get('default_serie'));
+                if ($serie) {
+                    $invoice->setSerie($serie);
+                }
             }
         }
-        if ($this->getConfig()->get('default_country')) {
-            $common->setCustomerCountry($this->getConfig()->get('default_country'));
+        if (!$common->getCustomerCountry()) {
+            if ($this->getConfig()->get('default_country')) {
+                $common->setCustomerCountry($this->getConfig()->get('default_country'));
+            }
         }
-        $common->setInvoice($invoice);
-
-        return $common;
+        if (!$common->getInvoice()) {
+            $common->setInvoice($invoice);
+        }
     }
 
     /**
@@ -185,6 +207,9 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         }
         else {
             throw new Exception('Only invoices with status draft could be edited');
+        }
+        if ($common->getQuote() && $common->getQuote()->getStatus() != 3) {
+            $common->getQuote()->setStatus(3);
         }
         $this->updateCustomerFromCommon($common);
 

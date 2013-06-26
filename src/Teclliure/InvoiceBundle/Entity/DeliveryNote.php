@@ -19,9 +19,9 @@ class DeliveryNote {
     private $id;
 
     /**
-     * @var integer $number
+     * @var string $number
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=25, unique=true, nullable=true )
      *
      */
     private $number;
@@ -30,14 +30,15 @@ class DeliveryNote {
      *
      * Possible status are
      *  - DRAFT         - 0
-     *  - INVOICED      - 1
+     *  - CLOSED        - 1
+     *  - INVOICED      - 2
      *
      * @var integer $number
      *
      * @ORM\Column(type="smallint")
      *
      */
-    private $status;
+    private $status = 0;
 
     /**
      * @var datetime $created
@@ -60,7 +61,7 @@ class DeliveryNote {
     /**
      * Set number
      *
-     * @param integer $number
+     * @param string $number
      * @return Order
      */
     public function setNumber($number)
@@ -73,7 +74,7 @@ class DeliveryNote {
     /**
      * Get number
      *
-     * @return integer 
+     * @return string
      */
     public function getNumber()
     {
@@ -180,5 +181,25 @@ class DeliveryNote {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     *
+     * Get status name
+     *
+     *
+     * @return string
+     *
+     */
+    public function getStatusName() {
+        if ($this->getStatus() == 0) {
+            return 'Draft';
+        }
+        elseif ($this->getStatus() == 1) {
+            return 'Closed';
+        }
+        elseif ($this->getStatus() == 2) {
+            return 'Invoiced';
+        }
     }
 }

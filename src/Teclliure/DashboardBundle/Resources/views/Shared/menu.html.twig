@@ -18,8 +18,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'Orders'|trans }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li class="divider"></li>
-                            <li><a href="">{{ 'Create order'|trans }}</a></li>
-                            <li><a href="">{{ 'View orders'|trans }}</a></li>
+                            <li><a href="{{ path('delivery_note_add') }}">{{ 'Create order'|trans }}</a></li>
+                            <li><a href="{{ path('delivery_note_list') }}">{{ 'View orders'|trans }}</a></li>
                             <li class="divider"></li>
                         </ul>
                     </li>

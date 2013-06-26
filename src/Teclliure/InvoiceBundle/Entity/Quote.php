@@ -19,9 +19,9 @@ class Quote {
     private $id;
 
     /**
-     * @var integer $number
+     * @var string $number
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=25, unique=true, nullable=true )
      *
      */
     private $number;
@@ -39,7 +39,7 @@ class Quote {
      * @ORM\Column(type="smallint")
      *
      */
-    private $status;
+    private $status = 0;
 
 
     /**
@@ -63,7 +63,7 @@ class Quote {
     /**
      * Set number
      *
-     * @param integer $number
+     * @param string $number
      * @return Quote
      */
     public function setNumber($number)
@@ -76,7 +76,7 @@ class Quote {
     /**
      * Get number
      *
-     * @return integer 
+     * @return string
      */
     public function getNumber()
     {

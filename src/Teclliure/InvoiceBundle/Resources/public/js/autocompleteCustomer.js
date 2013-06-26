@@ -7,6 +7,7 @@ $(function() {
         source: function(request, response) {
             var param = new Object();
             var id = this.element.attr('id');
+            param['base'] = baseObject;
             param['field'] = id;
             param['term'] = request.term;
             if (xhr) {

@@ -3,19 +3,18 @@
 namespace Teclliure\InvoiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Teclliure\InvoiceBundle\Service\InvoiceService;
-use Teclliure\InvoiceBundle\Entity\Common;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Teclliure\InvoiceBundle\Entity\CommonLine;
+use Doctrine\Common\Util\Inflector;
 
 class CommonController extends Controller
 {
     public function searchCustomerAction(Request $request)
     {
-        $field = str_replace('invoice_customer_', '', $request->get('field'));
-        $field = str_replace('quote_customer_', '', $request->get('field'));
+        $baseObject = $request->get('base');
+        $field = str_replace($baseObject.'_customer_', '', $request->get('field'));
         $customerService = $this->get('customer_service');
         $customers = $customerService->searchCustomers(array($field=>$request->get('term')), 10);
 
@@ -62,16 +61,18 @@ class CommonController extends Controller
         $baseObject = $request->get('baseObject');
         $data = $request->get($baseObject);
         $commonService = $this->get($baseObject.'_service');
+        $inflector = new Inflector();
+        $className = ucfirst($inflector->camelize($baseObject));
         if ($request->get('id')) {
-            $methodName = 'get'.ucfirst($baseObject);
+            $methodName = 'get'.$className;
             $common = $commonService->$methodName($request->get('id'));
         }
         else {
-            $methodName = 'create'.ucfirst($baseObject);
+            $methodName = 'create'.$className;
             $common = $commonService->$methodName();
         }
         $form = $this->createForm($this->get('teclliure.form.type.'.$baseObject), $common);
-        $form->bind($request);
+        $form->handleRequest($request);
 
         $taxRepository = $this->getDoctrine()->getRepository('TeclliureInvoiceBundle:Tax');
         $lines = array();

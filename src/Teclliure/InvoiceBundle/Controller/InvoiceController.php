@@ -43,7 +43,11 @@ class InvoiceController extends Controller
         $originalLines = array();
         $invoiceService = $this->get('invoice_service');
         if ($request->get('id')) {
-            $invoice = $invoiceService->getInvoice($request->get('id'));
+            $invoice = $invoiceService->getInvoice($request->get('id'), $request->get('new'));
+
+            if ($request->get('new')) {
+                $invoiceService->putDefaults($invoice);
+            }
 
             // Create an array of the current CommonLines objects in the database
             foreach ($invoice->getCommonLines() as $commonLine) {
@@ -81,6 +85,8 @@ class InvoiceController extends Controller
 
         return $this->render('TeclliureInvoiceBundle:Invoice:invoiceForm.html.twig', array(
             'form' => $form->createView(),
+            'config' => $this->get('craue_config')->all(),
+            'new' => $request->get('new'),
             'common' => $invoice
         ));
     }

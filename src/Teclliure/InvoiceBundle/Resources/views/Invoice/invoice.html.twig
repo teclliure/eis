@@ -1,8 +1,7 @@
 
     <div id="inside_content">
-
         <div id="companyInfo">
-            <h4>{{ 'Invoice'|trans }} - {{ common.invoice.number }}</h4>
+            <h4>{{ 'Invoice'|trans }} - {% if common.invoice.number %}{{ common.invoice.number }}{% else %}{{ 'Not already generated'|trans }}{% endif %}</h4>
             <div class="inputDiv control-group">
             {{ config.company_name }} - {{ config.company_identification }}
             </div>
@@ -20,7 +19,6 @@
                     {% if (print != true) %}<a href="mailto: {{ config.company_mail }}">{% endif %}{{ config.company_mail }}{% if (print != true) %}</a>{% endif %}
                 {% endif %}
             </div>
-
         </div>
 
         <h3>{{ 'Customer'|trans }}</h3>
@@ -80,7 +78,7 @@
             </thead>
             <tbody id="tbody_lines">
             {% for line in common.commonLines %}
-                {{ include('TeclliureInvoiceBundle:Invoice:line.html.twig', {'line': line}) }}
+                {{ include('TeclliureInvoiceBundle:Commmon:line.html.twig', {'line': line}) }}
             {% endfor %}
             </tbody>
             <tfoot>
@@ -118,9 +116,11 @@
         <div class="list_primary_buttons">
             {% if (common.invoice) and (common.invoice.status != 0) and (print != true) %}
                 <a href="{{ path('invoice_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+            {% elseif (common.invoice) and (common.invoice.status == 0) and (print != true) %}
+                <a href="{{ path('invoice_edit', {'id': common.id}) }}" class="btn btn-success"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
             {% endif %}
             {% if (print != true) %}
-                <a href="{{ path('invoice_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+                <a href="{{ path('invoice_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-info"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
                 <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
             {% endif %}
         </div>

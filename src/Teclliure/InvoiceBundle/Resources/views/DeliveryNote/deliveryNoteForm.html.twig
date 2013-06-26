@@ -15,13 +15,13 @@
 
 {% block content %}
     <script type="text/javascript">
-        baseObject = 'invoice';
+        baseObject = 'delivery_note';
     </script>
     <div id="inside_content">
         <div id="companyInfo">
-            <h4>{{ 'Invoice'|trans }} - {% if common.invoice.number %}{{ common.invoice.number }}{% else %}{{ 'Not assigned'|trans }}{% endif %}</h4>
+            <h4>{{ 'Order'|trans }} - {% if common.deliveryNote.number %}{{ common.deliveryNote.number }}{% else %}{{ 'Not assigned'|trans }}{% endif %}</h4>
             {% if common.quote  %}<h6>{{ 'Quote'|trans }}: <a href="{{ path('quote_view', {'id': common.id }) }}">{{ common.quote.number }}</a></h6>{% endif %}
-            {% if common.deliveryNote  %}<h6>{{ 'Order'|trans }}: <a href="{{ path('delivery_note_view', {'id': common.id }) }}">{{ common.deliveryNote.number }}</a></h6>{% endif %}
+            {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{{ common.invoice.number }}</a>{% else %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{{ 'Not asigned'|trans }}</a>{% endif %}</h6>{% endif %}
             <div class="inputDiv control-group">
                 {{ config.company_name }} - {{ config.company_identification }}
             </div>
@@ -40,7 +40,7 @@
                 {% endif %}
             </div>
         </div>
-        <form id="invoiceForm" action="{% if common.id %}{{ path('invoice_edit', {'id': common.id, 'new': new }) }}{% else %}{{ path('invoice_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+        <form id="invoiceForm" action="{% if common.id %}{{ path('delivery_note_edit', {'id': common.id }) }}{% else %}{{ path('delivery_note_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
 
             <h3>{{ 'Customer'|trans }}</h3>
@@ -75,29 +75,13 @@
             {{ form_errors(form.customer_country) }}
             {{ form_widget(form.customer_country, { 'attr': {'maxlength': 6, 'class': 'input-large uf-placeholder', 'placeholder': 'Country'|trans} }) }}
             </div>
-
-            <h3>{{ 'Payment'|trans }}</h3>
-            <div class="inputDivInline control-group {% if form.invoice.issue_date.vars.errors|length > 0 %}error{% endif %}">
-            {{ form_errors(form.invoice.issue_date) }}
-            {{ 'Issue date'|trans }}: {{ form_widget(form.invoice.issue_date, { 'attr': {'class': 'input-small date_input'} } ) }}
-            </div>
-            &nbsp;&nbsp;
-            <div class="inputDivInline control-group {% if form.invoice.due_date.vars.errors|length > 0 %}error{% endif %}">
-            {{ form_errors(form.invoice.due_date) }}
-            {{ 'Due date'|trans }}: {{ form_widget(form.invoice.due_date, { 'attr': {'class': 'input-small date_input'} }) }}
-            </div>
-            &nbsp;&nbsp;
-            <div class="inputDivInline control-group {% if form.invoice.serie.vars.errors|length > 0 %}error{% endif %}">
-            {{ form_errors(form.invoice.serie) }}
-            {{ 'Serie'|trans }}: {{ form_widget(form.invoice.serie, { 'attr': {'class': 'input-small'} }) }}
-            </div>
             <br />
             <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
             <h3>{{ 'Description'|trans }}</h3>
             {{ form_widget(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge', 'placeholder': 'Description'|trans} }) }}
             </div>
 
-            <h3>{{ 'Invoice lines'|trans }}</h3>
+            <h3>{{ 'Quote lines'|trans }}</h3>
             <table id="commonLines" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Common:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
                 <thead>
                     <tr class="lineHeader not_delete">
@@ -151,21 +135,21 @@
             {{ form_rest(form) }}
 
             <div class="list_primary_buttons">
-                {% if (common.id) and (common.invoice) and (common.invoice.status == 0)  %}
-                    <a href="{{ path('invoice_delete', {'id': common.id}) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Delete'|trans }}</a>
+                {% if (common.id) and (common.deliveryNote) and (common.deliveryNote.status == 0)  %}
+                    <a href="{{ path('delivery_note_delete', {'id': common.id}) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Delete'|trans }}</a>
                     &nbsp;
                     &nbsp;
                 {% endif %}
 
                 {% if (common.id) %}
-                    <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small btn-success"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                    <a href="{{ path('delivery_note_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small btn-success"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
                 {% endif %}
-                {% if (not common.invoice) or (common.invoice.status == 0)  %}
+                {% if (not common.deliveryNote) or (common.deliveryNote.status == 0)  %}
                     <button type="submit" name="action" value="save_and_close" class="btn btn-info"><i class="icon-folder-close"></i> {{ 'Save and close'|trans }}</button>
                     <button type="submit" name="action" value="save" class="btn"><i class="icon-file"></i> {{ 'Save'|trans }}</button>
                 {% endif %}
-                {% if (common.invoice) and (common.invoice.status != 0)  %}
-                    <a href="{{ path('invoice_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+                {% if (common.deliveryNote) and (common.deliveryNote.status != 0)  %}
+                    <a href="{{ path('delivery_note_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
                 {% endif %}
             </div>
             <div style="clear:both;"></div>

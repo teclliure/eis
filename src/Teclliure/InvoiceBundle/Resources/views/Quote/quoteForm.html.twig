@@ -18,6 +18,28 @@
         baseObject = 'quote';
     </script>
     <div id="inside_content">
+        <div id="companyInfo">
+            <h4>{{ 'Quote'|trans }} - {% if common.quote.number %}{{ common.quote.number }}{% else %}{{ 'Not assigned'|trans }}{% endif %}</h4>
+            {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{{ common.invoice.number }}</a>{% else %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{{ 'Not asigned'|trans }}</a>{% endif %}</h6>{% endif %}
+            {% if common.deliveryNote  %}<h6>{{ 'Order'|trans }}: <a href="{{ path('order_view', {'id': common.id }) }}">{{ common.deliveryNote.number }}</a></h6>{% endif %}
+            <div class="inputDiv control-group">
+                {{ config.company_name }} - {{ config.company_identification }}
+            </div>
+            <br />
+            <div class="inputDiv control-group">
+                {{ config.company_address|nl2br }}
+            </div>
+            <br />
+            <div class="inputDiv control-group">
+                {% if config.company_web %}
+                    <a href="{{ config.company_web }}">{{ config.company_web }}</a>
+                {% endif %}
+                {% if config.company_mail %}
+                    <br />
+                    <a href="mailto: {{ config.company_mail }}">{{ config.company_mail }}</a>
+                {% endif %}
+            </div>
+        </div>
         <form id="invoiceForm" action="{% if common.id %}{{ path('quote_edit', {'id': common.id }) }}{% else %}{{ path('quote_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
 
@@ -60,7 +82,7 @@
             </div>
 
             <h3>{{ 'Quote lines'|trans }}</h3>
-            <table id="commonLines" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
+            <table id="commonLines" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Common:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
                 <thead>
                     <tr class="lineHeader not_delete">
                         <th class="lineDesc">{{ 'Description' }}</th>
@@ -74,7 +96,7 @@
                 <tbody id="tbody_lines">
                 {# iterate over each existing tag and render its only field: name #}
                 {% for key,line in form.common_lines %}
-                    {{ include('TeclliureInvoiceBundle:Invoice:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
+                    {{ include('TeclliureInvoiceBundle:Common:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
                 {% endfor %}
                 </tbody>
                 <tfoot>

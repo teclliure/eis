@@ -7,18 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Teclliure\InvoiceBundle\Form\Type\CommonLineType;
 use Teclliure\InvoiceBundle\Entity\CommonLine;
-use Doctrine\ORM\EntityManager;
 use Teclliure\InvoiceBundle\Form\DataTransformer\CustomerToNumberTransformer;
 
 class CommonType extends AbstractType
 {
-    protected $em;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new CustomerToNumberTransformer($this->em);

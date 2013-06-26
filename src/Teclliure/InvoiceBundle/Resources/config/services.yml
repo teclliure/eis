@@ -1,6 +1,7 @@
 parameters:
     teclliure_invoice_service.class: Teclliure\InvoiceBundle\Service\InvoiceService
     teclliure_quote_service.class: Teclliure\InvoiceBundle\Service\QuoteService
+    teclliure_delivery_note_service.class: Teclliure\InvoiceBundle\Service\DeliveryNoteService
     teclliure_customer_service.class: Teclliure\CustomerBundle\Service\CustomerService
 
 services:
@@ -14,6 +15,14 @@ services:
 
   quote_service:
         class: "%teclliure_quote_service.class%"
+        arguments:
+          em: "@doctrine.orm.entity_manager"
+          config: "@craue_config"
+        tags:
+          - { name: "knp_paginator.injectable", alias: "knp_paginator" }
+
+  delivery_note_service:
+        class: "%teclliure_delivery_note_service.class%"
         arguments:
           em: "@doctrine.orm.entity_manager"
           config: "@craue_config"
@@ -44,6 +53,12 @@ services:
         class: Teclliure\InvoiceBundle\Form\Type\QuoteType
         arguments:
             - @doctrine.orm.entity_manager
+
+  teclliure.form.type.delivery_note:
+          class: Teclliure\InvoiceBundle\Form\Type\DeliveryNoteType
+          arguments:
+              - @doctrine.orm.entity_manager
+
 #    teclliure_invoice.example:
 #        class: %teclliure_invoice.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

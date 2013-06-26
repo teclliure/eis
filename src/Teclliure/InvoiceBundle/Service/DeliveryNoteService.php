@@ -13,21 +13,21 @@ namespace Teclliure\InvoiceBundle\Service;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Teclliure\InvoiceBundle\Entity\Common;
-use Teclliure\InvoiceBundle\Entity\Quote;
+use Teclliure\InvoiceBundle\Entity\DeliveryNote;
 use Teclliure\InvoiceBundle\Service\CommonService;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 
 
 /**
- * Quote service. It "should" be the ONLY class used directly by controllers.
+ * DeliveryNote service. It "should" be the ONLY class used directly by controllers.
  *
  * @author Marc Montañés Abarca <marc@teclliure.net>
  *
  * @api
  */
-class QuoteService extends CommonService implements PaginatorAwareInterface {
+class DeliveryNoteService extends CommonService implements PaginatorAwareInterface {
     /**
-     * Get quotes
+     * Get orders
      *
      * @param integer $limit
      * @param integer $offset
@@ -38,15 +38,15 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function getQuotes($limit = 10, $page = 1, $filters = array()) {
+    public function getDeliveryNotes($limit = 10, $page = 1, $filters = array()) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-                        ->select('c, q')
+                        ->select('c, d')
                         ->from('TeclliureInvoiceBundle:Common','c')
-                        ->innerJoin('c.quote','q');
+                        ->innerJoin('c.delivery_note','d');
 
         if ($filters) {
             if (isset($filters['search']) && $filters['search']) {
-                $queryBuilder->where('q.number LIKE :search OR c.customer_name LIKE :search2')
+                $queryBuilder->where('d.number LIKE :search OR c.customer_name LIKE :search2')
                     ->setParameters(array(
                         'search'    => '%'.$filters['search'].'%',
                         'search2'   => '%'.$filters['search'].'%'
@@ -55,19 +55,19 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             }
 
             if (isset($filters['start_issue_date']) && $filters['start_issue_date']) {
-                $queryBuilder->andWhere('q.created >= :start_issue_date')
+                $queryBuilder->andWhere('d.created >= :start_issue_date')
                     ->setParameter('start_issue_date', $filters['start_issue_date'],  \Doctrine\DBAL\Types\Type::DATETIME);
                 unset ($filters['start_issue_date']);
             }
             if (isset($filters['end_issue_date']) && $filters['end_issue_date']) {
-                $queryBuilder->andWhere('q.created <= :end_issue_date')
+                $queryBuilder->andWhere('d.created <= :end_issue_date')
                     ->setParameter('end_issue_date', $filters['end_issue_date'], \Doctrine\DBAL\Types\Type::DATETIME);
                 unset ($filters['end_issue_date']);
             }
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
-                    $fieldName = preg_replace('/^q_/', 'q.',preg_replace('/^c_/', 'c.', $key));
+                    $fieldName = preg_replace('/^d_/', 'd.',preg_replace('/^c_/', 'c.', $key));
                     $value = $filter;
                     if (is_array($filter)) {
                         $queryBuilder->andWhere($fieldName.' IN (:where'.$key.')')
@@ -99,7 +99,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
     }
 
     /**
-     * Get quote
+     * Get order
      *
      * @param integer $commonId
      *
@@ -107,11 +107,11 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function getQuote($commonId) {
+    public function getDeliveryNote($commonId) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-            ->select('c, q')
+            ->select('c, d')
             ->from('TeclliureInvoiceBundle:Common','c')
-            ->innerJoin('c.quote','q')
+            ->innerJoin('c.delivery_note','d')
             ->where('c.id = :commonId')
             ->setParameter('commonId', $commonId);
 
@@ -119,34 +119,34 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
     }
 
     /**
-     * Create quote
+     * Create deliveryNote
      *
      * @return Common
      *
      * @api 0.1
      */
-    public function createQuote() {
+    public function createDeliveryNote() {
         $common = new Common();
 
-        $quote = new Quote();
+        $deliveryNote = new DeliveryNote();
         if ($this->getConfig()->get('default_country')) {
             $common->setCustomerCountry($this->getConfig()->get('default_country'));
         }
-        $common->setQuote($quote);
+        $common->setDeliveryNote($deliveryNote);
 
         return $common;
     }
 
     /**
-     * Save quote
+     * Save deliveryNote
      *
-     * Save quote and calculate amounts
+     * Save deliveryNote and calculate amounts
      *
-     * @param Common $common Quote to save
+     * @param Common $common DeliveryNote to save
      *
      * @api 0.1
      */
-    public function saveQuote(Common $common, $originalLines = array()) {
+    public function saveDeliveryNote(Common $common, $originalLines = array()) {
         if ($originalLines)  {
             foreach ($common->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
@@ -162,20 +162,20 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             }
         }
 
-        if (!$common->getQuote()) {
-            throw new Exception('Common is not an quote');
+        if (!$common->getDeliveryNote()) {
+            throw new Exception('Common is not an order');
         }
-        elseif ($common->getQuote()->getStatus() > 0) {
-            throw new Exception('Only quotes with status draft could be edited');
+        elseif ($common->getDeliveryNote()->getStatus() > 0) {
+            throw new Exception('Only orders with status draft could be edited');
         }
 
-        if (!$common->getQuote()->getNumber()) {
-            // We get WRITE lock to avoid duplicated quote numbers
+        if (!$common->getDeliveryNote()->getNumber()) {
+            // We get WRITE lock to avoid duplicated deliveryNote numbers
             $em = $this->getEntityManager();
-            $em->getConnection()->exec('LOCK TABLE quote q0_ WRITE;');
-            if (!$common->getQuote()->getNumber()) {
-                $nextQuoteNumber = $this->getNextQuoteNumber(new \DateTime());
-                $common->getQuote()->setNumber($nextQuoteNumber);
+            $em->getConnection()->exec('LOCK TABLE delivery_note d0_ WRITE;');
+            if (!$common->getDeliveryNote()->getNumber()) {
+                $nextDeliveryNoteNumber = $this->getNextDeliveryNoteNumber(new \DateTime());
+                $common->getDeliveryNote()->setNumber($nextDeliveryNoteNumber);
             }
             $em->persist($common);
             $em->flush();
@@ -190,85 +190,66 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
     }
 
     /**
-     * Close quote
+     * Close deliveryNote
      *
-     * Set status to closed and generate quote number
+     * Set status to closed and generate deliveryNote number
      *
-     * @param Common $common Quote to close
+     * @param Common $common DeliveryNote to close
      *
      * @api 0.1
      */
-    public function closeQuote(Common $common) {
-        if ($common->getQuote()->getStatus() != 0) {
-            throw new Exception('Only quotes with status draft could be closed');
+    public function closeDeliveryNote(Common $common) {
+        if ($common->getDeliveryNote()->getStatus() != 0) {
+            throw new Exception('Only orders with status draft could be closed');
         }
-        $common->getQuote()->setStatus(1);
+        $common->getDeliveryNote()->setStatus(1);
         $em = $this->getEntityManager();
         $em->persist($common);
         $em->flush();
     }
 
     /**
-     * Deny quote
-     *
-     * Set status to closed and generate quote number
-     *
-     * @param Common $common Quote to close
-     *
-     * @api 0.1
-     */
-    public function denyQuote(Common $common) {
-        if ($common->getQuote()->getStatus() > 1 ) {
-            throw new Exception('Only quotes with status draft could be rejected');
-        }
-        $common->getQuote()->setStatus(2);
-        $em = $this->getEntityManager();
-        $em->persist($common);
-        $em->flush();
-    }
-
-    /**
-     * Open quote
+     * Open order
      *
      * Set status to open
      *
-     * @param Common $common Quote to open
+     * @param Common $common DeliveryNote to open
      *
      * @api 0.1
      */
-    public function openQuote(Common $common) {
-        if (!($common->getQuote()->getStatus() > 0)) {
-            throw new Exception('Only quotes with status different than draft could be opened');
+    public function openDeliveryNote(Common $common) {
+        if (!($common->getDeliveryNote()->getStatus() > 0)) {
+            throw new Exception('Only orders with status different than draft could be opened');
         }
-        $common->getQuote()->setStatus(0);
+        $common->getDeliveryNote()->setStatus(0);
         $em = $this->getEntityManager();
         $em->persist($common);
         $em->flush();
     }
 
     /**
-     * Get next quote number
+     * Get next order number
      *
-     * Get next quote number of a serie
+     * Get next order number of a serie
      *
-     * @param string Next quote number
+     * @param string Next delivery_note number
      *
      * @api 0.1
      */
-    protected function getNextQuoteNumber(\DateTime $date) {
+    protected function getNextDeliveryNoteNumber(\DateTime $date) {
         $queryParams = array();
 
         // We have the year at first
         $size = 5;
-        $selectSubstring = 'MAX(SUBSTRING(q.number, '.$size.')) as number';
+        $selectSubstring = 'MAX(SUBSTRING(d.number, '.$size.')) as number';
 
         // Filter by date
         $queryParams['startDate'] = new \DateTime('@'.mktime (0, 0, 0, 1, 1, $date->format('Y')));
         $queryParams['endDate'] = new \DateTime('@'.mktime (0, 0, 0, 12, 32, $date->format('Y')));
 
 
-        $query = $this->em->createQuery('SELECT '.$selectSubstring.' FROM TeclliureInvoiceBundle:Quote q
-        WHERE q.created >= :startDate AND q.created < :endDate ORDER BY q.number desc');
+        $query = $this->em->createQuery('SELECT '.$selectSubstring.' FROM TeclliureInvoiceBundle:DeliveryNote d
+        WHERE d.created >= :startDate AND d.created < :endDate ORDER BY d.number desc');
         $query->setParameters($queryParams);
         $result = $query->getOneOrNullResult();
         // print_r ($result);

@@ -22,7 +22,7 @@ jQuery(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: basePath + "/invoice/list",
+            url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function(data)
             {
@@ -42,7 +42,7 @@ jQuery(document).ready(function() {
         e.preventDefault();
         $.ajax({
             type: "POST",
-            url: basePath + "/invoice/list",
+            url: $('#formFilter').attr('action'),
             success: function(data)
             {
                 $('#results_datagrid').html(data);
@@ -74,7 +74,7 @@ jQuery(document).ready(function() {
         e.preventDefault();
 
         if ($.isNumeric($(this).val())) {
-            var action = basePath + "/invoice/list?page="+$(this).val();
+            var action = $('#formFilter').attr('action') + '?page='+$(this).val();
 
             $.ajax({
                 type: "POST",

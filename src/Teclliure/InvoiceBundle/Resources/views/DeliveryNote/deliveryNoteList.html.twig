@@ -1,0 +1,54 @@
+<table  class="table table-bordered table-hover" style="margin: 25px; width: 97%;">
+    <thead>
+    <tr>
+        <th {% if deliveryNotes.isSorted('d.number') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(deliveryNotes, 'Order number'|trans, 'd.number', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if deliveryNotes.isSorted('c.customer_name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(deliveryNotes, 'Customer name'|trans, 'c.customer_name', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if deliveryNotes.isSorted('d.created') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(deliveryNotes, 'Created date'|trans, 'd.created', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if deliveryNotes.isSorted('q.status') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(deliveryNotes, 'Status'|trans, 'q.status', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th>{{ 'Total'|trans }}</th>
+        <th class="clear"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for common in deliveryNotes %}
+        <tr>
+            <td>
+                {{ common.deliveryNote.number }}
+            </td>
+            <td>{{ common.customerName }}</td>
+            <td>{{ common.deliveryNote.created|date('d/m/Y') }}</td>
+            <td>{{ common.deliveryNote.statusName|trans }}</td>
+            <td>{{ common.grossAmount|number_format(2, '.', ',') }} €</td>
+            <td>
+                {% if common.deliveryNote.status == 0  %}
+                <a href="{{ path('delivery_note_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                <a href="{{ path('delivery_note_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
+                {% elseif (common.deliveryNote.status == 1) or (common.deliveryNote.status == 2) %}
+                <a href="{{ path('delivery_note_open', {'id': common.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-small"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
+                {% endif %}
+
+                {% if (common.deliveryNote.status == 0) or  (common.deliveryNote.status == 1) %}
+                    {% if not common.invoice %}
+                        <a href="{{ path('delivery_note_invoice', {'id': common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-small btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ path('delivery_note_view', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-file"></i> {{ 'View'|trans }}</a>
+                {% endif %}
+                {% if common.invoice %}
+                    <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'Invoice view'|trans }}</a>
+                {% endif %}
+                {% if (common.deliveryNote.status != 0) %}
+                <a href="{{ path('delivery_note_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="8">
+            {{ knp_pagination_render(deliveryNotes, 'TeclliureInvoiceBundle:Common:simple_pagination.html.twig') }}
+        </td>
+    </tr>
+    </tfoot>
+</table>

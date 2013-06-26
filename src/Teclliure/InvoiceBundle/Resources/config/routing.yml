@@ -74,6 +74,47 @@ quote_order:
     pattern:  /quote/order/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Quote:orderQuote }
 
+delivery_note_list:
+    pattern:  /delivery_note/list
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:index }
+
+delivery_note_add:
+    pattern:  /delivery_note/add
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:addEditDeliveryNote }
+
+delivery_note_edit:
+    pattern:  /delivery_note/edit/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:addEditDeliveryNote }
+
+delivery_note_view:
+    pattern:  /delivery_note/view/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:viewDeliveryNote }
+
+delivery_note_print:
+    pattern:  /delivery_note/print/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:printDeliveryNote }
+
+delivery_note_delete:
+    pattern:  /delivery_note/delete/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:deleteDeliveryNote }
+
+delivery_note_open:
+    pattern:  /delivery_note/open/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:openDeliveryNote }
+
+delivery_note_close:
+    pattern:  /delivery_note/close/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:closeDeliveryNote }
+
+delivery_note_deny:
+    pattern:  /delivery_note/deny/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:denyDeliveryNote }
+
+delivery_note_invoice:
+    pattern:  /delivery_note/invoice/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:invoiceDeliveryNote }
+
+
 search_customer:
     pattern: /searchCustomer
     defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomer }
