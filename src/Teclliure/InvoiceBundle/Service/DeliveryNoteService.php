@@ -107,13 +107,19 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * @api 0.1
      */
-    public function getDeliveryNote($commonId) {
+    public function getDeliveryNote($commonId, $new = false) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('c, d')
             ->from('TeclliureInvoiceBundle:Common','c')
-            ->innerJoin('c.delivery_note','d')
             ->where('c.id = :commonId')
             ->setParameter('commonId', $commonId);
+
+        if ($new) {
+            $queryBuilder->leftJoin('c.delivery_note','d');
+        }
+        else {
+            $queryBuilder->innerJoin('c.delivery_note','d');
+        }
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
@@ -181,6 +187,9 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
+        if ($common->getQuote() && $common->getQuote()->getStatus() != 3) {
+            $common->getQuote()->setStatus(3);
+        }
         $this->updateCustomerFromCommon($common);
 
         $em = $this->getEntityManager();
@@ -240,7 +249,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
         $queryParams = array();
 
         // We have the year at first
-        $size = 5;
+        $size = 6;
         $selectSubstring = 'MAX(SUBSTRING(d.number, '.$size.')) as number';
 
         // Filter by date
@@ -259,7 +268,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
         else {
             $number = (int)$result['number']+1;
         }
-        $number = $date->format('Y').str_pad($number, 8, '0', STR_PAD_LEFT);
+        $number = 'DN'.$date->format('Y').str_pad($number, 8, '0', STR_PAD_LEFT);
 
         return $number;
     }

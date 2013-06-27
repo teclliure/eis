@@ -185,8 +185,32 @@ class QuoteController extends Controller
         $t = $this->get('translator');
         $quoteService = $this->get('quote_service');
         $quote = $quoteService->getQuote($request->get('id'));
+        if (!$quote) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        elseif ($quote->getQuote()->getStatus() > 1) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft or pending could not be invoiced.'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
         $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to invoice!'));
         return $this->redirect($this->generateUrl('invoice_edit', array('id'=>$quote->getId(), 'new'=>true)));
+    }
+
+    public function orderQuoteAction(Request $request) {
+        $t = $this->get('translator');
+        $quoteService = $this->get('quote_service');
+        $quote = $quoteService->getQuote($request->get('id'));
+        if (!$quote) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        elseif ($quote->getQuote()->getStatus() > 1) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft or pending could not be ordered.'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to order!'));
+        return $this->redirect($this->generateUrl('delivery_note_edit', array('id'=>$quote->getId(), 'new'=>true)));
     }
 
     protected function notFoundRedirect ($id) {

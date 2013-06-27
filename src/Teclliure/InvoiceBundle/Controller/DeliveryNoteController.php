@@ -44,13 +44,13 @@ class DeliveryNoteController extends Controller
         $originalLines = array();
         $deliveryNoteService = $this->get('delivery_note_service');
         if ($request->get('id')) {
-            $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'));
+            $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'), $request->get('new'));
             if (!$deliveryNote) {
-                $this->get('session')->getFlashBag()->add('warning', $t->trans('DeliveryNote does not exists!'));
+                $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
-            elseif ($deliveryNote->getDeliveryNote()->getStatus() != 0) {
-                $this->get('session')->getFlashBag()->add('warning', $t->trans('DeliveryNote with status different to draft could not be edited.'));
+            elseif (!$request->get('new') && $deliveryNote->getDeliveryNote()->getStatus() != 0 ) {
+                $this->get('session')->getFlashBag()->add('warning', $t->trans('Order with status different to draft could not be edited.'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
 
@@ -75,10 +75,10 @@ class DeliveryNoteController extends Controller
                 $action = $request->get('action');
                 if ($action == 'save_and_close') {
                     $deliveryNoteService->closeDeliveryNote($deliveryNote);
-                    $this->get('session')->getFlashBag()->add('success', $t->trans('DeliveryNote saved and closed!'));
+                    $this->get('session')->getFlashBag()->add('success', $t->trans('Order saved and closed!'));
                 }
                 elseif ($action == 'save') {
-                    $this->get('session')->getFlashBag()->add('success', $t->trans('DeliveryNote saved!'));
+                    $this->get('session')->getFlashBag()->add('success', $t->trans('Order saved!'));
                 }
                 else {
                     $this->get('session')->getFlashBag()->add('warning', $t->trans('Nothing done!'));
@@ -89,9 +89,10 @@ class DeliveryNoteController extends Controller
         }
 
         return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNoteForm.html.twig', array(
-            'form' => $form->createView(),
-            'config' => $this->get('craue_config')->all(),
-            'common' => $deliveryNote
+            'form'      => $form->createView(),
+            'config'    => $this->get('craue_config')->all(),
+            'new'       => $request->get('new'),
+            'common'    => $deliveryNote
         ));
     }
 
@@ -101,7 +102,7 @@ class DeliveryNoteController extends Controller
         $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'));
 
         if (!$deliveryNote) {
-            $this->get('session')->getFlashBag()->add('warning', $t->trans('DeliveryNote does not exists!'));
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
             return $this->redirect($this->generateUrl('delivery_note_list'));
         }
 
@@ -118,7 +119,7 @@ class DeliveryNoteController extends Controller
         $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'));
 
         if (!$deliveryNote) {
-            $this->get('session')->getFlashBag()->add('warning', $t->trans('DeliveryNote does not exists!'));
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
             return $this->redirect($this->generateUrl('delivery_note_list'));
         }
 

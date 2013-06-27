@@ -105,7 +105,7 @@
         </table>
 
         <div class="list_primary_buttons">
-            {% if (common.quote) and (common.quote.status != 0) and (print != true) and not common.invoice %}
+            {% if (common.quote) and (common.quote.status != 0) and (print != true) and not common.invoice and not common.deliveryNote %}
                 <a href="{{ path('quote_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% endif %}
             {% if (print != true) %}
@@ -113,7 +113,7 @@
                     <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
                 {% endif %}
                 {% if common.deliveryNote  %}
-                    <a href="{{ path('order_view', {'id': common.id }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
+                    <a href="{{ path('delivery_note_view', {'id': common.id }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
                 {% endif %}
                 <a href="{{ path('quote_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
                 <a href="{{ path('quote_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>

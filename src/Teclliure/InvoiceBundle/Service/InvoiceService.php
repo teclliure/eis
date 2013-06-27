@@ -116,6 +116,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             ->from('TeclliureInvoiceBundle:Common','c')
             ->where('c.id = :commonId')
             ->setParameter('commonId', $commonId);
+
         if ($new) {
             $queryBuilder->leftJoin('c.invoice','i');
         }
@@ -210,6 +211,9 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         }
         if ($common->getQuote() && $common->getQuote()->getStatus() != 3) {
             $common->getQuote()->setStatus(3);
+        }
+        if ($common->getDeliveryNote() && $common->getDeliveryNote()->getStatus() != 2) {
+            $common->getDeliveryNote()->setStatus(2);
         }
         $this->updateCustomerFromCommon($common);
 

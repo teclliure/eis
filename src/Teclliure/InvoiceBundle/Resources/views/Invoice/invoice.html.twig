@@ -2,6 +2,10 @@
     <div id="inside_content">
         <div id="companyInfo">
             <h4>{{ 'Invoice'|trans }} - {% if common.invoice.number %}{{ common.invoice.number }}{% else %}{{ 'Not already generated'|trans }}{% endif %}</h4>
+            {% if not print %}
+                {% if common.quote  %}<h6>{{ 'Quote'|trans }}: <a href="{{ path('quote_view', {'id': common.id }) }}">{{ common.quote.number }}</a></h6>{% endif %}
+                {% if common.deliveryNote  %}<h6>{{ 'Order'|trans }}: <a href="{{ path('delivery_note_view', {'id': common.id }) }}">{{ common.deliveryNote.number }}</a></h6>{% endif %}
+            {% endif %}
             <div class="inputDiv control-group">
             {{ config.company_name }} - {{ config.company_identification }}
             </div>
@@ -78,7 +82,7 @@
             </thead>
             <tbody id="tbody_lines">
             {% for line in common.commonLines %}
-                {{ include('TeclliureInvoiceBundle:Commmon:line.html.twig', {'line': line}) }}
+                {{ include('TeclliureInvoiceBundle:Common:line.html.twig', {'line': line}) }}
             {% endfor %}
             </tbody>
             <tfoot>

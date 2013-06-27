@@ -2,8 +2,10 @@
     <div id="inside_content">
 
         <div id="companyInfo">
-            <h4>{{ 'Quote'|trans }} - {{ common.quote.number }}</h4>
-            <b>{{ 'Created'|trans }}</b>: {{ common.quote.created|date("d/m/Y") }}<br />
+            <h4>{{ 'Order'|trans }} - {{ common.deliveryNote.number }}</h4>
+            <b>{{ 'Created'|trans }}</b>: {{ common.deliveryNote.created|date("d/m/Y") }}<br />
+            {% if common.quote  %}<h6>{{ 'Quote'|trans }}: {% if not print %}<a href="{{ path('quote_view', {'id': common.id }) }}">{% endif %}{{ common.quote.number }}{% if not print %}</a>{% endif %}</h6>{% endif %}
+            {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}{% if not print %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{% endif %}{{ common.invoice.number }}{% if not print %}</a>{% endif %}{% else %}{% if not print %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{% endif %}{{ 'Not asigned'|trans }}{% if not print %}</a>{% endif %}{% endif %}</h6>{% endif %}
             <div class="inputDiv control-group">
             {{ config.company_name }} - {{ config.company_identification }}
             </div>
@@ -106,17 +108,17 @@
 
         <div class="list_primary_buttons">
             {% if (common.quote) and (common.quote.status != 0) and (print != true) and not common.invoice %}
-                <a href="{{ path('quote_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+                <a href="{{ path('delivery_note_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% endif %}
             {% if (print != true) %}
                 {% if common.invoice %}
                     <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
                 {% endif %}
-                {% if common.deliveryNote  %}
-                    <a href="{{ path('order_view', {'id': common.id }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
+                {% if common.quote  %}
+                    <a href="{{ path('quote_view', {'id': common.id }) }}" alt="{{ 'View quote'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View quote'|trans }}</a>
                 {% endif %}
-                <a href="{{ path('quote_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-                <a href="{{ path('quote_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                <a href="{{ path('delivery_note_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+                <a href="{{ path('delivery_note_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
             {% endif %}
         </div>
         <div style="clear:both;"></div>

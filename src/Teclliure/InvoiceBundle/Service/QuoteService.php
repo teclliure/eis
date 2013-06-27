@@ -259,7 +259,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $queryParams = array();
 
         // We have the year at first
-        $size = 5;
+        $size = 6;
         $selectSubstring = 'MAX(SUBSTRING(q.number, '.$size.')) as number';
 
         // Filter by date
@@ -278,7 +278,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         else {
             $number = (int)$result['number']+1;
         }
-        $number = $date->format('Y').str_pad($number, 8, '0', STR_PAD_LEFT);
+        $number = 'Q'.$date->format('Y').str_pad($number, 8, '0', STR_PAD_LEFT);
 
         return $number;
     }

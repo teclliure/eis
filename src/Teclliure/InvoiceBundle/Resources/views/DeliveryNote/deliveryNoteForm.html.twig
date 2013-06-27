@@ -19,7 +19,7 @@
     </script>
     <div id="inside_content">
         <div id="companyInfo">
-            <h4>{{ 'Order'|trans }} - {% if common.deliveryNote.number %}{{ common.deliveryNote.number }}{% else %}{{ 'Not assigned'|trans }}{% endif %}</h4>
+            <h4>{{ 'Order'|trans }} - {% if common.deliveryNote and common.deliveryNote.number %}{{ common.deliveryNote.number }}{% else %}{{ 'Not assigned'|trans }}{% endif %}</h4>
             {% if common.quote  %}<h6>{{ 'Quote'|trans }}: <a href="{{ path('quote_view', {'id': common.id }) }}">{{ common.quote.number }}</a></h6>{% endif %}
             {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{{ common.invoice.number }}</a>{% else %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{{ 'Not asigned'|trans }}</a>{% endif %}</h6>{% endif %}
             <div class="inputDiv control-group">
@@ -40,7 +40,7 @@
                 {% endif %}
             </div>
         </div>
-        <form id="invoiceForm" action="{% if common.id %}{{ path('delivery_note_edit', {'id': common.id }) }}{% else %}{{ path('delivery_note_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+        <form id="invoiceForm" action="{% if common.id %}{{ path('delivery_note_edit', {'id': common.id, 'new': new }) }}{% else %}{{ path('delivery_note_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
 
             <h3>{{ 'Customer'|trans }}</h3>

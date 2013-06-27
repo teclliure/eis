@@ -23,7 +23,7 @@
                 {% if common.deliveryNote.status == 0  %}
                 <a href="{{ path('delivery_note_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
                 <a href="{{ path('delivery_note_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
-                {% elseif (common.deliveryNote.status == 1) or (common.deliveryNote.status == 2) %}
+                {% elseif (common.deliveryNote.status == 1) %}
                 <a href="{{ path('delivery_note_open', {'id': common.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-small"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
                 {% endif %}
 
