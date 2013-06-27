@@ -1,0 +1,48 @@
+<table  class="table table-bordered table-hover" style="margin: 25px; width: 97%;">
+    <thead>
+    <tr>
+        <th {% if customers.isSorted('c.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(customers, 'Name'|trans, 'c.name', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if customers.isSorted('c.identification') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(customers, 'Identification'|trans, 'c.identification', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if customers.isSorted('c.paid') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(customers, 'Paid'|trans, 'c.paid', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if customers.isSorted('c.due') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(customers, 'Due'|trans, 'c.due', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th {% if customers.isSorted('c.active') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(customers, 'Active'|trans, 'c.active', {}, {}, 'TeclliureInvoiceBundle:Common:sortable_link.html.twig') }}</th>
+        <th class="clear"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for customer in customers %}
+        <tr>
+            <td>
+                {{ customer.name }}
+            </td>
+            <td>{{ customer.identification }}</td>
+            <td>{{ 'Pending'|trans }}</td>
+            <td>{{ 'Pending'|trans }}</td>
+            <td>
+                {% if customer.active %}
+                    <i class="icon-ok-sign"></i>
+                {% else %}
+                    <i class="icon-remove-sign"></i>
+                {% endif %}
+            </td>
+
+            <td>
+                <a href="{{ path('customer_edit', {'id': customer.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                {% if customer.active %}
+                    <a href="{{ path('customer_disable', {'id': customer.id }) }}" alt="{{ 'Disable'|trans }}" class="btn btn-small btn-warning"><i class="icon-remove-sign"></i> {{ 'Disable'|trans }}</a>
+                {% else %}
+                    <a href="{{ path('customer_enable', {'id': customer.id }) }}" alt="{{ 'Enable'|trans }}" class="btn btn-small btn-info"><i class="icon-ok-sign"></i> {{ 'Enable'|trans }}</a>
+                {% endif %}
+                <a href="{{ path('customer_delete', {'id': customer.id }) }}" alt="{{ 'Delete'|trans }}" class="btn btn-small btn-danger"><i class="icon-trash"></i> {{ 'Delete'|trans }}</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="8">
+            {{ knp_pagination_render(customers, 'TeclliureInvoiceBundle:Common:simple_pagination.html.twig') }}
+        </td>
+    </tr>
+    </tfoot>
+</table>

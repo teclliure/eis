@@ -1,3 +1,23 @@
-teclliure_customer_homepage:
-    pattern:  /hello/{name}
+customer_list:
+    pattern:  /customer/list
     defaults: { _controller: TeclliureCustomerBundle:Default:index }
+
+customer_add:
+    pattern:  /customer/add
+    defaults: { _controller: TeclliureCustomerBundle:Default:addEdit }
+
+customer_edit:
+    pattern:  /customer/edit/{id}
+    defaults: { _controller: TeclliureCustomerBundle:Default:addEdit }
+
+customer_delete:
+    pattern:  /customer/delete/{id}
+    defaults: { _controller: TeclliureCustomerBundle:Default:delete }
+
+customer_disable:
+    pattern:  /customer/disable/{id}
+    defaults: { _controller: TeclliureCustomerBundle:Default:disable }
+
+customer_enable:
+    pattern:  /customer/enable/{id}
+    defaults: { _controller: TeclliureCustomerBundle:Default:enable }

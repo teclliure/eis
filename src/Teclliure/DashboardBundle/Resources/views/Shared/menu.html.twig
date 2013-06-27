@@ -36,8 +36,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{ 'Customers'|trans }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li class="divider"></li>
-                            <li><a href="">{{ 'Create customer'|trans }}</a></li>
-                            <li><a href="">{{ 'View customers'|trans }}</a></li>
+                            <li><a href="{{ path('customer_add') }}">{{ 'Create customer'|trans }}</a></li>
+                            <li><a href="{{ path('customer_list') }}">{{ 'View customers'|trans }}</a></li>
                             <li class="divider"></li>
                         </ul>
                     </li>

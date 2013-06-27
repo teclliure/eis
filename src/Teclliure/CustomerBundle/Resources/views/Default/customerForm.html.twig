@@ -1,0 +1,174 @@
+{% extends '::container.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/teclliureinvoice/js/lines.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/inputPlaceholderUF.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/jquery-ui-1.10.3.custom.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/autocompleteCustomer.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/datePicker.js') }}" type="text/javascript"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/teclliureinvoice/css/smoothness/jquery-ui-1.10.3.custom.min.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript">
+        baseObject = 'invoice';
+    </script>
+    <div id="inside_content">
+        <div id="companyInfo">
+            <h4>{{ 'Invoice'|trans }} - {% if common.invoice.number %}{{ common.invoice.number }}{% else %}{{ 'Not assigned'|trans }}{% endif %}</h4>
+            {% if common.quote  %}<h6>{{ 'Quote'|trans }}: <a href="{{ path('quote_view', {'id': common.id }) }}">{{ common.quote.number }}</a></h6>{% endif %}
+            {% if common.deliveryNote  %}<h6>{{ 'Order'|trans }}: <a href="{{ path('delivery_note_view', {'id': common.id }) }}">{{ common.deliveryNote.number }}</a></h6>{% endif %}
+            <div class="inputDiv control-group">
+                {{ config.company_name }} - {{ config.company_identification }}
+            </div>
+            <br />
+            <div class="inputDiv control-group">
+                {{ config.company_address|nl2br }}
+            </div>
+            <br />
+            <div class="inputDiv control-group">
+                {% if config.company_web %}
+                    <a href="{{ config.company_web }}">{{ config.company_web }}</a>
+                {% endif %}
+                {% if config.company_mail %}
+                    <br />
+                    <a href="mailto: {{ config.company_mail }}">{{ config.company_mail }}</a>
+                {% endif %}
+            </div>
+        </div>
+        <form id="invoiceForm" action="{% if common.id %}{{ path('invoice_edit', {'id': common.id, 'new': new }) }}{% else %}{{ path('invoice_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+            {{ form_errors(form) }}
+
+            <h3>{{ 'Customer'|trans }}</h3>
+            <div class="inputDiv control-group {% if form.customer_identification.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_widget(form.customer_identification, {'attr': { 'maxlength': 30, 'class': 'input-medium uf-placeholder', 'placeholder': 'Identification'|trans} }) }}
+            {{ form_errors(form.customer_identification) }}
+            <div class="ajax_loader input_inside_ajax_load"> </div>
+            </div>
+            <div class="inputDiv control-group {% if form.customer_name.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_name) }}
+            {{ form_widget(form.customer_name, { 'attr': {'maxlength': 200, 'class': 'input-xlarge uf-placeholder', 'placeholder': 'Name'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_zip_code.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_zip_code) }}
+            {{ form_widget(form.customer_zip_code, { 'attr': {'maxlength': 6, 'class': 'input-mini uf-placeholder', 'placeholder': 'Zip code'|trans} }) }}
+            </div>
+            <br />
+            <div class="inputDiv control-group {% if form.customer_address.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_address) }}
+            {{ form_widget(form.customer_address, { 'attr': {'class': 'input-xxlarge uf-placeholder', 'placeholder': 'Invoicing address'|trans} }) }}
+            </div>
+            <br />
+            <div class="inputDiv control-group {% if form.customer_city.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_city) }}
+            {{ form_widget(form.customer_city, { 'attr': {'maxlength': 6, 'class': 'uf-placeholder', 'placeholder': 'City'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_state.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_state) }}
+            {{ form_widget(form.customer_state, { 'attr': {'maxlength': 6, 'class': 'input-small uf-placeholder', 'placeholder': 'State'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.customer_country.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.customer_country) }}
+            {{ form_widget(form.customer_country, { 'attr': {'maxlength': 6, 'class': 'input-large uf-placeholder', 'placeholder': 'Country'|trans} }) }}
+            </div>
+
+            <h3>{{ 'Payment'|trans }}</h3>
+            <div class="inputDivInline control-group {% if form.invoice.issue_date.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.invoice.issue_date) }}
+            {{ 'Issue date'|trans }}: {{ form_widget(form.invoice.issue_date, { 'attr': {'class': 'input-small date_input'} } ) }}
+            </div>
+            &nbsp;&nbsp;
+            <div class="inputDivInline control-group {% if form.invoice.due_date.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.invoice.due_date) }}
+            {{ 'Due date'|trans }}: {{ form_widget(form.invoice.due_date, { 'attr': {'class': 'input-small date_input'} }) }}
+            </div>
+            &nbsp;&nbsp;
+            <div class="inputDivInline control-group {% if form.invoice.serie.vars.errors|length > 0 %}error{% endif %}">
+            {{ form_errors(form.invoice.serie) }}
+            {{ 'Serie'|trans }}: {{ form_widget(form.invoice.serie, { 'attr': {'class': 'input-small'} }) }}
+            </div>
+            <br />
+            <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
+            <h3>{{ 'Description'|trans }}</h3>
+            {{ form_widget(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge', 'placeholder': 'Description'|trans} }) }}
+            </div>
+
+            <h3>{{ 'Invoice lines'|trans }}</h3>
+            <table id="commonLines" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Common:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
+                <thead>
+                    <tr class="lineHeader not_delete">
+                        <th class="lineDesc">{{ 'Description' }}</th>
+                        <th class="lineQty">{{ 'Quantity' }}</th>
+                        <th class="lineUC">{{ 'Unitary cost' }}</th>
+                        <th class="lineTaxes">{{ 'Taxes' }}</th>
+                        <th class="lineDiscount">{{ 'Discount' }}</th>
+                        <th class="lineDiscount">{{ 'Price' }}</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_lines">
+                {# iterate over each existing tag and render its only field: name #}
+                {% for key,line in form.common_lines %}
+                    {{ include('TeclliureInvoiceBundle:Common:lineForm.html.twig', {'lineForm': line, 'new': false}) }}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4" rowspan="2">
+                            <a href="#" class="btn btn-primary " id="add_line_link"><i class="icon-plus-sign"></i> {{ 'Add a line'|trans }}</a>
+                        </td>
+                        <th class="border_total">{{ 'Base'|trans }}</th>
+                        <td class="border_total common_totals" id="total_base_amount">{{ common.baseAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <th class="border_total">{{ 'Discount'|trans }}</th>
+                        <td class="border_total common_totals" id="total_discount">{{ common.discountAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ 'Subtotal'|trans }}</th>
+                        <td class="border_total common_totals" id="total_subtotal">{{ common.netAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ 'Taxes'|trans }}</th>
+                        <td class="border_total common_totals" id="total_taxes">{{ common.taxAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ 'Total'|trans }}</th>
+                        <td class="border_total common_totals" id="total_total">{{ common.grossAmount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            {{ form_rest(form) }}
+
+            <div class="list_primary_buttons">
+                {% if (common.id) and (common.invoice) and (common.invoice.status == 0)  %}
+                    <a href="{{ path('invoice_delete', {'id': common.id}) }}" class="btn btn-danger"><i class="icon-remove-circle"></i> {{ 'Delete'|trans }}</a>
+                    &nbsp;
+                    &nbsp;
+                {% endif %}
+
+                {% if (common.id) %}
+                    <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small btn-success"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                {% endif %}
+                {% if (not common.invoice) or (common.invoice.status == 0)  %}
+                    <button type="submit" name="action" value="save_and_close" class="btn btn-info"><i class="icon-folder-close"></i> {{ 'Save and close'|trans }}</button>
+                    <button type="submit" name="action" value="save" class="btn"><i class="icon-file"></i> {{ 'Save'|trans }}</button>
+                {% endif %}
+                {% if (common.invoice) and (common.invoice.status != 0)  %}
+                    <a href="{{ path('invoice_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+                {% endif %}
+            </div>
+            <div style="clear:both;"></div>
+        </form>
+    </div>
+{% endblock %}
