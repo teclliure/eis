@@ -16,8 +16,8 @@ customer_delete:
 
 customer_disable:
     pattern:  /customer/disable/{id}
-    defaults: { _controller: TeclliureCustomerBundle:Default:disable }
+    defaults: { _controller: TeclliureCustomerBundle:Default:disableCustomer }
 
 customer_enable:
     pattern:  /customer/enable/{id}
-    defaults: { _controller: TeclliureCustomerBundle:Default:enable }
+    defaults: { _controller: TeclliureCustomerBundle:Default:enableCustomer }

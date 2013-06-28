@@ -158,7 +158,8 @@ class CustomerService implements PaginatorAwareInterface {
             }
 
             foreach ($filters as $key=>$filter) {
-                if ($filter) {
+                // print $key.'-'.$filter.'__';
+                if ($filter != '') {
                     $fieldName = preg_replace('/^c_/', 'c.', $key);
                     $value = $filter;
                     if (is_array($filter)) {
@@ -201,7 +202,7 @@ class CustomerService implements PaginatorAwareInterface {
      */
     public function getCustomer($id) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-            ->select('c, i')
+            ->select('c')
             ->from('TeclliureCustomerBundle:Customer','c')
             ->where('c.id = :id')
             ->setParameter('id', $id);
@@ -220,6 +221,53 @@ class CustomerService implements PaginatorAwareInterface {
         $customer = new Customer();
         $this->putDefaults($customer);
         return $customer;
+    }
+
+    /**
+     * Disable customer
+     *
+     * @var Customer $customer
+     *
+     * @api 0.1
+     */
+    public function disableCustomer(Customer $customer) {
+        if ($customer->getActive() != 1) {
+            throw new \Exception('Only active customers could be disabled');
+        }
+        $customer->setActive(0);
+        $em = $this->getEntityManager();
+        $em->persist($customer);
+        $em->flush();
+    }
+
+    /**
+     * Enable customer
+     *
+     * @var Customer $customer
+     *
+     * @api 0.1
+     */
+    public function enableCustomer(Customer $customer) {
+        if ($customer->getActive() != 0) {
+            throw new \Exception('Only disabled customers could be enabled');
+        }
+        $customer->setActive(1);
+        $em = $this->getEntityManager();
+        $em->persist($customer);
+        $em->flush();
+    }
+
+    /**
+     * Delete customer
+     *
+     * @var Customer $customer
+     *
+     * @api 0.1
+     */
+    public function deleteCustomer(Customer $customer) {
+        $em = $this->getEntityManager();
+        $em->remove($customer);
+        $em->flush();
     }
 
     public function putDefaults(Customer $customer) {

@@ -26,6 +26,20 @@ function notify(notify_type, msg) {
     }
 }
 
-$("body").on('closed', 'div .notification', function(event) {
-    notifications--;
+$(function() {
+    $("body").on('closed', 'div .notification', function(event) {
+        notifications--;
+    });
+
+    $("body").on('click', 'a.confirmDialog', function(event) {
+        event.preventDefault();
+        var location = $(this).attr('href');
+        bootbox.confirm($(this).attr('data-confirmMsg'), function(result) {
+            if (result == true) {
+                window.location.replace(location);
+                event.preventDefault();
+            }
+        });
+
+    });
 });

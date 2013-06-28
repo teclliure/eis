@@ -33,7 +33,7 @@
                 {% else %}
                     <a href="{{ path('customer_enable', {'id': customer.id }) }}" alt="{{ 'Enable'|trans }}" class="btn btn-small btn-info"><i class="icon-ok-sign"></i> {{ 'Enable'|trans }}</a>
                 {% endif %}
-                <a href="{{ path('customer_delete', {'id': customer.id }) }}" alt="{{ 'Delete'|trans }}" class="btn btn-small btn-danger"><i class="icon-trash"></i> {{ 'Delete'|trans }}</a>
+                <a href="{{ path('customer_delete', {'id': customer.id }) }}" alt="{{ 'Delete'|trans }}" class="btn btn-small btn-danger confirmDialog" data-confirmMsg="{{ 'Are you sure do you want delete customer ?' }}"><i class="icon-trash"></i> {{ 'Delete'|trans }}</a>
             </td>
         </tr>
     {% endfor %}

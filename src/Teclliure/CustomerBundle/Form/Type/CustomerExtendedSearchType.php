@@ -38,8 +38,8 @@ class CustomerExtendedSearchType extends AbstractType
             ->add('c_active','choice',array(
                 'choices'   => array(
                     ''     => 'Yes and no',
-                    '0'     => 'Yes',
-                    '1'     => 'No'
+                    '1'     => 'Yes',
+                    '0'     => 'No'
                 ),
                 'label'     => 'Active',
                 'multiple'  => false,
