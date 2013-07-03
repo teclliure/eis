@@ -127,6 +127,25 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
     }
 
     /**
+     * Get invoice only
+     *
+     * @param integer $invoiceId
+     *
+     * @return mixed Invoice or null
+     *
+     * @api 0.1
+     */
+    public function getInvoiceById($invoiceId) {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('i')
+            ->from('TeclliureInvoiceBundle:Invoice','i')
+            ->where('i.id = :invoiceId')
+            ->setParameter('invoiceId', $invoiceId);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * Create invoice
      *
      * @return Common
@@ -202,6 +221,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             $common->getInvoice()->setNetAmount($common->getNetAmount());
             $common->getInvoice()->setTaxAmount($common->getTaxAmount());
             $common->getInvoice()->setGrossAmount($common->getGrossAmount());
+            $common->getInvoice()->setDueAmount($common->getGrossAmount()-$common->getInvoice()->getPaidAmount());
         }
         elseif (!$common->getInvoice()) {
             throw new Exception('Common is not an invoice');

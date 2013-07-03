@@ -2,6 +2,7 @@ parameters:
     teclliure_invoice_service.class: Teclliure\InvoiceBundle\Service\InvoiceService
     teclliure_quote_service.class: Teclliure\InvoiceBundle\Service\QuoteService
     teclliure_delivery_note_service.class: Teclliure\InvoiceBundle\Service\DeliveryNoteService
+    teclliure_payment_service.class: Teclliure\InvoiceBundle\Service\PaymentService
 
 services:
   invoice_service:
@@ -28,6 +29,11 @@ services:
         tags:
           - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
+  payment_service:
+        class: "%teclliure_payment_service.class%"
+        arguments:
+          em: "@doctrine.orm.entity_manager"
+          config: "@craue_config"
 
   teclliure.form.type_extension.collection:
       class: Teclliure\InvoiceBundle\Form\Extension\CollectionTypeExtension

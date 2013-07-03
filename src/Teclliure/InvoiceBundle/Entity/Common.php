@@ -115,6 +115,7 @@ class Common {
      */
     protected $common_lines;
 
+
     /**
      * Constructor
      */
@@ -466,7 +467,7 @@ class Common {
         foreach ($lines as $line) {
             $amount += $line->getBaseAmount();
         }
-        return $amount;
+        return round($amount,2);
     }
 
     public function getDiscountAmount()
@@ -476,7 +477,7 @@ class Common {
         foreach ($lines as $line) {
             $amount += $line->getDiscountAmount();
         }
-        return $amount;
+        return round($amount,2);
     }
 
     public function getNetAmount()
@@ -486,7 +487,7 @@ class Common {
         foreach ($lines as $line) {
             $amount += $line->getNetAmount();
         }
-        return $amount;
+        return round($amount,2);
     }
 
     public function getTaxAmount()
@@ -496,7 +497,7 @@ class Common {
         foreach ($lines as $line) {
             $amount += $line->getTaxAmount();
         }
-        return $amount;
+        return round($amount,2);
     }
 
     public function getGrossAmount()
@@ -506,6 +507,6 @@ class Common {
         foreach ($lines as $line) {
             $amount += $line->getTotalAmount();
         }
-        return $amount;
+        return round($amount,2);
     }
 }

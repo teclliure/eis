@@ -114,6 +114,13 @@ delivery_note_invoice:
     pattern:  /delivery_note/invoice/{id}
     defaults: { _controller: TeclliureInvoiceBundle:DeliveryNote:invoiceDeliveryNote }
 
+payment_add:
+    pattern:  /payment/add/{invoice_id}
+    defaults: { _controller: TeclliureInvoiceBundle:Payment:add }
+
+payment_delete:
+    pattern:  /payment/delete/{payment_id}
+    defaults: { _controller: TeclliureInvoiceBundle:Payment:delete }
 
 search_customer:
     pattern: /searchCustomer

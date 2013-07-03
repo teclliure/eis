@@ -88,7 +88,7 @@ class Customer implements InvoiceCustomerInterface {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
+     * @Assert\Length(min = 2, max = 200)
      *
      */
     private $city;
@@ -96,7 +96,7 @@ class Customer implements InvoiceCustomerInterface {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
+     * @Assert\Length(min = 3, max = 200)
      *
      */
     private $state;
@@ -104,7 +104,7 @@ class Customer implements InvoiceCustomerInterface {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
+     * @Assert\Length(min = 2, max = 200)
      * @Assert\Country
      *
      */
@@ -121,7 +121,8 @@ class Customer implements InvoiceCustomerInterface {
     /**
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Assert\Length(min = 4, max = 200)
+     * @Assert\GreaterThanOrEqual(value = 1)
+     * @Assert\LessThanOrEqual(value = 31)
      *
      */
     private $payment_day;

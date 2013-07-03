@@ -135,55 +135,19 @@ class Invoice {
      */
     private $gross_amount;
 
-    public function calculateBaseAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getBaseAmount();
-        }
-        return $amount;
-    }
+    /**
+     * @var float $due_amount
+     *
+     * @ORM\Column(type="float")
+     *
+     */
+    private $due_amount;
 
-    public function calculateDiscountAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getDiscountAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateNetAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getNetAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateTaxAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getTaxAmount();
-        }
-        return $amount;
-    }
-
-    public function calculateGrossAmount(Common $common)
-    {
-        $amount = 0;
-        $lines = $common->getCommonLines();
-        foreach ($lines as $line) {
-            $amount += $line->getTotalAmount();
-        }
-        return $amount;
-    }
+    /**
+     * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Payment", mappedBy="invoice", cascade={"persist", "remove"})
+     * @var Invoice
+     */
+    protected $payments;
 
     /**
      * Set status
@@ -492,5 +456,76 @@ class Invoice {
         elseif ($this->getStatus() == 3) {
             return 'Paid';
         }
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->payments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add payments
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Payment $payments
+     * @return Invoice
+     */
+    public function addPayment(\Teclliure\InvoiceBundle\Entity\Payment $payments)
+    {
+        $this->payments[] = $payments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove payments
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Payment $payments
+     */
+    public function removePayment(\Teclliure\InvoiceBundle\Entity\Payment $payments)
+    {
+        $this->payments->removeElement($payments);
+    }
+
+    /**
+     * Get payments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    public function getPaidAmount() {
+        $paid = 0;
+        foreach ($this->getPayments() as $payment) {
+            $paid += $payment->getPaymentAmount();
+        }
+        return $paid;
+    }
+
+    /**
+     * Set due_amount
+     *
+     * @param float $dueAmount
+     * @return Invoice
+     */
+    public function setDueAmount($dueAmount)
+    {
+        $this->due_amount = $dueAmount;
+    
+        return $this;
+    }
+
+    /**
+     * Get due_amount
+     *
+     * @return float 
+     */
+    public function getDueAmount()
+    {
+        return $this->due_amount;
     }
 }

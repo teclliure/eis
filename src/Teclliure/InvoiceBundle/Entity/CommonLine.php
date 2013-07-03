@@ -287,4 +287,27 @@ class CommonLine {
     {
         return $this->taxes;
     }
+
+    /**
+     * Add taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     * @return CommonLine
+     */
+    public function addTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes[] = $taxes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     */
+    public function removeTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes->removeElement($taxes);
+    }
 }

@@ -136,6 +136,20 @@ class Invoice {
     private $gross_amount;
 
     /**
+     * @var float $due_amount
+     *
+     * @ORM\Column(type="float")
+     *
+     */
+    private $due_amount;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Payment", mappedBy="invoice", cascade={"persist", "remove"})
+     * @var Invoice
+     */
+    protected $payments;
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -442,5 +456,76 @@ class Invoice {
         elseif ($this->getStatus() == 3) {
             return 'Paid';
         }
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->payments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add payments
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Payment $payments
+     * @return Invoice
+     */
+    public function addPayment(\Teclliure\InvoiceBundle\Entity\Payment $payments)
+    {
+        $this->payments[] = $payments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove payments
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Payment $payments
+     */
+    public function removePayment(\Teclliure\InvoiceBundle\Entity\Payment $payments)
+    {
+        $this->payments->removeElement($payments);
+    }
+
+    /**
+     * Get payments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    public function getPaidAmount() {
+        $paid = 0;
+        foreach ($this->getPayments() as $payment) {
+            $paid += $payment->getAmount();
+        }
+        return $paid;
+    }
+
+    /**
+     * Set due_amount
+     *
+     * @param float $dueAmount
+     * @return Invoice
+     */
+    public function setDueAmount($dueAmount)
+    {
+        $this->due_amount = $dueAmount;
+    
+        return $this;
+    }
+
+    /**
+     * Get due_amount
+     *
+     * @return float 
+     */
+    public function getDueAmount()
+    {
+        return $this->due_amount;
     }
 }

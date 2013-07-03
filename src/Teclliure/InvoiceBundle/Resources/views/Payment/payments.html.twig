@@ -1,0 +1,15 @@
+    {% if invoice.status == 1 or invoice.status == 2 %}
+    <button data-toggle="modal" data-target="#modalPayments{{ invoice.id }}" alt="{{ 'Pay'|trans }}" class="btn btn-small btn-success"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</button>
+    {% endif %}
+    <div class="modal hide fade modalPayments" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="modalPayments{{ invoice.id }}">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">{{ 'Invoice'|trans }} {{ invoice.number }} {{ 'payments'|trans }}</h3>
+        </div>
+        <div class="modal-body">
+            {{ include('TeclliureInvoiceBundle:Payment:modalBody.html.twig') }}
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{{ 'Close'|trans }}</button>
+        </div>
+    </div>

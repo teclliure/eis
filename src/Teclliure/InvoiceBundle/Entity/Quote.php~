@@ -19,9 +19,9 @@ class Quote {
     private $id;
 
     /**
-     * @var integer $number
+     * @var string $number
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=25, unique=true, nullable=true )
      *
      */
     private $number;
@@ -30,8 +30,8 @@ class Quote {
      *
      * Possible status are
      *  - DRAFT         - 0
-     *  - REJECTED      - 1
-     *  - PENDING       - 2
+     *  - PENDING       - 1
+     *  - REJECTED      - 2
      *  - APPROVED      - 3
      *
      * @var integer $number
@@ -39,7 +39,7 @@ class Quote {
      * @ORM\Column(type="smallint")
      *
      */
-    private $status;
+    private $status = 0;
 
 
     /**
@@ -63,7 +63,7 @@ class Quote {
     /**
      * Set number
      *
-     * @param integer $number
+     * @param string $number
      * @return Quote
      */
     public function setNumber($number)
@@ -76,7 +76,7 @@ class Quote {
     /**
      * Get number
      *
-     * @return integer 
+     * @return string
      */
     public function getNumber()
     {
@@ -183,5 +183,29 @@ class Quote {
     public function getId()
     {
         return $this->id;
+    }
+
+
+    /**
+     *
+     * Get status name
+     *
+     *
+     * @return string
+     *
+     */
+    public function getStatusName() {
+        if ($this->getStatus() == 0) {
+            return 'Draft';
+        }
+        elseif ($this->getStatus() == 1) {
+            return 'Pending';
+        }
+        elseif ($this->getStatus() == 2) {
+            return 'Rejected';
+        }
+        elseif ($this->getStatus() == 3) {
+            return 'Approved';
+        }
     }
 }

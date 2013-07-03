@@ -68,7 +68,7 @@ class CommonLine {
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", inversedBy="lines", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Tax", inversedBy="lines", cascade={"persist"})
      */
     private $taxes;
 
@@ -286,5 +286,28 @@ class CommonLine {
     public function getTaxes()
     {
         return $this->taxes;
+    }
+
+    /**
+     * Add taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     * @return CommonLine
+     */
+    public function addTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes[] = $taxes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove taxes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Tax $taxes
+     */
+    public function removeTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
+    {
+        $this->taxes->removeElement($taxes);
     }
 }

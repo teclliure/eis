@@ -1,5 +1,4 @@
 {% extends '::container.html.twig' %}
-
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/teclliureinvoice/js/jquery-ui-1.10.3.custom.min.js') }}" type="text/javascript"></script>
@@ -7,6 +6,8 @@
     <script src="{{ asset('bundles/teclliureinvoice/js/datePicker.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/teclliureinvoice/js/autocompleteCustomerName.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/teclliureinvoice/js/inputPlaceholderUF.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/datePicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/payment.js') }}" type="text/javascript"></script>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}

@@ -224,6 +224,39 @@ body {
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#ffe5e5e5', GradientType=0);
 }
 
+ul.payments li {
+    list-style-type: none;
+    display: table-row;
+}
+
+ul.payments li ul li {
+    float: left;
+    margin: 0em 1em 0.5em 0em;
+}
+
+
+.payments li ul.payment {
+    border-bottom: 1px solid #e5e5e5;
+    height: 20px;
+    clear: both;
+}
+
+.paymentDate {
+    width: 100px;
+}
+
+.paymentAmount {
+    width: 150px;
+}
+
+.paymentNotes {
+    width: 300px;
+}
+
+.modalPayments {
+    width: 800px; /* SET THE WIDTH OF THE MODAL */
+    left: 40%; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+}
 /* End list css */
 
 /* Start invoice css */

@@ -20,19 +20,19 @@
             <td>{{ common.customerName }}</td>
             <td>{{ common.invoice.issueDate|date('d/m/Y') }}</td>
             <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
-            <td>{{ 'Pending'|trans }}</td>
+            <td>{{ common.invoice.dueAmount|number_format(2, '.', ',') }} €</td>
             <td>{{ common.invoice.statusName|trans }}</td>
             <td>{{ common.invoice.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
-                {% if common.invoice.status == 1  %}
-                <a href="#" alt="{{ 'Pay'|trans }}" class="btn btn-small"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</a>
-                {%  endif  %}
                 {% if common.invoice.status == 0  %}
                 <a href="{{ path('invoice_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
                 {% else %}
                 <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View'|trans }}" class="btn btn-small"><i class="icon-zoom-in"></i> {{ 'View'|trans }}</a>
                 <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
                 {% endif %}
+                <div class="inputDivInline payments" id="payments{{ common.invoice.id }}">
+                    {{ render(controller('TeclliureInvoiceBundle:Payment:payments', { 'common': common })) }}
+                </div>
             </td>
         </tr>
     {% endfor %}

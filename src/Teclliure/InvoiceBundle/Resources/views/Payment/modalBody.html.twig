@@ -1,0 +1,57 @@
+            {% for flashMessage in app.session.flashbag.get('info') %}
+                <div class="alert alert-info fade in">
+                    {{ flashMessage }}
+                    <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success fade in" style="margin-bottom: 20px;">
+                    {{ flashMessage }}
+                    <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+                </div>
+
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-error fade in" style="margin-bottom: 20px;">
+                    {{ flashMessage }}
+                    <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+                </div>
+            {% endfor %}
+
+    <ul class="payments" id="payments{{ invoice.id }}">
+    {% for payment in payments %}
+        <li>
+            <ul class="payment" id="payment{{ payment.id }}">
+                <li class="paymentDate">{{ payment.paymentDate|date('d/m/Y') }}</li>
+                <li class="paymentAmount">{{ payment.amount|number_format(2, '.', ',') }}</li>
+                <li class="paymentNotes">{{ payment.notes }}</li>
+                <li class="paymentActions"><a href="{{ path('payment_delete', {'payment_id': payment.id}) }}" class="deletePayment" id="deletePayment{{ invoice.id }}"><i class="icon-trash"></i></a></li>
+            </ul>
+        </li>
+    {% endfor %}
+    <li>
+        {{ form_start(paymentForm, {'action': path('payment_add', {'invoice_id': invoice.id}), 'method': 'POST', 'attr': {'class': 'paymentForm', 'id': 'paymentForm' ~ invoice.id }}) }}
+        {{ form_errors(paymentForm) }}
+        <br />
+        <ul id="paymentNew">
+            <li class="paymentDate">
+                <div class="inputDivInline control-group">
+                    {{ form_widget(paymentForm.payment_date, {'attr': {'class': 'input-small date_input  uf-placeholder', 'placeholder': 'Payment date'|trans} }) }}
+                </div>
+            </li>
+            <li class="paymentAmount">
+                <div class="inputDivInline control-group">
+                    {{ form_widget(paymentForm.amount, {'attr': { 'class': 'input-small uf-placeholder', 'placeholder': 'Amount'|trans} }) }}
+                </div>
+            </li>
+            <li class="paymentNotes">
+                <div class="inputDivInline control-group">
+                    {{ form_widget(paymentForm.notes, {'attr': { 'class': 'input-xlarge  uf-placeholder', 'placeholder': 'Notes'|trans} }) }}
+                </div>
+            </li>
+            <li class="paymentActions"><button type="submit" class="btn btn-small btn-success"><i class="icon-plus-sign"></i> {{ 'Add'|trans }}</button></li>
+        </ul>
+        {{ form_end(paymentForm) }}
+    </li>
+    <li><h4>{{ 'Pay pending' }}: {{ invoice.dueAmount|number_format(2, '.', ',') }}</h4></li>
+</ul>
