@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="es" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="c1a4412c87fdc53070b2a0d8cd1cf3cd" resname="New tax">
+        <source>New tax</source>
+        <target>__New tax</target>
+      </trans-unit>
+      <trans-unit id="bf1a38e75f344fc8205088100205ce1b" resname="Tax list">
+        <source>Tax list</source>
+        <target>__Tax list</target>
+      </trans-unit>
+      <trans-unit id="49ee3087348e8d44e1feda1917443987" resname="Name">
+        <source>Name</source>
+        <target>__Name</target>
+      </trans-unit>
+      <trans-unit id="689202409e48743b914713f96d93947c" resname="Value">
+        <source>Value</source>
+        <target>__Value</target>
+      </trans-unit>
+      <trans-unit id="b4b18877fbe2fcd2ea1bb2b068a47bf0" resname="Is active ?">
+        <source>Is active ?</source>
+        <target>__Is active ?</target>
+      </trans-unit>
+      <trans-unit id="f1ba4df4148c03109bfb7915f8627196" resname="Is default ?">
+        <source>Is default ?</source>
+        <target>__Is default ?</target>
+      </trans-unit>
+      <trans-unit id="06df33001c1d7187fdd81ea1f5b277aa" resname="Actions">
+        <source>Actions</source>
+        <target>__Actions</target>
+      </trans-unit>
+      <trans-unit id="bcfaccebf745acfd5e75351095a5394a" resname="Disable">
+        <source>Disable</source>
+        <target>__Disable</target>
+      </trans-unit>
+      <trans-unit id="2faec1f9f8cc7f8f40d521c4dd574f49" resname="Enable">
+        <source>Enable</source>
+        <target>__Enable</target>
+      </trans-unit>
+      <trans-unit id="f2a6c498fb90ee345d997f888fce3b18" resname="Delete">
+        <source>Delete</source>
+        <target>__Delete</target>
+      </trans-unit>
+      <trans-unit id="630f6dc397fe74e52d5189e2c80f282b" resname="Back to list">
+        <source>Back to list</source>
+        <target>__Back to list</target>
+      </trans-unit>
+      <trans-unit id="125e8337d66fd3e1c831307140665482" resname="Tax creation">
+        <source>Tax creation</source>
+        <target>__Tax creation</target>
+      </trans-unit>
+      <trans-unit id="686e697538050e4664636337cc3b834f" resname="Create">
+        <source>Create</source>
+        <target>__Create</target>
+      </trans-unit>
+      <trans-unit id="b91140509f992aec2b07ffbb55808f66" resname="Tax edit">
+        <source>Tax edit</source>
+        <target>__Tax edit</target>
+      </trans-unit>
+      <trans-unit id="adf0e77bcd453a267511b55e10ed1789" resname="Ups, form error !">
+        <source>Ups, form error !</source>
+        <target>__Ups, form error !</target>
+      </trans-unit>
+      <trans-unit id="74b9d66621c84e3ce30b2239743e5d81" resname="Change a few things up and try submitting again.">
+        <source>Change a few things up and try submitting again.</source>
+        <target>__Change a few things up and try submitting again.</target>
+      </trans-unit>
+      <trans-unit id="7dce122004969d56ae2e0245cb754d35" resname="Edit">
+        <source>Edit</source>
+        <target>__Edit</target>
+      </trans-unit>
+      <trans-unit id="490aa6e856ccf208a054389e47ce0d06" resname="Id">
+        <source>Id</source>
+        <target>__Id</target>
+      </trans-unit>
+      <trans-unit id="8bf8854bebe108183caeb845c7676ae4" resname="of">
+        <source>of</source>
+        <target>__of</target>
+      </trans-unit>
+      <trans-unit id="691d502cfd0e0626cd3b058e5682ad1c" resname="items">
+        <source>items</source>
+        <target>__items</target>
+      </trans-unit>
+      <trans-unit id="193cfc9be3b995831c6af2fea6650e60" resname="Page">
+        <source>Page</source>
+        <target>__Page</target>
+      </trans-unit>
+      <trans-unit id="b5a7adde1af5c87d7fd797b6245c2a39" resname="Description">
+        <source>Description</source>
+        <target>__Description</target>
+      </trans-unit>
+      <trans-unit id="694e8d1f2ee056f98ee488bdc4982d73" resname="Quantity">
+        <source>Quantity</source>
+        <target>__Quantity</target>
+      </trans-unit>
+      <trans-unit id="72da9b5edfdd7c1f3e67b19cd9a98f06" resname="Unitary cost">
+        <source>Unitary cost</source>
+        <target>__Unitary cost</target>
+      </trans-unit>
+      <trans-unit id="99938b17c91170dfb0c2f3f8bc9f2a85" resname="Pay">
+        <source>Pay</source>
+        <target>__Pay</target>
+      </trans-unit>
+      <trans-unit id="466eadd40b3c10580e3ab4e8061161ce" resname="Invoice">
+        <source>Invoice</source>
+        <target>__Invoice</target>
+      </trans-unit>
+      <trans-unit id="84d5eaf713c96eecb3d2c4a83e64dc9a" resname="payments">
+        <source>payments</source>
+        <target>__payments</target>
+      </trans-unit>
+      <trans-unit id="d3d2e617335f08df83599665eef8a418" resname="Close">
+        <source>Close</source>
+        <target>__Close</target>
+      </trans-unit>
+      <trans-unit id="7133d45d85f629f4c8abe0e1b3d37942" resname="Payment date">
+        <source>Payment date</source>
+        <target>__Payment date</target>
+      </trans-unit>
+      <trans-unit id="b2f40690858b404ed10e62bdf422c704" resname="Amount">
+        <source>Amount</source>
+        <target>__Amount</target>
+      </trans-unit>
+      <trans-unit id="f4c6f851b00d5518bf888815de279aba" resname="Notes">
+        <source>Notes</source>
+        <target>__Notes</target>
+      </trans-unit>
+      <trans-unit id="ec211f7c20af43e742bf2570c3cb84f9" resname="Add">
+        <source>Add</source>
+        <target>__Add</target>
+      </trans-unit>
+      <trans-unit id="18ddd427aa7da1a6ba8e30e723ffabf0" resname="New quote">
+        <source>New quote</source>
+        <target>__New quote</target>
+      </trans-unit>
+      <trans-unit id="13348442cc6a27032d2b4aa28b75a5d3" resname="Search">
+        <source>Search</source>
+        <target>__Search</target>
+      </trans-unit>
+      <trans-unit id="7cb8ad465602a887dd56378d51dd85a2" resname="Advanced search">
+        <source>Advanced search</source>
+        <target>__Advanced search</target>
+      </trans-unit>
+      <trans-unit id="526d688f37a86d3c3f27d0c5016eb71d" resname="Reset">
+        <source>Reset</source>
+        <target>__Reset</target>
+      </trans-unit>
+      <trans-unit id="d98a07f84921b24ee30f86fd8cd85c3c" resname="from">
+        <source>from</source>
+        <target>__from</target>
+      </trans-unit>
+      <trans-unit id="01b6e20344b68835c5ed1ddedf20d531" resname="to">
+        <source>to</source>
+        <target>__to</target>
+      </trans-unit>
+      <trans-unit id="ec53a8c4f07baed5d8825072c89799be" resname="Status">
+        <source>Status</source>
+        <target>__Status</target>
+      </trans-unit>
+      <trans-unit id="ce26601dac0dea138b7295f02b7620a7" resname="Customer">
+        <source>Customer</source>
+        <target>__Customer</target>
+      </trans-unit>
+      <trans-unit id="2ee5e0f9e0c404601833297af3a11ad2" resname="Basic search">
+        <source>Basic search</source>
+        <target>__Basic search</target>
+      </trans-unit>
+      <trans-unit id="c48e929b2b1eabba2ba036884433345e" resname="Quote">
+        <source>Quote</source>
+        <target>__Quote</target>
+      </trans-unit>
+      <trans-unit id="0eceeb45861f9585dd7a97a3e36f85c6" resname="Created">
+        <source>Created</source>
+        <target>__Created</target>
+      </trans-unit>
+      <trans-unit id="25f6c53b657d7bb628e78fc156cb3253" resname="Invoice lines">
+        <source>Invoice lines</source>
+        <target>__Invoice lines</target>
+      </trans-unit>
+      <trans-unit id="095a1b43effec73955e31e790438de49" resname="Base">
+        <source>Base</source>
+        <target>__Base</target>
+      </trans-unit>
+      <trans-unit id="104d9898c04874d0fbac36e125fa1369" resname="Discount">
+        <source>Discount</source>
+        <target>__Discount</target>
+      </trans-unit>
+      <trans-unit id="2194aaec8cc7086ab0e93f74547e5f53" resname="Subtotal">
+        <source>Subtotal</source>
+        <target>__Subtotal</target>
+      </trans-unit>
+      <trans-unit id="719fec04166d6fa75f89cd29ad61fa8c" resname="Taxes">
+        <source>Taxes</source>
+        <target>__Taxes</target>
+      </trans-unit>
+      <trans-unit id="96b0141273eabab320119c467cdcaf17" resname="Total">
+        <source>Total</source>
+        <target>__Total</target>
+      </trans-unit>
+      <trans-unit id="5dfe705a34c50b4b0cedd69e3388a184" resname="Open and edit">
+        <source>Open and edit</source>
+        <target>__Open and edit</target>
+      </trans-unit>
+      <trans-unit id="a6ecff447ea8327b43f5d16a924fb6be" resname="View invoice">
+        <source>View invoice</source>
+        <target>__View invoice</target>
+      </trans-unit>
+      <trans-unit id="cb8fe83175bea4ba19d633b1dc6ea656" resname="View order">
+        <source>View order</source>
+        <target>__View order</target>
+      </trans-unit>
+      <trans-unit id="13dba24862cf9128167a59100e154c8d" resname="Print">
+        <source>Print</source>
+        <target>__Print</target>
+      </trans-unit>
+      <trans-unit id="63d8c71daa2adfb569eb9c363eaa7a89" resname="Not assigned">
+        <source>Not assigned</source>
+        <target>__Not assigned</target>
+      </trans-unit>
+      <trans-unit id="656b1d8a8e11ddebdf7d1581abe9f083" resname="Not asigned">
+        <source>Not asigned</source>
+        <target>__Not asigned</target>
+      </trans-unit>
+      <trans-unit id="a240fa27925a635b08dc28c9e4f9216d" resname="Order">
+        <source>Order</source>
+        <target>__Order</target>
+      </trans-unit>
+      <trans-unit id="c789b445f7b7db9daf56d34293d887c8" resname="Identification">
+        <source>Identification</source>
+        <target>__Identification</target>
+      </trans-unit>
+      <trans-unit id="642d3ba5db8b57e006584b544e490ec7" resname="Zip code">
+        <source>Zip code</source>
+        <target>__Zip code</target>
+      </trans-unit>
+      <trans-unit id="95046585f5c2b88a904f4f843e44d996" resname="Invoicing address">
+        <source>Invoicing address</source>
+        <target>__Invoicing address</target>
+      </trans-unit>
+      <trans-unit id="57d056ed0984166336b7879c2af3657f" resname="City">
+        <source>City</source>
+        <target>__City</target>
+      </trans-unit>
+      <trans-unit id="46a2a41cc6e552044816a2d04634545d" resname="State">
+        <source>State</source>
+        <target>__State</target>
+      </trans-unit>
+      <trans-unit id="59716c97497eb9694541f7c3d37b1a4d" resname="Country">
+        <source>Country</source>
+        <target>__Country</target>
+      </trans-unit>
+      <trans-unit id="62af6825747db1437884e96508c9f20c" resname="Quote lines">
+        <source>Quote lines</source>
+        <target>__Quote lines</target>
+      </trans-unit>
+      <trans-unit id="255b59a893f1b96a2591dc6d4f27c446" resname="Add a line">
+        <source>Add a line</source>
+        <target>__Add a line</target>
+      </trans-unit>
+      <trans-unit id="778551900655782c5c7827332b08cf3f" resname="Save and close">
+        <source>Save and close</source>
+        <target>__Save and close</target>
+      </trans-unit>
+      <trans-unit id="c9cc8cce247e49bae79f15173ce97354" resname="Save">
+        <source>Save</source>
+        <target>__Save</target>
+      </trans-unit>
+      <trans-unit id="27effd24d77365437d9cc35d0029e83e" resname="Quote number">
+        <source>Quote number</source>
+        <target>__Quote number</target>
+      </trans-unit>
+      <trans-unit id="b8e97dd2df718b18ba0111008a745c57" resname="Customer name">
+        <source>Customer name</source>
+        <target>__Customer name</target>
+      </trans-unit>
+      <trans-unit id="b3b60b7a5e7f9977461d42a94bf2c761" resname="Created date">
+        <source>Created date</source>
+        <target>__Created date</target>
+      </trans-unit>
+      <trans-unit id="7ea3365d58866ee726d33851a0e67e9d" resname="(Re)Open">
+        <source>(Re)Open</source>
+        <target>__(Re)Open</target>
+      </trans-unit>
+      <trans-unit id="740631b689a80b615d28a95cc6442f55" resname="Make order">
+        <source>Make order</source>
+        <target>__Make order</target>
+      </trans-unit>
+      <trans-unit id="9ba2d443a5ac63771ab8f69820c981bd" resname="Make invoice">
+        <source>Make invoice</source>
+        <target>__Make invoice</target>
+      </trans-unit>
+      <trans-unit id="d60769c87e18b9ee0560e72963d31946" resname="Mark as denied">
+        <source>Mark as denied</source>
+        <target>__Mark as denied</target>
+      </trans-unit>
+      <trans-unit id="4351cfebe4b61d8aa5efa1d020710005" resname="View">
+        <source>View</source>
+        <target>__View</target>
+      </trans-unit>
+      <trans-unit id="75104a4c1ebabb70a6ad5567ccc06a04" resname="View delivery note">
+        <source>View delivery note</source>
+        <target>__View delivery note</target>
+      </trans-unit>
+      <trans-unit id="ca4f8115d7a0dcdaaefbb3fc5731f5de" resname="Order view">
+        <source>Order view</source>
+        <target>__Order view</target>
+      </trans-unit>
+      <trans-unit id="ac3f341ad431c96676ddf716f6fef67a" resname="Invoice view">
+        <source>Invoice view</source>
+        <target>__Invoice view</target>
+      </trans-unit>
+      <trans-unit id="8720809f82f32663a7450612c6a9cff9" resname="New invoice">
+        <source>New invoice</source>
+        <target>__New invoice</target>
+      </trans-unit>
+      <trans-unit id="cd4b9482eadd1fea35dbf01c9a05b093" resname="Serie">
+        <source>Serie</source>
+        <target>__Serie</target>
+      </trans-unit>
+      <trans-unit id="c453a4b8e8d98e82f35b67f433e3b4da" resname="Payment">
+        <source>Payment</source>
+        <target>__Payment</target>
+      </trans-unit>
+      <trans-unit id="37191f84729fec7597a697177c3b999e" resname="Issue date">
+        <source>Issue date</source>
+        <target>__Issue date</target>
+      </trans-unit>
+      <trans-unit id="2e79cbc13bbc903d989eab943a2e394f" resname="Due date">
+        <source>Due date</source>
+        <target>__Due date</target>
+      </trans-unit>
+      <trans-unit id="8ae4286d38bb2235def98fd68d7420d2" resname="Invoice number">
+        <source>Invoice number</source>
+        <target>__Invoice number</target>
+      </trans-unit>
+      <trans-unit id="44749712dbec183e983dcd78a7736c41" resname="Date">
+        <source>Date</source>
+        <target>__Date</target>
+      </trans-unit>
+      <trans-unit id="d0363921c897ec48ae2a05228c825d0d" resname="Due">
+        <source>Due</source>
+        <target>__Due</target>
+      </trans-unit>
+      <trans-unit id="b4c7c6ca891c541330cc68886659252b" resname="Not already generated">
+        <source>Not already generated</source>
+        <target>__Not already generated</target>
+      </trans-unit>
+      <trans-unit id="4c9120f1a5947445c0e9620254ceb30b" resname="New order">
+        <source>New order</source>
+        <target>__New order</target>
+      </trans-unit>
+      <trans-unit id="4049d979b8e6b7d78194e96c3208a5a5" resname="Order number">
+        <source>Order number</source>
+        <target>__Order number</target>
+      </trans-unit>
+      <trans-unit id="75a84a0139de63fd8e3a6993b35e7a7a" resname="View quote">
+        <source>View quote</source>
+        <target>__View quote</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

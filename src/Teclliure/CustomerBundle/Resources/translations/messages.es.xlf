@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="es" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="d8165ec099ad89c083692dae84567e87" resname="New customer">
+        <source>New customer</source>
+        <target>__New customer</target>
+      </trans-unit>
+      <trans-unit id="13348442cc6a27032d2b4aa28b75a5d3" resname="Search">
+        <source>Search</source>
+        <target>__Search</target>
+      </trans-unit>
+      <trans-unit id="7cb8ad465602a887dd56378d51dd85a2" resname="Advanced search">
+        <source>Advanced search</source>
+        <target>__Advanced search</target>
+      </trans-unit>
+      <trans-unit id="526d688f37a86d3c3f27d0c5016eb71d" resname="Reset">
+        <source>Reset</source>
+        <target>__Reset</target>
+      </trans-unit>
+      <trans-unit id="49ee3087348e8d44e1feda1917443987" resname="Name">
+        <source>Name</source>
+        <target>__Name</target>
+      </trans-unit>
+      <trans-unit id="c789b445f7b7db9daf56d34293d887c8" resname="Identification">
+        <source>Identification</source>
+        <target>__Identification</target>
+      </trans-unit>
+      <trans-unit id="ce8ae9da5b7cd6c3df2929543a9af92d" resname="Email">
+        <source>Email</source>
+        <target>__Email</target>
+      </trans-unit>
+      <trans-unit id="4d3d769b812b6faa6b76e1a8abaece2d" resname="Active">
+        <source>Active</source>
+        <target>__Active</target>
+      </trans-unit>
+      <trans-unit id="46a2a41cc6e552044816a2d04634545d" resname="State">
+        <source>State</source>
+        <target>__State</target>
+      </trans-unit>
+      <trans-unit id="59716c97497eb9694541f7c3d37b1a4d" resname="Country">
+        <source>Country</source>
+        <target>__Country</target>
+      </trans-unit>
+      <trans-unit id="2ee5e0f9e0c404601833297af3a11ad2" resname="Basic search">
+        <source>Basic search</source>
+        <target>__Basic search</target>
+      </trans-unit>
+      <trans-unit id="ce26601dac0dea138b7295f02b7620a7" resname="Customer">
+        <source>Customer</source>
+        <target>__Customer</target>
+      </trans-unit>
+      <trans-unit id="642d3ba5db8b57e006584b544e490ec7" resname="Zip code">
+        <source>Zip code</source>
+        <target>__Zip code</target>
+      </trans-unit>
+      <trans-unit id="bcc254b55c4a1babdf1dcb82c207506b" resname="Phone">
+        <source>Phone</source>
+        <target>__Phone</target>
+      </trans-unit>
+      <trans-unit id="c6e190b284633c48e39e55049da3cce8" resname="Web">
+        <source>Web</source>
+        <target>__Web</target>
+      </trans-unit>
+      <trans-unit id="95046585f5c2b88a904f4f843e44d996" resname="Invoicing address">
+        <source>Invoicing address</source>
+        <target>__Invoicing address</target>
+      </trans-unit>
+      <trans-unit id="57d056ed0984166336b7879c2af3657f" resname="City">
+        <source>City</source>
+        <target>__City</target>
+      </trans-unit>
+      <trans-unit id="c453a4b8e8d98e82f35b67f433e3b4da" resname="Payment">
+        <source>Payment</source>
+        <target>__Payment</target>
+      </trans-unit>
+      <trans-unit id="fb0bb5c8a384ea9013b75e56c9167c16" resname="Payment period">
+        <source>Payment period</source>
+        <target>__Payment period</target>
+      </trans-unit>
+      <trans-unit id="834305f3c5d70ce26c3d1aa371353f9f" resname="Payment day">
+        <source>Payment day</source>
+        <target>__Payment day</target>
+      </trans-unit>
+      <trans-unit id="f2a6c498fb90ee345d997f888fce3b18" resname="Delete">
+        <source>Delete</source>
+        <target>__Delete</target>
+      </trans-unit>
+      <trans-unit id="c9cc8cce247e49bae79f15173ce97354" resname="Save">
+        <source>Save</source>
+        <target>__Save</target>
+      </trans-unit>
+      <trans-unit id="e0010a0a1a3259ab5c06a19bad532851" resname="Paid">
+        <source>Paid</source>
+        <target>__Paid</target>
+      </trans-unit>
+      <trans-unit id="d0363921c897ec48ae2a05228c825d0d" resname="Due">
+        <source>Due</source>
+        <target>__Due</target>
+      </trans-unit>
+      <trans-unit id="2d13df6f8b5e4c5af9f87e0dc39df69d" resname="Pending">
+        <source>Pending</source>
+        <target>__Pending</target>
+      </trans-unit>
+      <trans-unit id="7dce122004969d56ae2e0245cb754d35" resname="Edit">
+        <source>Edit</source>
+        <target>__Edit</target>
+      </trans-unit>
+      <trans-unit id="bcfaccebf745acfd5e75351095a5394a" resname="Disable">
+        <source>Disable</source>
+        <target>__Disable</target>
+      </trans-unit>
+      <trans-unit id="2faec1f9f8cc7f8f40d521c4dd574f49" resname="Enable">
+        <source>Enable</source>
+        <target>__Enable</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
