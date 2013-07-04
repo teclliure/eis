@@ -21,14 +21,17 @@
             {{ form_errors(form.identification) }}
             <div class="ajax_loader input_inside_ajax_load"> </div>
             </div>
+
             <div class="inputDiv control-group {% if form.name.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.name) }}
             {{ form_widget(form.name, { 'attr': {'maxlength': 200, 'class': 'input-xlarge uf-placeholder', 'placeholder': 'Name'|trans} }) }}
             </div>
-            <div class="inputDiv control-group {% if form.zip_code.vars.errors|length > 0 %}error{% endif %}">
-            {{ form_errors(form.zip_code) }}
-            {{ form_widget(form.zip_code, { 'attr': {'maxlength': 6, 'class': 'input-mini uf-placeholder', 'placeholder': 'Zip code'|trans} }) }}
+            <br />
+            <div class="inputDiv control-group {% if form.legal_name.vars.errors|length > 0 %}error{% endif %}">
+                {{ form_errors(form.legal_name) }}
+                {{ form_widget(form.legal_name, { 'attr': {'maxlength': 200, 'class': 'input-xxlarge uf-placeholder', 'placeholder': 'Legal name'|trans} }) }}
             </div>
+
             <br />
             <div class="inputDiv control-group {% if form.email.vars.errors|length > 0 %}error{% endif %}">
                 {{ form_errors(form.email) }}
@@ -52,13 +55,17 @@
             {{ form_errors(form.city) }}
             {{ form_widget(form.city, { 'attr': {'maxlength': 200, 'class': 'uf-placeholder', 'placeholder': 'City'|trans} }) }}
             </div>
+            <div class="inputDiv control-group {% if form.zip_code.vars.errors|length > 0 %}error{% endif %}">
+                {{ form_errors(form.zip_code) }}
+                {{ form_widget(form.zip_code, { 'attr': {'maxlength': 6, 'class': 'input-mini uf-placeholder', 'placeholder': 'Zip code'|trans} }) }}
+            </div>
             <div class="inputDiv control-group {% if form.state.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.state) }}
             {{ form_widget(form.state, { 'attr': {'maxlength': 200, 'class': 'input-small uf-placeholder', 'placeholder': 'State'|trans} }) }}
             </div>
             <div class="inputDiv control-group {% if form.country.vars.errors|length > 0 %}error{% endif %}">
             {{ form_errors(form.country) }}
-            {{ form_widget(form.country, { 'attr': {'class': 'input-large uf-placeholder', 'placeholder': 'Country'|trans} }) }}
+            {{ form_widget(form.country, { 'attr': {'class': 'input-medium uf-placeholder', 'placeholder': 'Country'|trans} }) }}
             </div>
 
             <h3>{{ 'Payment'|trans }}</h3>

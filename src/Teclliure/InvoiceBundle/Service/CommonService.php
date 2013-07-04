@@ -120,7 +120,7 @@ class CommonService implements PaginatorAwareInterface {
             else {
                 $customer = new Customer();
                 $customer->setIdentification($common->getCustomerIdentification());
-                $customer->setName($common->getCustomerName());
+                $customer->setLegalName($common->getCustomerName());
                 $customer->setAddress($common->getCustomerAddress());
                 $customer->setZipCode($common->getCustomerZipCode());
                 $customer->setCity($common->getCustomerCity());
@@ -131,8 +131,8 @@ class CommonService implements PaginatorAwareInterface {
             }
         }
         else {
-            if (!$customer->getName()) {
-                $customer->setName($common->getCustomerName());
+            if (!$customer->getLegalName()) {
+                $customer->setLegalName($common->getCustomerName());
             }
             if (!$customer->getAddress()) {
                 $customer->setAddress($common->getCustomerAddress());

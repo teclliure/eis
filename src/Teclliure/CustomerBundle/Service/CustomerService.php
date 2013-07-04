@@ -115,13 +115,25 @@ class CustomerService implements PaginatorAwareInterface {
 
         if ($search) {
             foreach ($search as $key => $find) {
-                if ($andOr == 'AND') {
-                    $queryBuilder->andWhere('c.'.$key. ' LIKE :find');
+
+                if ($key == 'name') {
+                    $dql = 'c.name LIKE :find OR c.legal_name LIKE :find2';
                 }
                 else {
-                    $queryBuilder->orWhere('c.'.$key. ' LIKE :find');
+                    $dql = 'c.'.$key. ' LIKE :find';
                 }
-                $queryBuilder->setParameter('find', '%'.$find.'%');
+                if ($andOr == 'AND') {
+                    $queryBuilder->andWhere($dql);
+                }
+                else {
+                    $queryBuilder->orWhere($dql);
+                }
+                if ($key == 'name') {
+                    $queryBuilder->setParameters(array('find' => '%'.$find.'%', 'find2' => '%'.$find.'%'));
+                }
+                else {
+                    $queryBuilder->setParameter('find', '%'.$find.'%');
+                }
             }
         }
         // $queryBuilder->setParameter('where', $where);

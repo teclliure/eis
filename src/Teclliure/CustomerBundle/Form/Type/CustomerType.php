@@ -12,6 +12,7 @@ class CustomerType extends AbstractType
     {
         // $builder->add('id', 'hidden');
         $builder->add('name');
+        $builder->add('legal_name');
         $builder->add('identification');
         $builder->add('email', 'email');
         $builder->add('phone');

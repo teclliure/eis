@@ -9,7 +9,7 @@ use Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface;
 
 /**
  * @ORM\Table(name="customer",uniqueConstraints={
- *     @ORM\UniqueConstraint(name="unique_name", columns={"name"}),
+ *     @ORM\UniqueConstraint(name="unique_legal_name", columns={"legal_name"}),
  *     @ORM\UniqueConstraint(name="unique_ident", columns={"identification"})
  * })
  * @ORM\Entity
@@ -24,13 +24,21 @@ class Customer implements InvoiceCustomerInterface {
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     *
+     * @Assert\Length(min = 4, max = 200)
+     *
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="string", length=200, unique=true)
      *
      * @Assert\Length(min = 4, max = 200)
      * @Assert\NotBlank()
      *
      */
-    private $name;
+    private $legal_name;
 
     /**
      * @ORM\Column(type="string", length=30, unique=true)
@@ -155,9 +163,13 @@ class Customer implements InvoiceCustomerInterface {
 
     /**
      * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Common", mappedBy="customer")
-     * @var Common
      */
     protected $commons;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Teclliure\CustomerBundle\Entity\Contact", mappedBy="customer")
+     */
+    protected $contacts;
 
     /**
      * Get id
@@ -552,5 +564,61 @@ class Customer implements InvoiceCustomerInterface {
     public function getPaymentDay()
     {
         return $this->payment_day;
+    }
+
+    /**
+     * Add contacts
+     *
+     * @param \Teclliure\CustomerBundle\Entity\Contact $contacts
+     * @return Customer
+     */
+    public function addContact(\Teclliure\CustomerBundle\Entity\Contact $contacts)
+    {
+        $this->contacts[] = $contacts;
+    
+        return $this;
+    }
+
+    /**
+     * Remove contacts
+     *
+     * @param \Teclliure\CustomerBundle\Entity\Contact $contacts
+     */
+    public function removeContact(\Teclliure\CustomerBundle\Entity\Contact $contacts)
+    {
+        $this->contacts->removeElement($contacts);
+    }
+
+    /**
+     * Get contacts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * Set legal_name
+     *
+     * @param string $legalName
+     * @return Customer
+     */
+    public function setLegalName($legalName)
+    {
+        $this->legal_name = $legalName;
+    
+        return $this;
+    }
+
+    /**
+     * Get legal_name
+     *
+     * @return string 
+     */
+    public function getLegalName()
+    {
+        return $this->legal_name;
     }
 }

@@ -13,7 +13,11 @@
     {% for customer in customers %}
         <tr>
             <td>
-                {{ customer.name }}
+                {% if customer.name %}
+                    {{ customer.name }}
+                {% else %}
+                    {{ customer.legalName }}
+                {% endif %}
             </td>
             <td>{{ customer.identification }}</td>
             <td>{{ 'Pending'|trans }}</td>

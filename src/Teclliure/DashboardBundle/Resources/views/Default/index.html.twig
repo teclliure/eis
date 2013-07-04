@@ -1,1 +1,7 @@
-{{ 'Hello !' | trans }}
+{% extends '::container.html.twig' %}
+
+{% block content %}
+    <div id="inside_content">
+        {{ 'Hello !' | trans }}
+    </div>
+{% endblock %}

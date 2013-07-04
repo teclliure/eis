@@ -36,16 +36,15 @@ class Payment {
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
-     * @Assert\Type(type="date")
+     * @Assert\Date()
      *
      */
     private $payment_date;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=200, nullable=true)
      *
      * @Assert\Length(min = 2, max = 200)
-     * @Assert\NotBlank()
      *
      */
     private $notes;

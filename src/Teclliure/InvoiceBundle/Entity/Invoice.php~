@@ -501,7 +501,7 @@ class Invoice {
     public function getPaidAmount() {
         $paid = 0;
         foreach ($this->getPayments() as $payment) {
-            $paid += $payment->getPaymentAmount();
+            $paid += $payment->getAmount();
         }
         return $paid;
     }

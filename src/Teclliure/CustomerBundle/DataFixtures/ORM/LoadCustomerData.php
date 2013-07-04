@@ -24,7 +24,7 @@ class LoadCustomerData implements FixtureInterface
         $customer = new Customer();
         $customer->setIdentification('123132132321');
         $customer->setActive(1);
-        $customer->setName('Active customer 123');
+        $customer->setLegalName('Active customer 123 SSLL');
         $customer->setEmail('active_cust1@test.net');
         $manager->persist($customer);
 
@@ -32,6 +32,7 @@ class LoadCustomerData implements FixtureInterface
         $customer->setIdentification('678678678');
         $customer->setActive(1);
         $customer->setName('Active customer 678');
+        $customer->setLegalName('Active customer 678 SSLL');
         $customer->setEmail('active_cust2@test.net');
         $manager->persist($customer);
 
@@ -40,6 +41,7 @@ class LoadCustomerData implements FixtureInterface
         $customer->setIdentification('12313213233');
         $customer->setActive(0);
         $customer->setName('Disabled customer 123');
+        $customer->setLegalName('Disabled customer 123 SSLL');
         $customer->setEmail('disable_cust1@test.net');
         $manager->persist($customer);
 

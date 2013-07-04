@@ -23,6 +23,11 @@ interface InvoiceCustomerInterface {
     /**
      * @return string
      */
+    public function getLegalName();
+
+    /**
+     * @return string
+     */
     public function getIdentification();
 
     /**

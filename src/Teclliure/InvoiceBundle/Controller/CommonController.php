@@ -21,10 +21,10 @@ class CommonController extends Controller
         $returnArray = array();
         foreach ($customers as $customer) {
             $customerArray = array();
-            $customerArray['label'] = $customer->getIdentification().' - '.$customer->getName();
+            $customerArray['label'] = $customer->getIdentification().' - '.$customer->getLegalName();
             $customerArray['id'] = $customer->getId();
             $customerArray['identification'] = $customer->getIdentification();
-            $customerArray['name'] = $customer->getName();
+            $customerArray['name'] = $customer->getLegalName();
             $customerArray['address'] = $customer->getAddress();
             $customerArray['zip_code'] = $customer->getZipCode();
             $customerArray['city'] = $customer->getCity();
