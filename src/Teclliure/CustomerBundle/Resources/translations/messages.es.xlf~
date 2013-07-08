@@ -114,22 +114,6 @@
         <source>Enable</source>
         <target>__Enable</target>
       </trans-unit>
-      <trans-unit id="8728ddcf2beef397dc6198b241e24abd" resname="Contact name">
-        <source>Contact name</source>
-        <target>__Contact name</target>
-      </trans-unit>
-      <trans-unit id="0be82c07536598950a624f3067c0e648" resname="Legal name">
-        <source>Legal name</source>
-        <target>__Legal name</target>
-      </trans-unit>
-      <trans-unit id="9aa698f602b1e5694855cee73a683488" resname="Contacts">
-        <source>Contacts</source>
-        <target>__Contacts</target>
-      </trans-unit>
-      <trans-unit id="eaf12d92dd865f388ee2ac4bb083d3be" resname="Add a contact">
-        <source>Add a contact</source>
-        <target>__Add a contact</target>
-      </trans-unit>
     </body>
   </file>
 </xliff>

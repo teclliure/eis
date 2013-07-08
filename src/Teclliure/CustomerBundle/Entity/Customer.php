@@ -129,8 +129,12 @@ class Customer implements InvoiceCustomerInterface {
     /**
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Assert\GreaterThanOrEqual(value = 1)
-     * @Assert\LessThanOrEqual(value = 31)
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 31,
+     *      minMessage = "Day must be between 1 and 31",
+     *      maxMessage = "Day must be between 1 and 31"
+     * )
      *
      */
     private $payment_day;
@@ -167,7 +171,7 @@ class Customer implements InvoiceCustomerInterface {
     protected $commons;
 
     /**
-     * @ORM\OneToMany(targetEntity="Teclliure\CustomerBundle\Entity\Contact", mappedBy="customer")
+     * @ORM\OneToMany(targetEntity="Teclliure\CustomerBundle\Entity\Contact", mappedBy="customer", cascade={"persist", "remove"})
      */
     protected $contacts;
 
@@ -574,6 +578,7 @@ class Customer implements InvoiceCustomerInterface {
      */
     public function addContact(\Teclliure\CustomerBundle\Entity\Contact $contacts)
     {
+        $contacts->setCustomer($this);
         $this->contacts[] = $contacts;
     
         return $this;

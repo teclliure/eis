@@ -20,7 +20,7 @@ class Contact {
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=200, unique=true)
+     * @ORM\Column(type="string", length=200)
      *
      * @Assert\Length(min = 4, max = 200)
      * @Assert\NotBlank()

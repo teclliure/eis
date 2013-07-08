@@ -27,7 +27,7 @@
 
                 {{ form_errors(basicSearchForm) }}
                 <div class="input-append">
-                    {{ form_widget(basicSearchForm.search, { 'attr': {'class': 'span2 search-query uf-placeholder', 'placeholder': 'Search'|trans }}) }}
+                    {{ form_widget(basicSearchForm.search, { 'attr': {'class': 'span2 search-query uf-placeholder customerAutocomplete', 'placeholder': 'Search'|trans }}) }}
                     <button type="submit" class="btn btn-success"><i class="icon-search"></i></button>
                 </div>
                 <div id="advancedSearchBtnDiv">

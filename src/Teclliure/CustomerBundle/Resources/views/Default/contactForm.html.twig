@@ -1,0 +1,28 @@
+<tr id="{% if new == true %}customer_contacts___name__{% else %}customer_contacts_{{ key }}{% endif %}" class="invoiceLine">
+    <td class="lineName">
+        <div class="inputDiv">
+        {{ form_errors(contactForm.name) }}
+        {{ form_widget(contactForm.name, {'attr': { 'maxlength': 200, 'class': 'input-xlarge uf-placeholder', 'placeholder': 'Contact name'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineMail">
+        <div class="inputDiv">
+        {{ form_errors(contactForm.email) }}
+        {{ form_widget(contactForm.email, {'attr': { 'class': 'uf-placeholder', 'placeholder': 'Email'|trans} }) }}
+        </div>
+    </td>
+    <td class="linePhone">
+        <div class="inputDiv">
+        {{ form_errors(contactForm.phone) }}
+        {{ form_widget(contactForm.phone, {'attr': { 'class': 'input-medium  uf-placeholder', 'placeholder': 'Phone'|trans} }) }}
+        </div>
+    </td>
+    <td class="lineNotifications">
+        <div>
+            {{ form_widget(contactForm.send_quote) }} {{ 'Send quotes' }}<br />
+            {{ form_widget(contactForm.send_delivery_note) }} {{ 'Send orders' }}<br />
+            {{ form_widget(contactForm.send_invoice) }} {{ 'Send invoices' }}<br />
+            {{ form_widget(contactForm.send_payment) }} {{ 'Send payments' }}<br />
+        </div>
+    </td>
+</tr>

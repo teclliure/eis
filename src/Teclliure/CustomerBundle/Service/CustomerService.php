@@ -299,7 +299,22 @@ class CustomerService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function saveCustomer(Customer $customer) {
+    public function saveCustomer(Customer $customer, $originalContacts = array()) {
+        if ($originalContacts)  {
+            foreach ($customer->getContacts() as $contact) {
+                foreach ($originalContacts as $key => $toDel) {
+                    if ($toDel->getId() === $contact->getId()) {
+                        unset($originalContacts[$key]);
+                    }
+                }
+            }
+
+            // remove the relationship between the line and the common
+            foreach ($originalContacts as $contact) {
+                $this->getEntityManager()->remove($contact);
+            }
+        }
+
         $em = $this->getEntityManager();
         $em->persist($customer);
         $em->flush();

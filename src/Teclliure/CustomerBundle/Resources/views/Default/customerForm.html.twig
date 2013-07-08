@@ -4,6 +4,7 @@
     {{ parent() }}
     <script src="{{ asset('bundles/teclliureinvoice/js/inputPlaceholderUF.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/teclliureinvoice/js/jquery-ui-1.10.3.custom.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliurecustomer/js/contacts.js') }}" type="text/javascript"></script>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -31,7 +32,6 @@
                 {{ form_errors(form.legal_name) }}
                 {{ form_widget(form.legal_name, { 'attr': {'maxlength': 200, 'class': 'input-xxlarge uf-placeholder', 'placeholder': 'Legal name'|trans} }) }}
             </div>
-
             <br />
             <div class="inputDiv control-group {% if form.email.vars.errors|length > 0 %}error{% endif %}">
                 {{ form_errors(form.email) }}
@@ -78,6 +78,31 @@
             {{ form_errors(form.payment_day) }}
             {{ 'Payment day'|trans }}: {{ form_widget(form.payment_day, { 'attr': {'class': 'input-mini two_input'} }) }}
             </div>
+
+            <h3>{{ 'Contacts'|trans }}</h3>
+            <table id="customerContacts" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureCustomerBundle:Default:contactForm.html.twig', {'contactForm': form.contacts.vars.prototype, 'new': true}) }}{% endfilter %}">
+                <thead>
+                <tr class="lineHeader not_delete">
+                    <th class="lineName">{{ 'Name' }}</th>
+                    <th class="lineMail">{{ 'Mail' }}</th>
+                    <th class="linePhone">{{ 'Phone' }}</th>
+                    <th class="lineNotifications">{{ 'Notifications' }}</th>
+                </tr>
+                </thead>
+                <tbody id="tbody_lines">
+                {# iterate over each existing tag and render its only field: name #}
+                {% for key,line in form.contacts %}
+                    {{ include('TeclliureCustomerBundle:Default:contactForm.html.twig', {'contactForm': line, 'new': false}) }}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                            <a href="#" class="btn btn-primary " id="add_line_link"><i class="icon-plus-sign"></i> {{ 'Add a contact'|trans }}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
 
 
             {{ form_rest(form) }}

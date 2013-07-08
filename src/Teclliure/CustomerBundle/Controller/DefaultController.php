@@ -40,9 +40,16 @@ class DefaultController extends Controller
     }
 
     public function addEditAction(Request $request) {
+        $originalContacts = array();
         $customerService = $this->get('customer_service');
         if ($request->get('id')) {
             $customer = $customerService->getCustomer($request->get('id'));
+
+            // Create an array of the current CommonLines objects in the database
+
+            foreach ($customer->getContacts() as $contact) {
+                $originalContacts[] = $contact;
+            }
         }
         else {
             $customer = $customerService->createCustomer();
@@ -55,7 +62,7 @@ class DefaultController extends Controller
 
             $t = $this->get('translator');
             if ($form->isValid()) {
-                $customerService->saveCustomer($customer);
+                $customerService->saveCustomer($customer, $originalContacts);
                 $this->get('session')->getFlashBag()->add('success', $t->trans('Customer saved!'));
 
                 return $this->redirect($this->generateUrl('customer_list'));

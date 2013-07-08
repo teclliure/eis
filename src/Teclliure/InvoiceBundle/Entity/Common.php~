@@ -37,12 +37,20 @@ class Common {
     private $invoice;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(min = 2, max = 10000)
      *
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $footnote;
 
     /**
      * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface",  cascade={"persist"}, inversedBy="commons")

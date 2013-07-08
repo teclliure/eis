@@ -292,6 +292,12 @@ ul.payments li ul li {
     /*margin: 0 0 0 25px;*/
 }
 
+.delete_contact_link {
+    position: absolute;
+    top: 30px;
+    left: -25px;
+}
+
 .delete_line_link i {
     /*line-height: 20px;*/
     /*margin-top: 19px;*/
@@ -312,11 +318,32 @@ ul.payments li ul li {
     text-align: right;
 }
 
+.lineName {
+    width: 285px;
+    position: relative;
+}
+.lineMail
+{
+    width: 221px;
+}
+
+.linePhone {
+    width: 165px;
+}
+
+.lineNotifications {
+    width: 150px;
+}
+
+.lineNotifications input[type=checkbox] {
+    margin-top: 0;
+}
+
 .checkbox.inline+.checkbox.inline {
     margin-left: 0;
 }
 
-.lineDesc, .lineQty, .lineUC, .lineTaxes, .lineDiscount, .linePrice {
+.lineDesc, .lineQty, .lineUC, .lineTaxes, .lineDiscount, .linePrice, .lineName, .lineMail, .linePhone, .lineNotifications {
     border: 1px solid #DCDCDC !important;
     vertical-align: middle;
     padding: 4px;

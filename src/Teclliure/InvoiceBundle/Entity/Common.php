@@ -37,12 +37,20 @@ class Common {
     private $invoice;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(min = 2, max = 10000)
      *
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $footnote;
 
     /**
      * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface",  cascade={"persist"}, inversedBy="commons")
@@ -508,5 +516,28 @@ class Common {
             $amount += $line->getTotalAmount();
         }
         return round($amount,2);
+    }
+
+    /**
+     * Set footnote
+     *
+     * @param string $footnote
+     * @return Common
+     */
+    public function setFootnote($footnote)
+    {
+        $this->footnote = $footnote;
+    
+        return $this;
+    }
+
+    /**
+     * Get footnote
+     *
+     * @return string 
+     */
+    public function getFootnote()
+    {
+        return $this->footnote;
     }
 }

@@ -174,7 +174,13 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             $em = $this->getEntityManager();
             $em->getConnection()->exec('LOCK TABLE quote q0_ WRITE;');
             if (!$common->getQuote()->getNumber()) {
-                $nextQuoteNumber = $this->getNextQuoteNumber(new \DateTime());
+                if ($common->getQuote()->getCreated()) {
+                    $createdDate = $common->getQuote()->getCreated();
+                }
+                else {
+                    $createdDate = new \DateTime();
+                }
+                $nextQuoteNumber = $this->getNextQuoteNumber($createdDate);
                 $common->getQuote()->setNumber($nextQuoteNumber);
             }
             $em->persist($common);
