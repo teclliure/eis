@@ -1,23 +1,39 @@
-teclliure_dashboard:
-    resource: "@TeclliureDashboardBundle/Resources/config/routing.yml"
-    prefix:   /
-
-teclliure_customer:
-    resource: "@TeclliureCustomerBundle/Resources/config/routing.yml"
-    prefix:   /
-
-teclliure_user:
-    resource: "@TeclliureUserBundle/Resources/config/routing.yml"
-    prefix:   /
-
-teclliure_invoice:
-    resource: "@TeclliureInvoiceBundle/Resources/config/routing.yml"
-    prefix:   /
-
 homepage:
     pattern:  /
     defaults: { _controller: TeclliureDashboardBundle:Default:index }
 
+teclliure_dashboard:
+    resource: "@TeclliureDashboardBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/
+    requirements:
+      _locale: en|es|ca
+
+teclliure_customer:
+    resource: "@TeclliureCustomerBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/
+    requirements:
+      _locale: en|es|ca
+
+teclliure_user:
+    resource: "@TeclliureUserBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/
+    requirements:
+      _locale: en|es|ca
+
+teclliure_invoice:
+    resource: "@TeclliureInvoiceBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/
+    requirements:
+      _locale: en|es|ca
+
 craue_config_settings:
   resource: "@CraueConfigBundle/Resources/config/routing/settings.xml"
-  prefix: /settings
+  prefix:   /{_locale}/settings
+  requirements:
+    _locale: en|es|ca
+
+homepage_localized:
+    pattern:  /{_locale}/
+    defaults: { _controller: TeclliureDashboardBundle:Default:index }
+    requirements:
+      _locale: en|es|ca

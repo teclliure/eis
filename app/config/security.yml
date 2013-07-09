@@ -22,15 +22,24 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-            logout:       true
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                csrf_provider: form.csrf_provider
+            logout:
+              path: fos_user_security_logout
             anonymous:    true
+            remember_me:
+              key:      "%secret%"
+              lifetime: 241920 # 7 days
+              path:     /
+              domain:   ~ # Defaults to the current domain from $_SERVER
 
     access_control:
         - { path: ^/_wdt, roles: 'IS_AUTHENTICATED_ANONYMOUSLY' }
         - { path: ^/*.css, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/*.js, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/[a-z]+/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z]+/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z]+/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z]+/admin/, role: ROLE_ADMIN }
         - { path: ^/, role: ROLE_USER }

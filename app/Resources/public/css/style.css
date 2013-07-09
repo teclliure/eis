@@ -28,6 +28,22 @@ body {
     min-height: 400px;
 }
 
+#languages {
+    float: right;
+    clear: both;
+}
+
+#languages ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+}
+
+#languages ul li {
+    display: inline;
+}
+
 /* Login css */
 .form-signin {
     max-width: 300px;
@@ -378,6 +394,7 @@ th.border_total {
 .lineTaxes {
     width: 250px;
 }
+
 
 .common_totals {
     text-align: right;

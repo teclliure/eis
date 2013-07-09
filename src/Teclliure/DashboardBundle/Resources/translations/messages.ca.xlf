@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="ca" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="c9a28e7f0dbc3ed20a161351c4f29a7b" resname="Quotes">
+        <source>Quotes</source>
+        <target>__Quotes</target>
+      </trans-unit>
+      <trans-unit id="c8eb9ba5a7e61d86dc5ba3e0e0a31d1b" resname="Create quote">
+        <source>Create quote</source>
+        <target>__Create quote</target>
+      </trans-unit>
+      <trans-unit id="9726a44aa6251e738baa12268fff7394" resname="View quotes">
+        <source>View quotes</source>
+        <target>__View quotes</target>
+      </trans-unit>
+      <trans-unit id="7442e29d7d53e549b78d93c46b8cdcfc" resname="Orders">
+        <source>Orders</source>
+        <target>__Orders</target>
+      </trans-unit>
+      <trans-unit id="0262a3dc4fae9adc8cb46e788806ccbf" resname="Create order">
+        <source>Create order</source>
+        <target>__Create order</target>
+      </trans-unit>
+      <trans-unit id="d2a99b49c6a18dbbd911e51e55cc5c6d" resname="View orders">
+        <source>View orders</source>
+        <target>__View orders</target>
+      </trans-unit>
+      <trans-unit id="fce9a6a1bd2a2050eb86d33103f46fd3" resname="Invoices">
+        <source>Invoices</source>
+        <target>__Invoices</target>
+      </trans-unit>
+      <trans-unit id="bfd55109139a7222b8fbe4abd5f8ebbe" resname="Create invoice">
+        <source>Create invoice</source>
+        <target>__Create invoice</target>
+      </trans-unit>
+      <trans-unit id="be8ceffab4024f219509f98cb55377f6" resname="View invoices">
+        <source>View invoices</source>
+        <target>__View invoices</target>
+      </trans-unit>
+      <trans-unit id="e6d0e1c8fc6a4fcf47869df87e04cd88" resname="Customers">
+        <source>Customers</source>
+        <target>__Customers</target>
+      </trans-unit>
+      <trans-unit id="bf1fef12d666594b74419d2874cf9bb6" resname="Create customer">
+        <source>Create customer</source>
+        <target>__Create customer</target>
+      </trans-unit>
+      <trans-unit id="9480fc3f72417e97a0887066d78360e2" resname="View customers">
+        <source>View customers</source>
+        <target>__View customers</target>
+      </trans-unit>
+      <trans-unit id="f4f70727dc34561dfde1a3c529b6205c" resname="Settings">
+        <source>Settings</source>
+        <target>__Settings</target>
+      </trans-unit>
+      <trans-unit id="b082f46150200c597cdef93bf62e0f9b" resname="Your company info">
+        <source>Your company info</source>
+        <target>__Your company info</target>
+      </trans-unit>
+      <trans-unit id="719fec04166d6fa75f89cd29ad61fa8c" resname="Taxes">
+        <source>Taxes</source>
+        <target>__Taxes</target>
+      </trans-unit>
+      <trans-unit id="4394c8d8e63c470de62ced3ae85de5ae" resname="Log out">
+        <source>Log out</source>
+        <target>__Log out</target>
+      </trans-unit>
+      <trans-unit id="aa832eea8427bbcd93a90f2d3baa3913" resname="Hello !">
+        <source>Hello !</source>
+        <target>__Hello !</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -101,12 +101,12 @@
             <table id="commonLines" class="lines" data-prototype="{% filter escape %}{{ include('TeclliureInvoiceBundle:Common:lineForm.html.twig', {'lineForm': form.common_lines.vars.prototype, 'new': true}) }}{% endfilter %}">
                 <thead>
                     <tr class="lineHeader not_delete">
-                        <th class="lineDesc">{{ 'Description' }}</th>
-                        <th class="lineQty">{{ 'Quantity' }}</th>
-                        <th class="lineUC">{{ 'Unitary cost' }}</th>
-                        <th class="lineTaxes">{{ 'Taxes' }}</th>
-                        <th class="lineDiscount">{{ 'Discount' }}</th>
-                        <th class="lineDiscount">{{ 'Price' }}</th>
+                        <th class="lineDesc">{{ 'Description'|trans }}</th>
+                        <th class="lineQty">{{ 'Quantity'|trans }}</th>
+                        <th class="lineUC">{{ 'Unitary cost'|trans }}</th>
+                        <th class="lineTaxes">{{ 'Taxes'|trans }}</th>
+                        <th class="lineDiscount">{{ 'Discount'|trans }}</th>
+                        <th class="lineDiscount">{{ 'Price'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody id="tbody_lines">

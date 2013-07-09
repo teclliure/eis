@@ -53,7 +53,7 @@ class Customer implements InvoiceCustomerInterface {
      *
      * @Assert\Length(min = 5, max = 200)
      * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
+     *     message = "The email {{ value }} is not a valid email.",
      *     checkMX = true
      * )
      *

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="es" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1" resname="Customers">
+            <source>Customers</source>
+            <target>Clientes</target>
+      </trans-unit>
+      <trans-unit id="2" resname="View customers">
+            <source>View customers</source>
+            <target>Ver clientes</target>
+      </trans-unit>
+      <trans-unit id="3" resname="Log out">
+            <source>Log out</source>
+            <target>Salir</target>
+      </trans-unit>
+      <trans-unit id="4" resname="Please sign in">
+            <source>Please sign in</source>
+            <target>Por favor, inicie sesión</target>
+      </trans-unit>
+      <trans-unit id="5" resname="Coding by">
+          <source>Coding by</source>
+          <target>Programado por</target>
+      </trans-unit>
+      <trans-unit id="6">
+          <source>Email or username</source>
+          <target>Email o nombre de usuario</target>
+      </trans-unit>
+      <trans-unit id="7">
+          <source>Password</source>
+          <target>Contraseña</target>
+      </trans-unit>
+      <trans-unit id="8">
+          <source>Create customer</source>
+          <target>Crear cliente</target>
+      </trans-unit>
+      <trans-unit id="9">
+          <source>Welcome</source>
+          <target>Bienvenido</target>
+      </trans-unit>
+        <trans-unit id="10">
+            <source>Settings</source>
+            <target>Configuración</target>
+        </trans-unit>
+        <trans-unit id="11">
+            <source>Taxes</source>
+            <target>Impuestos</target>
+        </trans-unit>
+        <trans-unit id="12">
+            <source>Your company info</source>
+            <target>Información de la empresa</target>
+        </trans-unit>
+        <trans-unit id="13">
+            <source>Notifications</source>
+            <target>Notificaciones</target>
+        </trans-unit>
+        <trans-unit id="14">
+            <source>Send quotes</source>
+            <target>Enviar presupuestos</target>
+        </trans-unit>
+        <trans-unit id="15">
+            <source>Send orders</source>
+            <target>Enviar albarán</target>
+        </trans-unit>
+        <trans-unit id="16">
+            <source>Send invoices</source>
+            <target>Enviar factura</target>
+        </trans-unit>
+        <trans-unit id="17">
+            <source>Send payments</source>
+            <target>Enviar pagos</target>
+        </trans-unit>
+        <trans-unit id="19">
+            <source>Customer saved!</source>
+            <target>¡ Cliente guardado !</target>
+        </trans-unit>
+        <trans-unit id="20">
+                <source>Ups, form error !</source>
+            <target>¡ Ups, error en el formulario !</target>
+        </trans-unit>
+        <trans-unit id="21">
+            <source>Change a few things up and try submitting again.</source>
+            <target>Cambia algunas cosas y trata de enviar de nuevo.</target>
+        </trans-unit>
+        <trans-unit id="22">
+            <source>The email {{ value }} is not a valid email.</source>
+            <target>El email {{ value }} no es válido.</target>
+        </trans-unit>
+        <trans-unit id="23">
+            <source>The value {{ value }} is not a valid {{ type }}.</source>
+            <target>El {{ value }} no es un {{ type }} válido.</target>
+        </trans-unit>
+        <trans-unit id="24">
+            <source>This value is not a valid email address.</source>
+            <target>El email no es válido.</target>
+        </trans-unit>
+
+    </body>
+  </file>
+</xliff>

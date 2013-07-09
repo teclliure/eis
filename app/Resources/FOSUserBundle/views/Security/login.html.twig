@@ -1,6 +1,13 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block fos_user_content %}
+<div id="languages">
+    <ul class="lang-menu">
+        <li>{% if app.request.locale != 'ca' %}<a class="btn btn-mini btn-link" href="{{ path('homepage_localized', {'_locale': 'ca'}) }}">{% endif %}Català{% if app.request.locale != 'ca' %}</a>{% endif %}</li>
+        <li>{% if app.request.locale != 'es' %}<a class="btn btn-mini btn-link" href="{{ path('homepage_localized', {'_locale': 'es'}) }}">{% endif %}Español{% if app.request.locale != 'es' %}</a>{% endif %}</li>
+        <li>{% if app.request.locale != 'en' %}<a class="btn btn-mini btn-link" href="{{ path('homepage_localized', {'_locale': 'en'}) }}">{% endif %}English{% if app.request.locale != 'en' %}</a>{% endif %}</li>
+    </ul>
+</div>
 <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
     <h2 class="form-signin-heading">{{ 'Please sign in'|trans }}</h2>
 
@@ -22,5 +29,7 @@
 
 
     <input type="submit" id="_submit" name="_submit" class="btn btn-large btn-primary" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+    <br />
+    <div style="float: right">{{ 'Coding by'|trans }} <a href="http://www.teclliure.net">Teclliure</a></div>
 </form>
 {% endblock fos_user_content %}
