@@ -5,7 +5,7 @@
             <h4>{{ 'Order'|trans }} - {{ common.deliveryNote.number }}</h4>
             <b>{{ 'Created'|trans }}</b>: {{ common.deliveryNote.created|date("d/m/Y") }}<br />
             {% if common.quote  %}<h6>{{ 'Quote'|trans }}: {% if not print %}<a href="{{ path('quote_view', {'id': common.id }) }}">{% endif %}{{ common.quote.number }}{% if not print %}</a>{% endif %}</h6>{% endif %}
-            {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}{% if not print %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{% endif %}{{ common.invoice.number }}{% if not print %}</a>{% endif %}{% else %}{% if not print %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{% endif %}{{ 'Not asigned'|trans }}{% if not print %}</a>{% endif %}{% endif %}</h6>{% endif %}
+            {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}{% if not print %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{% endif %}{{ common.invoice.number }}{% if not print %}</a>{% endif %}{% else %}{% if not print %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{% endif %}{{ 'Not assigned'|trans }}{% if not print %}</a>{% endif %}{% endif %}</h6>{% endif %}
             <div class="inputDiv control-group">
             {{ config.company_name }} - {{ config.company_identification }}
             </div>

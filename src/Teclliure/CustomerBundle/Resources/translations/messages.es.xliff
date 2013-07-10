@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="2ee5e0f9e0c404601833297af3a11ad2" resname="Basic search">
         <source>Basic search</source>
-        <target>Búsqueda básica</target>
+        <target>Busqueda básica</target>
       </trans-unit>
       <trans-unit id="ce26601dac0dea138b7295f02b7620a7" resname="Customer">
         <source>Customer</source>
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="95046585f5c2b88a904f4f843e44d996" resname="Invoicing address">
         <source>Invoicing address</source>
-        <target>Dirección de facturación</target>
+        <target>Dirección facturación</target>
       </trans-unit>
       <trans-unit id="57d056ed0984166336b7879c2af3657f" resname="City">
         <source>City</source>
@@ -76,11 +76,11 @@
       </trans-unit>
       <trans-unit id="fb0bb5c8a384ea9013b75e56c9167c16" resname="Payment period">
         <source>Payment period</source>
-        <target>Periodo de pago</target>
+        <target>Plazo de cobro</target>
       </trans-unit>
       <trans-unit id="834305f3c5d70ce26c3d1aa371353f9f" resname="Payment day">
         <source>Payment day</source>
-        <target>Día de pago</target>
+        <target>Dia de pago</target>
       </trans-unit>
       <trans-unit id="f2a6c498fb90ee345d997f888fce3b18" resname="Delete">
         <source>Delete</source>
@@ -114,22 +114,18 @@
         <source>Enable</source>
         <target>Habilitar</target>
       </trans-unit>
-      <trans-unit id="8728ddcf2beef397dc6198b241e24abd" resname="Contact name">
-        <source>Contact name</source>
-        <target>Nombre contacto</target>
-      </trans-unit>
-      <trans-unit id="0be82c07536598950a624f3067c0e648" resname="Legal name">
-        <source>Legal name</source>
-        <target>Nombre legal</target>
-      </trans-unit>
-      <trans-unit id="9aa698f602b1e5694855cee73a683488" resname="Contacts">
-        <source>Contacts</source>
-        <target>Contactos</target>
-      </trans-unit>
-      <trans-unit id="eaf12d92dd865f388ee2ac4bb083d3be" resname="Add a contact">
-        <source>Add a contact</source>
-        <target>Añadir un contacto</target>
-      </trans-unit>
+        <trans-unit id="1">
+            <source>Add a contact</source>
+            <target>Añadir un contacto</target>
+        </trans-unit>
+        <trans-unit id="2">
+            <source>Legal name</source>
+            <target>Nombre legal</target>
+        </trans-unit>
+        <trans-unit id="3">
+            <source>Contact name</source>
+            <target>Nombre contacto</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

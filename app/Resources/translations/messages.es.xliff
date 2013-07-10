@@ -83,18 +83,9 @@
             <target>Cambia algunas cosas y trata de enviar de nuevo.</target>
         </trans-unit>
         <trans-unit id="22">
-            <source>The email {{ value }} is not a valid email.</source>
-            <target>El email {{ value }} no es válido.</target>
+            <source>Developed by</source>
+            <target>Desarrollado por</target>
         </trans-unit>
-        <trans-unit id="23">
-            <source>The value {{ value }} is not a valid {{ type }}.</source>
-            <target>El {{ value }} no es un {{ type }} válido.</target>
-        </trans-unit>
-        <trans-unit id="24">
-            <source>This value is not a valid email address.</source>
-            <target>El email no es válido.</target>
-        </trans-unit>
-
     </body>
   </file>
 </xliff>

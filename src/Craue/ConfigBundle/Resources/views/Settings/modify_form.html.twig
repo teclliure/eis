@@ -6,13 +6,13 @@
 	{% for section in sections | craue_sortSections %}
 		{% if section is not empty %}
 			<fieldset>
-				<legend>{{ section | trans({}, 'CraueConfigBundle') }}</legend>
+				<legend>{{ section | trans({}, 'CraueConfigBundle', app.request.locale) }}</legend>
 		{% endif %}
 
 		{% for setting in form.settings if setting.section.vars.value == section %}
 			{{ form_row(setting.name) }}
 			{{ form_row(setting.section) }}
-			{{ form_row(setting.value, {'label': setting.name.vars.value}) }}
+			{{ form_row(setting.value, {'label': setting.name.vars.value  | trans({}, 'CraueConfigBundle') }) }}
 		{% endfor %}
 
 		{% if section is not empty %}

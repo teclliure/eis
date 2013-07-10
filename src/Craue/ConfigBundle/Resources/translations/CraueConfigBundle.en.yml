@@ -1,3 +1,12 @@
 no_settings_defined: There are no settings defined yet.
-modify_settings: apply
-settings_changed: The settings were changed.
+modify_settings: Save
+settings_changed: The settings were saved.
+company_info: Company information
+company_name: Company name
+company_mail: Company email
+company_web: Company web
+company_address: Company address
+company_identification: Company identification
+default_serie: Default serie
+default_country: Default country
+web: Default application values
