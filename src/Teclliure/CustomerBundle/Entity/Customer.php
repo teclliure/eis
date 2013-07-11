@@ -176,6 +176,24 @@ class Customer implements InvoiceCustomerInterface {
     protected $contacts;
 
     /**
+     *
+     * On postLoad calculation, not persisted
+     *
+     * @var float
+     *
+     */
+    protected $totalPaid;
+
+    /**
+     *
+     * On postLoad calculation, not persisted
+     *
+     * @var float
+     *
+     */
+    protected $totalDue;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -625,5 +643,37 @@ class Customer implements InvoiceCustomerInterface {
     public function getLegalName()
     {
         return $this->legal_name;
+    }
+
+    /**
+     * @param float $totalDue
+     */
+    public function setTotalDue($totalDue)
+    {
+        $this->totalDue = $totalDue;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalDue()
+    {
+        return $this->totalDue;
+    }
+
+    /**
+     * @param float $totalPaid
+     */
+    public function setTotalPaid($totalPaid)
+    {
+        $this->totalPaid = $totalPaid;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPaid()
+    {
+        return $this->totalPaid;
     }
 }

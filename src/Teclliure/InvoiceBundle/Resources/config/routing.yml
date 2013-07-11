@@ -122,18 +122,6 @@ payment_delete:
     pattern:  /payment/delete/{payment_id}
     defaults: { _controller: TeclliureInvoiceBundle:Payment:delete }
 
-search_customer:
-    pattern: /searchCustomer
-    defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomer }
-
-search_customer_name:
-    pattern: /searchCustomerName
-    defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomerName }
-
-update_prices:
-    pattern: /updatePrices
-    defaults: { _controller: TeclliureInvoiceBundle:Common:updatePrices }
-
 taxes:
     resource: "@TeclliureInvoiceBundle/Controller/TaxController.php"
     type:     annotation

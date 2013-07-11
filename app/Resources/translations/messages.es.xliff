@@ -86,6 +86,42 @@
             <source>Developed by</source>
             <target>Desarrollado por</target>
         </trans-unit>
+        <trans-unit id="23">
+            <source>Quotes</source>
+            <target>Presupuestos</target>
+        </trans-unit>
+        <trans-unit id="24">
+            <source>Create quote</source>
+            <target>Crear presupuesto</target>
+        </trans-unit>
+        <trans-unit id="25">
+            <source>View quotes</source>
+            <target>Ver presupuestos</target>
+        </trans-unit>
+        <trans-unit id="26">
+            <source>Orders</source>
+            <target>Albaranes</target>
+        </trans-unit>
+        <trans-unit id="27">
+            <source>Create order</source>
+            <target>Crear albarán</target>
+        </trans-unit>
+        <trans-unit id="28">
+            <source>View orders</source>
+            <target>Ver albaranes</target>
+        </trans-unit>
+        <trans-unit id="29">
+            <source>Invoices</source>
+            <target>Facturas</target>
+        </trans-unit>
+        <trans-unit id="30">
+            <source>Create invoice</source>
+            <target>Crear factura</target>
+        </trans-unit>
+        <trans-unit id="31">
+            <source>View invoices</source>
+            <target>Ver facturas</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

@@ -26,6 +26,9 @@ teclliure_invoice:
     requirements:
       _locale: en|es|ca
 
+teclliure_invoice_ajax:
+    resource: "@TeclliureInvoiceBundle/Resources/config/routingAjax.yml"
+
 craue_config_settings:
   resource: "@CraueConfigBundle/Resources/config/routing/settings.xml"
   prefix:   /{_locale}/settings
@@ -37,3 +40,4 @@ homepage_localized:
     defaults: { _controller: TeclliureDashboardBundle:Default:index }
     requirements:
       _locale: en|es|ca
+

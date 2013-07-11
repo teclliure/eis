@@ -14,6 +14,7 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 use Doctrine\ORM\EntityManager;
 use Craue\ConfigBundle\Util\Config;
 use Teclliure\InvoiceBundle\Entity\Payment;
+use Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface;
 
 /**
  * Payment service. It "should" be the ONLY class used directly by controllers.

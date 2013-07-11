@@ -140,7 +140,9 @@ class CustomerService implements PaginatorAwareInterface {
         $queryBuilder->setMaxResults($limit);
         $queryBuilder->setFirstResult($offset);
 
-        return $queryBuilder->getQuery()->getResult();
+        $results = $queryBuilder->getQuery()->getResult();
+
+        return $results;
     }
 
     /**
@@ -199,6 +201,7 @@ class CustomerService implements PaginatorAwareInterface {
             $page,
             $limit
         );
+        $this->addTotals($pagination);
 
         return $pagination;
     }
@@ -318,5 +321,65 @@ class CustomerService implements PaginatorAwareInterface {
         $em = $this->getEntityManager();
         $em->persist($customer);
         $em->flush();
+    }
+
+    /**
+     * Get customer total payments amount
+     *
+     * @param Customer $customer Customer
+     * @return float Amount
+     *
+     * @api 0.1
+     */
+    protected function getCustomerPayments(Customer $customer) {
+        $total = 0;
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('c, i, p')
+            ->from('TeclliureInvoiceBundle:Common','c')
+            ->innerJoin('c.invoice','i')
+            ->leftJoin('i.payments','p')
+            ->where('c.customer = :customer')
+            ->setParameter('customer', $customer->getId());
+
+        $results = $queryBuilder->getQuery()->getResult();
+
+        foreach ($results as $result) {
+            foreach ($result->getInvoice()->getPayments() as $payment) {
+                $total += $payment->getAmount();
+            }
+        }
+        return $total;
+    }
+
+    /**
+     * Get customer total due
+     *
+     * @param Customer $customer Customer
+     * @return float Amount
+     *
+     * @api 0.1
+     */
+    protected function getCustomerDue(Customer $customer) {
+        $total = 0;
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('c, i')
+            ->from('TeclliureInvoiceBundle:Common','c')
+            ->innerJoin('c.invoice','i')
+            ->where('c.customer = :customer')
+            ->setParameter('customer', $customer->getId());
+
+        $results = $queryBuilder->getQuery()->getResult();
+
+        foreach ($results as $result) {
+            $total += $result->getInvoice()->getDueAmount();
+        }
+        return $total;
+    }
+
+    protected function addTotals ($results) {
+        foreach ($results as $key=>$result) {
+            $result->setTotalPaid($this->getCustomerPayments($result));
+            $result->setTotalDue($this->getCustomerDue($result));
+        }
     }
 }
