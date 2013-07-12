@@ -155,13 +155,12 @@ class MigrateQfactCommand extends ContainerAwareCommand
                 $stmt = $qfactDb->prepare('SELECT * from 2013_d_presupost where num_pre = '.$pre['num_pre']);
                 $stmt->execute();
                 $presLines = $stmt->fetchAll();
+                $desc = '';
                 foreach ($presLines as $line) {
                     $line = $this->convertEncodingArray($line);
-
-                    $desc = '';
                     $desc .= $line['descripcio']."\n";
 
-                    if ($line['unitats']) {
+                    if ($line['unitats'] && $line['preu']) {
                         $commonLine = new CommonLine();
                         $commonLine->setDescription($line['descripcio']);
                         $commonLine->addTax($taxes[$line['iva']]);

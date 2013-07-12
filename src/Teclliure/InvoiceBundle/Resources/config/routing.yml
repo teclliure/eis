@@ -124,4 +124,5 @@ payment_delete:
 
 taxes:
     resource: "@TeclliureInvoiceBundle/Controller/TaxController.php"
+    prefix:   admin
     type:     annotation

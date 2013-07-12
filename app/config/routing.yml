@@ -31,7 +31,7 @@ teclliure_invoice_ajax:
 
 craue_config_settings:
   resource: "@CraueConfigBundle/Resources/config/routing/settings.xml"
-  prefix:   /{_locale}/settings
+  prefix:   /{_locale}/admin/settings
   requirements:
     _locale: en|es|ca
 
