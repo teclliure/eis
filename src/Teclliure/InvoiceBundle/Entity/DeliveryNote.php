@@ -41,6 +41,14 @@ class DeliveryNote {
     private $status = 0;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $footnote;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -201,5 +209,28 @@ class DeliveryNote {
         elseif ($this->getStatus() == 2) {
             return 'Invoiced';
         }
+    }
+
+    /**
+     * Set footnote
+     *
+     * @param string $footnote
+     * @return DeliveryNote
+     */
+    public function setFootnote($footnote)
+    {
+        $this->footnote = $footnote;
+    
+        return $this;
+    }
+
+    /**
+     * Get footnote
+     *
+     * @return string 
+     */
+    public function getFootnote()
+    {
+        return $this->footnote;
     }
 }

@@ -10,3 +10,6 @@ company_identification: Company identification
 default_serie: Default serie
 default_country: Default country
 web: Default application values
+default_footnote_order: Default order footnote
+default_footnote_invoice: Default invoice footnote
+default_footnote_quote: Default quote footnote

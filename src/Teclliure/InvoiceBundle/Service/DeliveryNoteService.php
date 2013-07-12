@@ -133,14 +133,23 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      */
     public function createDeliveryNote() {
         $common = new Common();
+        $this->putDefaults($common);
+        return $common;
+    }
 
-        $deliveryNote = new DeliveryNote();
-        if ($this->getConfig()->get('default_country')) {
+    public function putDefaults(Common $common) {
+        $deliveryNote = $common->getDeliveryNote();
+        if (!$deliveryNote) {
+            $deliveryNote = new DeliveryNote();
+        }
+
+        if ($this->getConfig()->get('default_country') && !$common->getCustomerCountry()) {
             $common->setCustomerCountry($this->getConfig()->get('default_country'));
         }
+        if ($this->getConfig()->get('default_footnote_order') && !$deliveryNote->getFootnote()) {
+            $deliveryNote->setFootnote($this->getConfig()->get('default_footnote_order'));
+        }
         $common->setDeliveryNote($deliveryNote);
-
-        return $common;
     }
 
     /**

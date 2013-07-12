@@ -53,7 +53,9 @@ class DeliveryNoteController extends Controller
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Order with status different to draft could not be edited.'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
-
+            if ($request->get('new')) {
+                $deliveryNoteService->putDefaults($deliveryNote);
+            }
             // Create an array of the current CommonLines objects in the database
             foreach ($deliveryNote->getCommonLines() as $commonLine) {
                 $originalLines[] = $commonLine;

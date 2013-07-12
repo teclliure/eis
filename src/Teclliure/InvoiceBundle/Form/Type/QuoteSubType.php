@@ -10,6 +10,7 @@ class QuoteSubType extends CommonType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('footnote');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

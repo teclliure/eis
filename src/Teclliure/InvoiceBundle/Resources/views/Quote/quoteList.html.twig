@@ -28,7 +28,7 @@
                 {% endif %}
 
                 {% if (common.quote.status == 0) or  (common.quote.status == 1) %}
-                    <div style="margin-top: 10px">
+                    <div style="margin: 5px 0">
                     {% if not common.deliveryNote and not common.invoice %}
                         <a href="{{ path('quote_order', {'id': common.id }) }}" alt="{{ 'Make order'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make order'|trans }}</a>
                     {% endif %}

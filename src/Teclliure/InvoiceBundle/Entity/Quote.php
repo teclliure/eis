@@ -41,6 +41,14 @@ class Quote {
      */
     private $status = 0;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $footnote;
+
 
     /**
      * @var datetime $created
@@ -207,5 +215,28 @@ class Quote {
         elseif ($this->getStatus() == 3) {
             return 'Approved';
         }
+    }
+
+    /**
+     * Set footnote
+     *
+     * @param string $footnote
+     * @return Quote
+     */
+    public function setFootnote($footnote)
+    {
+        $this->footnote = $footnote;
+    
+        return $this;
+    }
+
+    /**
+     * Get footnote
+     *
+     * @return string 
+     */
+    public function getFootnote()
+    {
+        return $this->footnote;
     }
 }

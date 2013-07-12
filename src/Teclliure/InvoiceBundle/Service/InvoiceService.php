@@ -185,9 +185,13 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
                 $common->setCustomerCountry($this->getConfig()->get('default_country'));
             }
         }
+        if ($this->getConfig()->get('default_footnote_invoice') && !$invoice->getFootnote()) {
+            $invoice->setFootnote($this->getConfig()->get('default_footnote_invoice'));
+        }
         if (!$common->getInvoice()) {
             $common->setInvoice($invoice);
         }
+
     }
 
     /**

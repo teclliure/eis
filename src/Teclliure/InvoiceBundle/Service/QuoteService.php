@@ -132,6 +132,9 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         if ($this->getConfig()->get('default_country')) {
             $common->setCustomerCountry($this->getConfig()->get('default_country'));
         }
+        if ($this->getConfig()->get('default_footnote_quote')) {
+            $quote->setFootnote($this->getConfig()->get('default_footnote_quote'));
+        }
         $common->setQuote($quote);
 
         return $common;

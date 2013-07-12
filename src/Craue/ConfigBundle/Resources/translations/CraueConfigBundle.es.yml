@@ -10,3 +10,6 @@ company_identification: Identificación empresa
 default_serie: Serie por defecto
 default_country: Pais por defecto
 web: Valores por defecto aplicación
+default_footnote_order: Nota al pie por defecto albarán
+default_footnote_invoice: Nota al pie por defecto factura
+default_footnote_quote: Nota al pie por defecto presupuesto

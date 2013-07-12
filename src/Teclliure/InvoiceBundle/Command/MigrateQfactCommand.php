@@ -149,7 +149,7 @@ class MigrateQfactCommand extends ContainerAwareCommand
                 $quote->setCustomerCity($customer->getCity());
                 $quote->setCustomerState($customer->getState());
                 $quote->setCustomerCountry($customer->getCountry());
-                $quote->setFootnote($pre['text_peu']);
+                $quote->getQuote()->setFootnote($pre['text_peu']);
                 $quote->getQuote()->setCreated(new \DateTime($pre['data']));
 
                 $stmt = $qfactDb->prepare('SELECT * from 2013_d_presupost where num_pre = '.$pre['num_pre']);

@@ -41,6 +41,14 @@ class DeliveryNote {
     private $status = 0;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $footnote;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")

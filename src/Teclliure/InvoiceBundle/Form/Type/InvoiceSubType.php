@@ -19,6 +19,7 @@ class InvoiceSubType extends CommonType
             'widget' => 'single_text',
             'format' => 'dd/MM/yyyy'
         ));
+        $builder->add('footnote');
         $builder->add('serie');
     }
 

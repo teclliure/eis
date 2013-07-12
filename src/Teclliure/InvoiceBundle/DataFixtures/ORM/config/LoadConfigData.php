@@ -61,7 +61,7 @@ class LoadConfigData implements FixtureInterface
         $setting->setName('company_address');
         $setting->setType('textarea');
         $setting->setSection('company_info');
-        $setting->setTypeOptions(array());
+        $setting->setTypeOptions(array('attr' => array('class' => 'input-large', 'rows' => 3)));
         $setting->setSortOrder(4);
         $setting->setValue("1123 Wilson Way.\n World");
         $manager->persist($setting);
@@ -79,6 +79,30 @@ class LoadConfigData implements FixtureInterface
         $setting->setValue('ES');
         $setting->setSection('web');
         $setting->setTypeOptions(array());
+        $manager->persist($setting);
+
+        $setting = new Setting();
+        $setting->setName('default_footnote_quote');
+        $setting->setType('textarea');
+        $setting->setValue('Default footnote quote. Change on settings.');
+        $setting->setSection('web');
+        $setting->setTypeOptions(array('attr' => array('class' => 'input-xxlarge', 'rows' => 5)));
+        $manager->persist($setting);
+
+        $setting = new Setting();
+        $setting->setName('default_footnote_order');
+        $setting->setType('textarea');
+        $setting->setValue('Default footnote order. Change on settings.');
+        $setting->setSection('web');
+        $setting->setTypeOptions(array('attr' => array('class' => 'input-xxlarge', 'rows' => 5)));
+        $manager->persist($setting);
+
+        $setting = new Setting();
+        $setting->setName('default_footnote_invoice');
+        $setting->setType('textarea');
+        $setting->setValue('Default footnote invoice. Change on settings.');
+        $setting->setSection('web');
+        $setting->setTypeOptions(array('attr' => array('class' => 'input-xxlarge', 'rows' => 5)));
         $manager->persist($setting);
 
         $manager->flush();

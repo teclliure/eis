@@ -68,6 +68,14 @@ class Invoice {
     private $due_date;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(min = 2, max = 10000)
+     *
+     */
+    private $footnote;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -527,5 +535,28 @@ class Invoice {
     public function getDueAmount()
     {
         return $this->due_amount;
+    }
+
+    /**
+     * Set footnote
+     *
+     * @param string $footnote
+     * @return Invoice
+     */
+    public function setFootnote($footnote)
+    {
+        $this->footnote = $footnote;
+    
+        return $this;
+    }
+
+    /**
+     * Get footnote
+     *
+     * @return string 
+     */
+    public function getFootnote()
+    {
+        return $this->footnote;
     }
 }

@@ -55,8 +55,7 @@
             {{ common.description|nl2br }}
         </div>
 
-        <h3>{{ 'Invoice lines'|trans }}</h3>
-        <table id="commonLines" class="lines">
+        <table id="commonLines" class="lines" style="margin-top: 40px">
             <thead>
             <tr class="lineHeader not_delete">
                 <th class="lineDesc">{{ 'Description' }}</th>
@@ -103,6 +102,10 @@
             </tr>
             </tfoot>
         </table>
+
+        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
+            {{ common.quote.footnote|nl2br }}
+        </div>
 
         <div class="list_primary_buttons">
             {% if (common.quote) and (common.quote.status != 0) and (print != true) and not common.invoice and not common.deliveryNote %}

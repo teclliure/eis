@@ -132,6 +132,12 @@
                 </tfoot>
             </table>
 
+            <div class="inputDiv control-group {% if form.deliveryNote.footnote.vars.errors|length > 0 %}error{% endif %}">
+                <h3>{{ 'Footnote'|trans }}</h3>
+                {{ form_widget(form.deliveryNote.footnote, { 'attr': {'rows': 5, 'class': 'input-xxlarge', 'placeholder': 'Footnote'|trans} }) }}
+            </div>
+            <div style="clear: both">&nbsp;</div>
+
             {{ form_rest(form) }}
 
             <div class="list_primary_buttons">
