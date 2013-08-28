@@ -1,0 +1,33 @@
+{% extends '::container.html.twig' %}
+
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('serie') }}" class="btn btn-primary"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+        <a href="{{ path('serie_edit', { 'id': entity.id }) }}" class="btn"><i class="icon-file"></i> {{ 'Edit'|trans }}</a>
+    </div>
+
+    <h1>Tax</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>{{ 'Name'|trans }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Short'|trans }}</th>
+                <td>{{ entity.short }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Is active ?'|trans }}</th>
+                <td>{{ entity.active }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Start number'|trans }}</th>
+                <td>{{ entity.firstNumber }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

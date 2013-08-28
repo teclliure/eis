@@ -126,3 +126,8 @@ taxes:
     resource: "@TeclliureInvoiceBundle/Controller/TaxController.php"
     prefix:   admin
     type:     annotation
+
+series:
+    resource: "@TeclliureInvoiceBundle/Controller/SerieController.php"
+    prefix:   admin
+    type:     annotation
