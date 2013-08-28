@@ -1,0 +1,22 @@
+{% extends '::container.html.twig' %}
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('serie') }}" class="btn btn-primary"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ 'Serie creation'|trans }}</h1>
+    </div>
+
+    <form action="{{ path('serie_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button class="btn" type="submit">{{ 'Create'|trans }}</button>
+        </p>
+    </form>
+</div>
+{% endblock %}
+
+

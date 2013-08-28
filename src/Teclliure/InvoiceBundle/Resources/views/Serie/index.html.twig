@@ -1,0 +1,48 @@
+{% extends '::container.html.twig' %}
+
+
+{% block content %}
+<div id="inside_content">
+    <div class="list_primary_buttons">
+        <a href="{{ path('serie_new') }}" id="newTaxLink" class="btn btn-primary"><i class="icon-plus"></i> {{ 'New serie'|trans }}</a>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ 'Serie list'|trans }}</h1>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped" style="margin: 25px; width: 97%;">
+        <thead>
+            <tr>
+                <th>{{ 'Name'|trans }}</th>
+                <th>{{ 'Is active ?'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('serie_edit', { 'id': entity.id }) }}">{{ entity.name }} ({{ entity.short }})</a></td>
+                <td>
+                    {% if entity.active %}
+                        <i class="icon-ok"></i>
+                    {% else %}
+                        <i class="icon-remove"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if entity.active %}
+                        <a href="{{ path('serie_disable', { 'id': entity.id }) }}" class="btn btn-warning"><i class="icon-remove"></i> {{ 'Disable'|trans }}</a>
+                    {% else %}
+                        <a href="{{ path('serie_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-ok"></i> {{ 'Enable'|trans }}</a>
+                    {% endif %}
+                    {% if entity.invoices|length == 0 %}
+                        <a href="{{ path('serie_delete', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove"></i> {{ 'Delete'|trans }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
