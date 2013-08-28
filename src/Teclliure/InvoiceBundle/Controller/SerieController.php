@@ -235,6 +235,7 @@ class SerieController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Serie entity.');
         }
+        // FIXME: Memory problems when there are too many invoices
         if (count ($entity->getInvoices()) > 0) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Error deleting Serie: this Serie is used in invoices.'));
         }

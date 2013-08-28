@@ -47,7 +47,7 @@ class TaxController extends Controller
         $t = $this->get('translator');
         $entity  = new Tax();
         $form = $this->createForm(new TaxType(), $entity);
-        $form->bind($request);
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -153,7 +153,7 @@ class TaxController extends Controller
         }
 
         $editForm = $this->createForm(new TaxType(), $entity);
-        $editForm->bind($request);
+        $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->persist($entity);
@@ -226,6 +226,7 @@ class TaxController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Tax entity.');
         }
+        // FIXME: Memory problems when there are too many lines
         if (count ($entity->getLines()) > 0) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Error deleting Tax: this Tax is used in lines.'));
         }
