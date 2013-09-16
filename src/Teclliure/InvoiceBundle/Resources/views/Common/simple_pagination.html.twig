@@ -58,7 +58,7 @@
                 {% endfor %}
             </ul>
         </div>
-        <span>{{ 'of'|trans }} <span class="grid-pages">{{ endPage }}</span></span>
+        <span>{{ 'of'|trans }} <span class="grid-pages">{{ last }}</span></span>
         {% if next is defined %}
             <a class="pagerBtn btn grid-nextpage" href="{{ path(route, query|merge({(pageParameterName): next})) }}"><i class="icon-chevron-right"></i></a>
         {% else %}

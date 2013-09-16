@@ -3,6 +3,11 @@ search_customer:
     defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomer }
     prefix:   /
 
+search_contact:
+    pattern: /searchContact
+    defaults: { _controller: TeclliureInvoiceBundle:Common:searchContact }
+    prefix:   /
+
 search_customer_name:
     pattern: /searchCustomerName
     defaults: { _controller: TeclliureInvoiceBundle:Common:searchCustomerName }

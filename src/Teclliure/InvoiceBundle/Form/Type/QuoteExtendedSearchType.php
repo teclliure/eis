@@ -43,7 +43,7 @@ class QuoteExtendedSearchType extends SearchType
                     '0'     => 'Draft',
                     '1'     => 'Pending',
                     '2'     => 'Rejected',
-                    '3'     => 'Aprpoved',
+                    '3'     => 'Aproved',
                 ),
                 'label'     => 'Status',
                 'multiple'  => true,

@@ -23,6 +23,7 @@
                     {% if (print != true) %}<a href="mailto: {{ config.company_mail }}">{% endif %}{{ config.company_mail }}{% if (print != true) %}</a>{% endif %}
                 {% endif %}
             </div>
+
         </div>
 
         <h3>{{ 'Customer'|trans }}</h3>
@@ -49,6 +50,12 @@
         <div class="inputDiv control-group">
             {{ common.customerCountry }}
         </div>
+        {% if common.invoice.contactName or common.invoice.contactEmail %}
+            <h4>{{ 'Contact'|trans }}</h4>
+            <div class="inputDiv control-group">
+                {{ common.invoice.contactName }} {{ common.invoice.contactEmail }}
+            </div>
+        {% endif %}
 
         <h3>{{ 'Payment'|trans }}</h3>
         <div class="inputDivInline control-group">
@@ -58,10 +65,12 @@
         <div class="inputDivInline control-group">
             <b>{{ 'Due date'|trans }}</b>: {{ common.invoice.dueDate|date("d/m/Y") }}
         </div>
+        {% if common.invoice.serie %}
         &nbsp;&nbsp;
         <div class="inputDivInline control-group">
             <b>{{ 'Serie'|trans }}</b>: {{ common.invoice.serie }}
         </div>
+        {% endif %}
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
@@ -71,12 +80,12 @@
         <table id="commonLines" class="lines" style="margin-top: 40px">
             <thead>
             <tr class="lineHeader not_delete">
-                <th class="lineDesc">{{ 'Description' }}</th>
-                <th class="lineQty">{{ 'Quantity' }}</th>
-                <th class="lineUC">{{ 'Unitary cost' }}</th>
-                <th class="lineTaxes">{{ 'Taxes' }}</th>
-                <th class="lineDiscount">{{ 'Discount' }}</th>
-                <th class="lineDiscount">{{ 'Price' }}</th>
+                <th class="lineDesc">{{ 'Description'|trans }}</th>
+                <th class="lineQty">{{ 'Quantity'|trans }}</th>
+                <th class="lineUC">{{ 'Unitary cost'|trans }}</th>
+                <th class="lineTaxes">{{ 'Taxes'|trans }}</th>
+                <th class="lineDiscount">{{ 'Discount'|trans }}</th>
+                <th class="lineDiscount">{{ 'Price'|trans }}</th>
             </tr>
             </thead>
             <tbody id="tbody_lines">
@@ -117,7 +126,7 @@
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ common.deliveryNote.footnote|nl2br }}
+            {{ common.invoice.footnote|nl2br }}
         </div>
 
         <div class="list_primary_buttons">

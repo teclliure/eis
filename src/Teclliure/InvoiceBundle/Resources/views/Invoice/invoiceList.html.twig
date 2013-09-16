@@ -26,6 +26,7 @@
             <td>
                 {% if common.invoice.status == 0  %}
                 <a href="{{ path('invoice_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-mini"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                <a href="{{ path('invoice_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
                 {% else %}
                 <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View'|trans }}" class="btn btn-mini"><i class="icon-zoom-in"></i> {{ 'View'|trans }}</a>
                 <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>

@@ -20,8 +20,8 @@
                 {% endif %}
             </td>
             <td>{{ customer.identification }}</td>
-            <td>{{ customer.getTotalPaid|number_format(2, '.', ',') }}</td>
-            <td>{{ customer.getTotalDue|number_format(2, '.', ',') }}</td>
+            <td>{{ customer.getTotalPaid|number_format(2, '.', ',') }} €</td>
+            <td>{{ customer.getTotalDue|number_format(2, '.', ',') }} €</td>
             <td>
                 {% if customer.active %}
                     <i class="icon-ok-sign"></i>

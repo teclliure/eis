@@ -87,6 +87,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
                 }
             }
         }
+        $queryBuilder->addOrderBy('d.created', 'DESC');
         $query = $queryBuilder->getQuery();
 
         $pagination = $this->getPaginator()->paginate(

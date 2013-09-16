@@ -21,6 +21,8 @@ class InvoiceSubType extends CommonType
         ));
         $builder->add('footnote');
         $builder->add('serie');
+        $builder->add('contact_name');
+        $builder->add('contact_email');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

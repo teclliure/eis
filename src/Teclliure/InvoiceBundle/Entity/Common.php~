@@ -509,27 +509,4 @@ class Common {
         }
         return round($amount,2);
     }
-
-    /**
-     * Set footnote
-     *
-     * @param string $footnote
-     * @return Common
-     */
-    public function setFootnote($footnote)
-    {
-        $this->footnote = $footnote;
-    
-        return $this;
-    }
-
-    /**
-     * Get footnote
-     *
-     * @return string 
-     */
-    public function getFootnote()
-    {
-        return $this->footnote;
-    }
 }

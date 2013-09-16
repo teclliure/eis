@@ -75,6 +75,15 @@
             {{ form_errors(form.customer_country) }}
             {{ form_widget(form.customer_country, { 'attr': {'maxlength': 6, 'class': 'input-large uf-placeholder', 'placeholder': 'Country'|trans} }) }}
             </div>
+            <h4>{{ 'Contact'|trans }}</h4>
+            <div class="inputDiv control-group {% if form.deliveryNote.contact_name.vars.errors|length > 0 %}error{% endif %}">
+                {{ form_errors(form.deliveryNote.contact_name) }}
+                {{ form_widget(form.deliveryNote.contact_name, { 'attr': {'maxlength': 150, 'class': 'input-xxlarge-medium uf-placeholder', 'placeholder': 'Name'|trans} }) }}
+            </div>
+            <div class="inputDiv control-group {% if form.deliveryNote.contact_email.vars.errors|length > 0 %}error{% endif %}">
+                {{ form_errors(form.deliveryNote.contact_email) }}
+                {{ form_widget(form.deliveryNote.contact_email, { 'attr': {'maxlength': 150, 'class': 'input-xxlarge-medium uf-placeholder', 'placeholder': 'Email'|trans} }) }}
+            </div>
             <br />
             <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
             <h3>{{ 'Description'|trans }}</h3>
@@ -147,9 +156,6 @@
                     &nbsp;
                 {% endif %}
 
-                {% if (common.id) %}
-                    <a href="{{ path('delivery_note_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small btn-success"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
-                {% endif %}
                 {% if (not common.deliveryNote) or (common.deliveryNote.status == 0)  %}
                     <button type="submit" name="action" value="save_and_close" class="btn btn-info"><i class="icon-folder-close"></i> {{ 'Save and close'|trans }}</button>
                     <button type="submit" name="action" value="save" class="btn"><i class="icon-file"></i> {{ 'Save'|trans }}</button>

@@ -23,24 +23,23 @@
                 {% if common.quote.status == 0  %}
                 <a href="{{ path('quote_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
                 <a href="{{ path('quote_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
-                {% elseif (common.quote.status == 1) or (common.quote.status == 2) %}
-                <a href="{{ path('quote_open', {'id': common.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-small"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
                 {% endif %}
-
-                {% if (common.quote.status == 0) or  (common.quote.status == 1) %}
-                    <div style="margin: 5px 0">
+                <div style="margin: 5px 0">
+                {% if common.quote.status == 1 %}
                     {% if not common.deliveryNote and not common.invoice %}
                         <a href="{{ path('quote_order', {'id': common.id }) }}" alt="{{ 'Make order'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make order'|trans }}</a>
                     {% endif %}
                     {% if not common.invoice %}
                         <a href="{{ path('quote_invoice', {'id': common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
                     {% endif %}
+                    <br />
                     {% if not common.deliveryNote and not common.invoice %}
-                        <a href="{{ path('quote_deny', {'id': common.id }) }}" alt="{{ 'Mark as denied'|trans }}" class="btn btn-mini btn-danger"><i class="icon-lock"></i> {{ 'Mark as denied'|trans }}</a>
+                        <a href="{{ path('quote_deny', {'id': common.id }) }}" alt="{{ 'Denied'|trans }}" class="btn btn-mini btn-danger"><i class="icon-lock"></i> {{ 'Denied'|trans }}</a>
                     {% endif %}
-                    </div>
-                {% else %}
-                    <a href="{{ path('quote_view', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
+                {% endif %}
+                </div>
+                {% if common.quote.status > 0 %}
+                <a href="{{ path('quote_view', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
                 {% endif %}
                 {% if common.deliveryNote %}
                     <a href="{{ path('delivery_note_view', {'id': common.id }) }}" alt="{{ 'View delivery note'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Order view'|trans }}</a>
@@ -48,8 +47,9 @@
                 {% if common.invoice %}
                     <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Invoice view'|trans }}</a>
                 {% endif %}
-                {% if (common.quote.status != 0) %}
-                <a href="{{ path('quote_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                {% if (common.quote.status > 0) %}
+                    <a href="{{ path('quote_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                    <a href="{{ path('quote_open', {'id': common.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-small btn-warning"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
                 {% endif %}
             </td>
         </tr>

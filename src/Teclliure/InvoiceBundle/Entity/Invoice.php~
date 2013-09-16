@@ -158,6 +158,21 @@ class Invoice {
     protected $payments;
 
     /**
+     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     *
+     * @var String
+     */
+    protected $contact_name;
+
+    /**
+     *
+     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     *
+     * @var String
+     */
+    protected $contact_email;
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -535,5 +550,28 @@ class Invoice {
     public function getDueAmount()
     {
         return $this->due_amount;
+    }
+
+    /**
+     * Set footnote
+     *
+     * @param string $footnote
+     * @return Invoice
+     */
+    public function setFootnote($footnote)
+    {
+        $this->footnote = $footnote;
+    
+        return $this;
+    }
+
+    /**
+     * Get footnote
+     *
+     * @return string 
+     */
+    public function getFootnote()
+    {
+        return $this->footnote;
     }
 }

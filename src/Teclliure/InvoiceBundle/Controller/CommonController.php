@@ -30,7 +30,34 @@ class CommonController extends Controller
             $customerArray['city'] = $customer->getCity();
             $customerArray['state'] = $customer->getState();
             $customerArray['country'] = $customer->getCountry();
+            $contact = $customerService->getContact($customer, $baseObject);
+            $customerArray['contact_name'] = $contact->getName();
+            $customerArray['contact_email'] = $contact->getEmail();
             $returnArray[] = $customerArray;
+        }
+
+        $callback = $request->get('callback');
+        $response = new JsonResponse($returnArray, 200, array());
+        $response->setCallback($callback);
+        return $response;
+    }
+
+    public function searchContactAction(Request $request)
+    {
+        $returnArray = array();
+        $customerId = $request->get('customer');
+
+        if ($customerId) {
+            $customerService = $this->get('customer_service');
+
+            $contacts = $customerService->getContacts($customerId, $request->get('term'));
+
+            foreach ($contacts as $contact) {
+                $customerArray['label'] = $contact->getName().' - '.$contact->getEmail();
+                $customerArray['contact_name'] = $contact->getName();
+                $customerArray['contact_email'] = $contact->getEmail();
+                $returnArray[] = $customerArray;
+            }
         }
 
         $callback = $request->get('callback');

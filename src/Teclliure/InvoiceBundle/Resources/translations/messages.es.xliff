@@ -346,6 +346,46 @@
         <source>View quote</source>
         <target>Ver presupuesto</target>
       </trans-unit>
+      <trans-unit id="1">
+          <source>Draft</source>
+          <target>Borrador</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Rejected</source>
+        <target>Rechazado</target>
+      </trans-unit>
+      <trans-unit id="3">
+         <source>Aproved</source>
+         <target>Aprovado</target>
+      </trans-unit>
+      <trans-unit id="4">
+         <source>Closed</source>
+         <target>Cerrado</target>
+      </trans-unit>
+      <trans-unit id="5">
+         <source>Invoiced</source>
+         <target>Facturado</target>
+      </trans-unit>
+      <trans-unit id="6">
+         <source>Overdue</source>
+         <target>Impagado</target>
+      </trans-unit>
+      <trans-unit id="7">
+         <source>Overdued</source>
+         <target>Impagado</target>
+      </trans-unit>
+      <trans-unit id="8">
+         <source>Denied</source>
+         <target>Denegado</target>
+      </trans-unit>
+      <trans-unit id="9">
+         <source>Price</source>
+         <target>Precio</target>
+      </trans-unit>
+      <trans-unit id="10">
+         <source>Contact</source>
+         <target>Contacto</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

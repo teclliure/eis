@@ -67,6 +67,21 @@ class DeliveryNote {
     private $updated;
 
     /**
+     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     *
+     * @var String
+     */
+    protected $contact_name;
+
+    /**
+     *
+     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     *
+     * @var String
+     */
+    protected $contact_email;
+
+    /**
      * Set number
      *
      * @param string $number
@@ -232,5 +247,52 @@ class DeliveryNote {
     public function getFootnote()
     {
         return $this->footnote;
+    }
+
+
+    /**
+     * Set contact_name
+     *
+     * @param string $contactName
+     * @return DeliveryNote
+     */
+    public function setContactName($contactName)
+    {
+        $this->contact_name = $contactName;
+    
+        return $this;
+    }
+
+    /**
+     * Get contact_name
+     *
+     * @return string 
+     */
+    public function getContactName()
+    {
+        return $this->contact_name;
+    }
+
+    /**
+     * Set contact_email
+     *
+     * @param string $contactEmail
+     * @return DeliveryNote
+     */
+    public function setContactEmail($contactEmail)
+    {
+        $this->contact_email = $contactEmail;
+    
+        return $this;
+    }
+
+    /**
+     * Get contact_email
+     *
+     * @return string 
+     */
+    public function getContactEmail()
+    {
+        return $this->contact_email;
     }
 }

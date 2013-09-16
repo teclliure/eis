@@ -60,6 +60,7 @@ doctrine:
         auto_mapping: true
         resolve_target_entities:
             Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface: Teclliure\CustomerBundle\Entity\Customer
+            Teclliure\InvoiceBundle\Model\ContactInterface: Teclliure\CustomerBundle\Entity\Contact
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -5,13 +5,14 @@ namespace Teclliure\CustomerBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Teclliure\InvoiceBundle\Model\ContactInterface;
 
 /**
  * @ORM\Table(name="customer_contact")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Contact {
+class Contact implements ContactInterface {
     /**
     * @ORM\Id
     * @ORM\Column(type="integer")

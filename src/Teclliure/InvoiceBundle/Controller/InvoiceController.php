@@ -144,6 +144,17 @@ class InvoiceController extends Controller
         return $this->redirect($this->generateUrl('invoice_edit', array ('id'=>$invoice->getId())));
     }
 
+    public function closeInvoiceAction(Request $request) {
+        $t = $this->get('translator');
+        $invoiceService = $this->get('invoice_service');
+        $invoice = $invoiceService->getInvoice($request->get('id'));
+        $invoiceService->closeInvoice($invoice);
+
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Invoice closed!'));
+
+        return $this->redirect($this->generateUrl('invoice_list'));
+    }
+
     protected function notFoundRedirect ($id) {
         $t = $this->get('translator');
         $this->get('session')->getFlashBag()->add('error', $t->trans('Invoice with id ('.$id.') not found!'));

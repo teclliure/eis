@@ -88,6 +88,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
                 }
             }
         }
+        $queryBuilder->addOrderBy('i.issue_date', 'DESC');
         $query = $queryBuilder->getQuery();
 
         $pagination = $this->getPaginator()->paginate(
@@ -346,7 +347,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         }
         // var_dump($result);
         // print_r ($result);
-        // die ($result);
+        // die ('NumInvoice'.$number);
 
         return $number;
     }

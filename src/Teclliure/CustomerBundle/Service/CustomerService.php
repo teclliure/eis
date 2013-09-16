@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Craue\ConfigBundle\Util\Config;
 use Knp\Component\Pager\Paginator;
 use Teclliure\CustomerBundle\Entity\Customer;
+use Teclliure\CustomerBundle\Entity\Contact;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 
 /**
@@ -136,6 +137,7 @@ class CustomerService implements PaginatorAwareInterface {
                 }
             }
         }
+        $queryBuilder->addOrderBy('c.legal_name', 'ASC');
         // $queryBuilder->setParameter('where', $where);
         $queryBuilder->setMaxResults($limit);
         $queryBuilder->setFirstResult($offset);
@@ -194,6 +196,7 @@ class CustomerService implements PaginatorAwareInterface {
                 }
             }
         }
+        $queryBuilder->addOrderBy('c.legal_name', 'ASC');
         $query = $queryBuilder->getQuery();
 
         $pagination = $this->getPaginator()->paginate(
@@ -352,6 +355,58 @@ class CustomerService implements PaginatorAwareInterface {
     }
 
     /**
+     * Get customer total payments amount
+     *
+     * @param Customer $customer Customer
+     * @param string $type Document type: invoice, quote, ...
+     *
+     * @return Contact
+     *
+     * @api 0.1
+     */
+    public function getContact(Customer $customer, $type) {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('c')
+            ->from('TeclliureCustomerBundle:Contact','c')
+            ->innerJoin('c.customer', 'customer')
+            ->where('customer.id = :customer_id')
+            ->andWhere('c.send_'.$type.' = 1')
+            ->setParameter('customer_id', $customer->getId())
+            ->setMaxResults(1);
+
+       $contact = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        if (!$contact) {
+            $contact = new Contact();
+        }
+
+        return $contact;
+    }
+
+    /**
+     * Get customer total payments amount
+     *
+     * @param Customer $customer Customer
+     * @param string $type Document type: invoice, quote, ...
+     *
+     * @return Contact
+     *
+     * @api 0.1
+     */
+    public function getContacts($customerId, $search) {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('c')
+            ->from('TeclliureCustomerBundle:Contact','c')
+            ->innerJoin('c.customer', 'customer')
+            ->where('customer.id = :customer_id')
+            ->andWhere('c.name LIKE :search OR c.email LIKE :search')
+            ->setParameter('customer_id', $customerId)
+            ->setParameter('search', '%'.$search.'%');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * Get customer total due
      *
      * @param Customer $customer Customer
@@ -375,6 +430,7 @@ class CustomerService implements PaginatorAwareInterface {
         }
         return $total;
     }
+
 
     protected function addTotals ($results) {
         foreach ($results as $key=>$result) {

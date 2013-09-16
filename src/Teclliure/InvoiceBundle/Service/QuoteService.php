@@ -87,6 +87,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
                 }
             }
         }
+        $queryBuilder->addOrderBy('q.created', 'DESC');
         $query = $queryBuilder->getQuery();
 
         $pagination = $this->getPaginator()->paginate(

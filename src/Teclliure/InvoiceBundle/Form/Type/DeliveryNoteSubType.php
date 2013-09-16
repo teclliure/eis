@@ -11,6 +11,8 @@ class DeliveryNoteSubType extends CommonType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('footnote');
+        $builder->add('contact_name');
+        $builder->add('contact_email');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

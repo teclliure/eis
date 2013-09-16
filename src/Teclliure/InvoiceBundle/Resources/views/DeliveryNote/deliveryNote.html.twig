@@ -50,6 +50,12 @@
         <div class="inputDiv control-group">
             {{ common.customerCountry }}
         </div>
+        {% if common.deliveryNote.contactName or common.deliveryNote.contactEmail %}
+            <h4>{{ 'Contact'|trans }}</h4>
+            <div class="inputDiv control-group">
+                {{ common.deliveryNote.contactName }} {{ common.deliveryNote.contactEmail }}
+            </div>
+        {% endif %}
 
         <br />
         <div class="inputDiv control-group">
@@ -60,12 +66,12 @@
         <table id="commonLines" class="lines" style="margin-top: 40px">
             <thead>
             <tr class="lineHeader not_delete">
-                <th class="lineDesc">{{ 'Description' }}</th>
-                <th class="lineQty">{{ 'Quantity' }}</th>
-                <th class="lineUC">{{ 'Unitary cost' }}</th>
-                <th class="lineTaxes">{{ 'Taxes' }}</th>
-                <th class="lineDiscount">{{ 'Discount' }}</th>
-                <th class="lineDiscount">{{ 'Price' }}</th>
+                <th class="lineDesc">{{ 'Description'|trans }}</th>
+                <th class="lineQty">{{ 'Quantity'|trans }}</th>
+                <th class="lineUC">{{ 'Unitary cost'|trans }}</th>
+                <th class="lineTaxes">{{ 'Taxes'|trans }}</th>
+                <th class="lineDiscount">{{ 'Discount'|trans }}</th>
+                <th class="lineDiscount">{{ 'Price'|trans }}</th>
             </tr>
             </thead>
             <tbody id="tbody_lines">
