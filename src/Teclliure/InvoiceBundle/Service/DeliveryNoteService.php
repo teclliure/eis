@@ -16,6 +16,8 @@ use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Entity\DeliveryNote;
 use Teclliure\InvoiceBundle\Service\CommonService;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Teclliure\InvoiceBundle\Event\CommonEvent;
+use Teclliure\InvoiceBundle\CommonEvents;
 
 
 /**
@@ -225,6 +227,16 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
         $em = $this->getEntityManager();
         $em->persist($common);
         $em->flush();
+
+        // Dispatch Event
+        $closeEvent = new CommonEvent($common);
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_CLOSED, $closeEvent);
+
+        if ($closeEvent->isPropagationStopped()) {
+            // Things to do if stopped
+        } else {
+            // Things to do if not stopped
+        }
     }
 
     /**

@@ -17,6 +17,8 @@ use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Entity\Serie;
 use Teclliure\InvoiceBundle\Service\CommonService;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Teclliure\InvoiceBundle\Event\CommonEvent;
+use Teclliure\InvoiceBundle\CommonEvents;
 
 
 /**
@@ -273,6 +275,16 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         $em->persist($common);
         $em->flush();
         $em->getConnection()->exec('UNLOCK TABLES;');
+
+        // Dispatch Event
+        $closeEvent = new CommonEvent($common);
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_CLOSED, $closeEvent);
+
+        if ($closeEvent->isPropagationStopped()) {
+            // Things to do if stopped
+        } else {
+            // Things to do if not stopped
+        }
     }
 
     /**

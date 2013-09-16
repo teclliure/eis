@@ -9,6 +9,7 @@ use Teclliure\CustomerBundle\Entity\Customer;
 use Knp\Component\Pager\Paginator;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Craue\ConfigBundle\Util\Config;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /*
  * This file is part of Teclliure developed package build on 6/25/13.
@@ -46,14 +47,20 @@ class CommonService implements PaginatorAwareInterface {
     private $paginator;
 
     /**
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * Constructor.
      *
      * @param EntityManager
      *
      */
-    public function __construct(EntityManager $em, Config $config) {
+    public function __construct(EntityManager $em, Config $config, EventDispatcher $eventDispatcher) {
         $this->em = $em;
         $this->config = $config;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -74,6 +81,16 @@ class CommonService implements PaginatorAwareInterface {
      */
     public function getConfig() {
         return $this->config;
+    }
+
+    /**
+     * Return event dispatcher
+     *
+     * @return EventDispatcher
+     *
+     */
+    public function getEventDispatcher() {
+        return $this->eventDispatcher;
     }
 
     /**

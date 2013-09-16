@@ -3,6 +3,7 @@ parameters:
     teclliure_quote_service.class: Teclliure\InvoiceBundle\Service\QuoteService
     teclliure_delivery_note_service.class: Teclliure\InvoiceBundle\Service\DeliveryNoteService
     teclliure_payment_service.class: Teclliure\InvoiceBundle\Service\PaymentService
+    teclliure_from_mail: 'send@example.net'
 
 services:
   invoice_service:
@@ -10,6 +11,7 @@ services:
       arguments:
         em: "@doctrine.orm.entity_manager"
         config: "@craue_config"
+        eventDispatcher: "@event_dispatcher"
       tags:
         - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
@@ -18,6 +20,7 @@ services:
         arguments:
           em: "@doctrine.orm.entity_manager"
           config: "@craue_config"
+          eventDispatcher: "@event_dispatcher"
         tags:
           - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
@@ -26,6 +29,7 @@ services:
         arguments:
           em: "@doctrine.orm.entity_manager"
           config: "@craue_config"
+          eventDispatcher: "@event_dispatcher"
         tags:
           - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
@@ -60,6 +64,16 @@ services:
           arguments:
               - @doctrine.orm.entity_manager
 
+  teclliure.common.mailer.subscriber:
+        class: Teclliure\InvoiceBundle\Listener\CommonMailerSubscriber
+        arguments:
+            mailer: @mailer
+            translator: @translator
+            pdfGenerator: "@knp_snappy.pdf"
+            config: @craue_config
+            fromEmail: %teclliure_from_mail%
+        tags:
+            - { name: kernel.event_subscriber }
 #    teclliure_invoice.example:
 #        class: %teclliure_invoice.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
