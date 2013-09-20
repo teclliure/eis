@@ -68,6 +68,7 @@ services:
         class: Teclliure\InvoiceBundle\Listener\CommonMailerSubscriber
         arguments:
             mailer: @mailer
+            transport: @swiftmailer.transport.real
             translator: @translator
             pdfGenerator: "@knp_snappy.pdf"
             templating: @templating
