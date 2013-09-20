@@ -70,6 +70,7 @@ services:
             mailer: @mailer
             translator: @translator
             pdfGenerator: "@knp_snappy.pdf"
+            templating: @templating
             config: @craue_config
             fromEmail: %teclliure_from_mail%
         tags:

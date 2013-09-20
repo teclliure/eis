@@ -8,6 +8,7 @@ use Teclliure\InvoiceBundle\CommonEvents;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Craue\ConfigBundle\Util\Config;
 use Knp\Bundle\SnappyBundle\Snappy\LoggableGenerator;
+use Symfony\Component\Templating\EngineInterface;
 
 class CommonMailerSubscriber implements EventSubscriberInterface
 {
@@ -21,7 +22,7 @@ class CommonMailerSubscriber implements EventSubscriberInterface
 
     private $config;
 
-    public function __construct(\Swift_Mailer $mailer, Translator $translator, LoggableGenerator $pdfGenerator, Config $config, $fromEmail)
+    public function __construct(\Swift_Mailer $mailer, Translator $translator, LoggableGenerator $pdfGenerator, EngineInterface $templating, Config $config, $fromEmail)
     {
         $this->mailer = $mailer;
         $this->translator = $translator;
@@ -44,22 +45,23 @@ class CommonMailerSubscriber implements EventSubscriberInterface
     {
         $common = $event->getCommon();
 
-        $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
+        $html = $this->templating->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
             'common' => $common,
             'config' => $this->config->all(),
             'print'  => true
         ));
 
-        $tmpFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'invoice'.$common->getInvoice()->getIssueDate()->format('d-m-Y').$common->getInvoice()->getNumber().'.pdf';
+        $tmpFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'invoice'.$common->getInvoice()->getNumber().'.pdf';
+        unlink($tmpFile);
         $this->pdfGenerator->generateFromHtml($html, $tmpFile);
 
         // Send an email to contact
-        $message = Swift_Message::newInstance()
+        $message = $this->mailer->createMessage()
             ->setSubject($this->translator->trans('Invoice created').' '.$common->getInvoice()->getNumber())
             ->setFrom($this->fromEmail)
             ->setTo($common->getInvoice()->getContactEmail())
             ->setBody($this->translator->trans("Hello %name%, an new invoiced is avaliable to you. Open attached PDF file to get more info.", array('%name%'=>$common->getInvoice()->getContactName())))
-            ->attach(Swift_Attachment::fromPath($tmpFile));
+            ->attach(\Swift_Attachment::fromPath($tmpFile));
 
         $this->mailer->send($message);
 
