@@ -12,13 +12,13 @@ class TaxControllerTest extends WebTestCase
 
         // Create a new client to browse the application
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'user',
-            'PHP_AUTH_PW'   => 'userP',
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'adminP',
         ));
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/tax/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tax/");
+        $crawler = $client->request('GET', '/en/admin/tax/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /en/admin/tax/");
 
         $i = 0;
         while ($crawler->filter('td:contains("'.$taxName.' Edit'.'")')->count()) {
@@ -73,5 +73,20 @@ class TaxControllerTest extends WebTestCase
 
         // Check the entity has been delete on the list
         $this->assertNotRegExp('/'.$taxName.'/', $client->getResponse()->getContent());
+    }
+
+    public function testPerms()
+    {
+        $taxName = 'Test';
+
+        // Create a new client to browse the application
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'user',
+            'PHP_AUTH_PW'   => 'userP',
+        ));
+
+        // Create a new entry in the database
+        $crawler = $client->request('GET', '/en/admin/tax/');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "More needed permissions");
     }
 }

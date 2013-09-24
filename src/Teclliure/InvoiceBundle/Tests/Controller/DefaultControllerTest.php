@@ -12,9 +12,13 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/');
 
+        $response = $client->getResponse();
+
         $this->assertTrue(
-            $client->getResponse()->isRedirect('http://localhost/login')
+            $response->isRedirect()
         );
+
+        $this->assertRegExp('/\/login$/', $client->getResponse()->headers->get('location'));
 
         // $this->assertTrue($client->getResponse()->isSuccessful());
         // $this->assertTrue($crawler->filter('html:contains("input")')->count() == 4);

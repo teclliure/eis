@@ -32,8 +32,8 @@ class SerieController extends Controller
 
         foreach ($entities as $entity) {
             $result = $this->getDoctrine()->getManager()
-                ->createQuery('SELECT cl FROM CommonLine cl JOIN cl.taxes t WHERE t.id = :taxId')
-                ->setParameter($entity->getId(), $entity->getId())
+                ->createQuery('SELECT i FROM TeclliureInvoiceBundle:Invoice i WHERE i.serie = :serieId')
+                ->setParameter('serieId', $entity->getId())
                 ->setMaxResults(1)
                 ->getOneOrNullResult();
 

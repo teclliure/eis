@@ -30,6 +30,19 @@ class TaxController extends Controller
 
         $entities = $em->getRepository('TeclliureInvoiceBundle:Tax')->findAll();
 
+        foreach ($entities as $entity) {
+            $result = $this->getDoctrine()->getManager()
+                ->createQuery('SELECT cl FROM TeclliureInvoiceBundle:CommonLine cl JOIN cl.taxes t WHERE t.id = :taxId')
+                ->setParameter('taxId', $entity->getId())
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
+
+
+            if (!$result) {
+                $entity->setIsEmpty(true);
+            }
+        }
+
         return array(
             'entities' => $entities,
         );

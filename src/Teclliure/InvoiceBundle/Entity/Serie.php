@@ -61,6 +61,14 @@ class Serie {
     private $active = true;
 
     /**
+    *
+    * var bool
+    *
+    */
+    private $is_empty = false;
+
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -70,6 +78,22 @@ class Serie {
 
     public function __toString() {
         return $this->getName();
+    }
+
+    /**
+     * @param mixed $is_empty
+     */
+    public function setIsEmpty($is_empty)
+    {
+        $this->is_empty = $is_empty;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsEmpty()
+    {
+        return $this->is_empty;
     }
     
     /**
