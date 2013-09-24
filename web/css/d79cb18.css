@@ -152,6 +152,10 @@ body {
     margin: 30px 28px 0px 28px;
 }
 
+#results_datagrid {
+    clear: both;
+}
+
 #results_datagrid table tfoot {
     background-color: #f9f9f9;
 }

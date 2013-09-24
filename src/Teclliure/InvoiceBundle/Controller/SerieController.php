@@ -30,6 +30,18 @@ class SerieController extends Controller
 
         $entities = $em->getRepository('TeclliureInvoiceBundle:Serie')->findAll();
 
+        foreach ($entities as $entity) {
+            $result = $this->getDoctrine()->getManager()
+                ->createQuery('SELECT cl FROM CommonLine cl JOIN cl.taxes t WHERE t.id = :taxId')
+                ->setParameter($entity->getId(), $entity->getId())
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
+
+            if (!$result) {
+                $entity->setIsEmpty(true);
+            }
+        }
+
         return array(
             'entities' => $entities,
         );
