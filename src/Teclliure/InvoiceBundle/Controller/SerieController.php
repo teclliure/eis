@@ -247,8 +247,14 @@ class SerieController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Serie entity.');
         }
-        // FIXME: Memory problems when there are too many invoices
-        if (count ($entity->getInvoices()) > 0) {
+
+        $result = $this->getDoctrine()->getManager()
+            ->createQuery('SELECT i FROM TeclliureInvoiceBundle:Invoice i WHERE i.serie = :serieId')
+            ->setParameter('serieId', $entity->getId())
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if ($result) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Error deleting Serie: this Serie is used in invoices.'));
         }
         else {

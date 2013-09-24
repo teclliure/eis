@@ -36,6 +36,7 @@
                     {% else %}
                         <a href="{{ path('serie_enable', { 'id': entity.id }) }}" class="btn btn-success"><i class="icon-ok"></i> {{ 'Enable'|trans }}</a>
                     {% endif %}
+
                     {% if entity.isEmpty %}
                         <a href="{{ path('serie_delete', { 'id': entity.id }) }}" class="btn btn-danger"><i class="icon-remove"></i> {{ 'Delete'|trans }}</a>
                     {% endif %}
