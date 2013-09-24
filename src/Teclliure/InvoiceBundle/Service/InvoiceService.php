@@ -93,13 +93,18 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         $queryBuilder->addOrderBy('i.issue_date', 'DESC');
         $query = $queryBuilder->getQuery();
 
-        $pagination = $this->getPaginator()->paginate(
-            $query,
-            $page,
-            $limit
-        );
+        if ($limit && $page) {
+            $result = $this->getPaginator()->paginate(
+                $query,
+                $page,
+                $limit
+            );
+        }
+        else {
+            $result = $query->getResult();
+        }
 
-        return $pagination;
+        return $result;
     }
 
     /**

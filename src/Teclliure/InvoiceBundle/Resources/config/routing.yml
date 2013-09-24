@@ -18,6 +18,10 @@ invoice_print:
     pattern:  /invoice/print/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Invoice:printInvoice }
 
+invoice_list_print:
+    pattern:  /invoice/list/print
+    defaults: { _controller: TeclliureInvoiceBundle:Invoice:printList }
+
 invoice_delete:
     pattern:  /invoice/delete/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Invoice:deleteInvoice }

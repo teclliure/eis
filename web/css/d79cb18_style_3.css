@@ -127,6 +127,12 @@ body {
     margin: 30px 28px 0px 28px;
 }
 
+.bottom-actions {
+    float: right;
+    margin: 5px 28px 0px 28px;
+    clear: both;
+}
+
 .list_secondary_buttons {
     float: left;
     margin: 30px 28px 0px 28px;
@@ -573,3 +579,4 @@ td.lineTaxes div.tax {
 .input-xxlarge-medium {
     width: 257px;
 }
+

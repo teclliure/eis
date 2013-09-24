@@ -46,3 +46,10 @@
     </tr>
     </tfoot>
 </table>
+
+<div class="bottom-actions">
+    <a class="btn btn-small" href="{{ path('invoice_list_print', {'searchData': searchData}) }}">
+        <i class="icon-print"></i>
+        {{ 'Print listing'|trans }}
+    </a>
+</div>

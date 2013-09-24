@@ -35,9 +35,8 @@
                     <div class="resetSearchBtn"><button class="btn btn-mini btn-danger"><i class="icon-remove-circle"></i> {{ 'Reset'|trans }}</button></div>
                 </div>
                 {{ form_end(basicSearchForm) }}
-
-
             </div>
+
             <div id="advancedSearch" class="searchBox">
                 {{ form_start(extendedSearchForm, {'action': path('invoice_list'), 'method': 'POST',  'attr': {'class': 'form-search', 'id': 'formFilterAdvanced' }}) }}
                 <div class="inputDivInline control-group {% if extendedSearchForm.search.vars.errors|length > 0 %}error{% endif %}">
@@ -79,6 +78,7 @@
                 {{ form_end(extendedSearchForm) }}
             </div>
         </div>
+
         <div id="results_datagrid">
             {{ include('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig') }}
         </div>

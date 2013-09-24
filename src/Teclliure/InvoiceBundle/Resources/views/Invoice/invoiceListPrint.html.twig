@@ -1,0 +1,51 @@
+{% extends '::containerPrint.html.twig' %}
+
+{% block content %}
+    <table  class="table table-bordered table-hover" style="margin: 25px; width: 97%;">
+        <thead>
+        <tr>
+            <th>{{ 'Invoice number'|trans }}</th>
+            <th>{{ 'Customer name'|trans }}</th>
+            <th>{{ 'Date'|trans }}</th>
+            <th>{{ 'Due date'|trans }}</th>
+            <th>{{ 'Status'|trans }}</th>
+            <th>{{ 'Due'|trans }}</th>
+            <th>{{ 'Total'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set dueAmount = 0 %}
+        {% set grossAmount = 0 %}
+        {% for common in invoices %}
+            <tr>
+                <td>
+                    {{ common.invoice.number }}
+                </td>
+                <td>{{ common.customerName }}</td>
+                <td>{{ common.invoice.issueDate|date('d/m/Y') }}</td>
+                <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
+                <td>{{ common.invoice.statusName|trans }}</td>
+                <td>{{ common.invoice.dueAmount|number_format(2, '.', ',') }} €</td>
+                <td>{{ common.invoice.grossAmount|number_format(2, '.', ',') }} €</td>
+            </tr>
+            {% set dueAmount = common.invoice.dueAmount + dueAmount %}
+            {% set grossAmount = common.invoice.grossAmount + grossAmount %}
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4">
+            </td>
+            <td>
+                <b>{{ 'TOTALS'|trans }}</b>
+            </td>
+            <td>
+                <b><i>{{ dueAmount|number_format(2, '.', ',') }} €</i></b>
+            </td>
+            <td>
+                <b><i>{{ grossAmount|number_format(2, '.', ',') }} €</i></b>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+{% endblock %}

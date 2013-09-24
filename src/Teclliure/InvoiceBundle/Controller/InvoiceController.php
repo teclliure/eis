@@ -27,16 +27,41 @@ class InvoiceController extends Controller
         $invoices = $invoiceService->getInvoices(10,  $this->get('request')->query->get('page', 1), $searchData);
         if ($request->isXmlHttpRequest()) {
             return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
+                'searchData'            => serialize($searchData),
                 'invoices'              => $invoices
             ));
         }
         else {
             return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array(
                 'invoices'              => $invoices,
+                'searchData'            => serialize($searchData),
                 'basicSearchForm'       => $basicSearchForm->createView(),
                 'extendedSearchForm'    => $extendedSearchForm->createView()
             ));
         }
+    }
+
+    public function printListAction(Request $request)
+    {
+        $searchData = unserialize($request->get('searchData'));
+        $invoiceService = $this->get('invoice_service');
+        $invoices = $invoiceService->getInvoices(null, null, $searchData);
+
+        $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoiceListPrint.html.twig', array(
+            'invoices' => $invoices,
+            'config' => $this->get('craue_config')->all(),
+            'print'  => true
+        ));
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            200,
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'attachment; filename="invoiceList.pdf"'
+            )
+        );
+
     }
 
     public function addEditInvoiceAction(Request $request) {
