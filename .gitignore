@@ -9,6 +9,7 @@ web/uploads/*
 web/bundles/*
 web/app_test.*
 .idea
+.rsync_cache
 
 # Configuration files
 app/config/parameters.ini
