@@ -1,0 +1,43 @@
+<html>
+<head>
+    <script>
+        function subst() {
+            var vars = {};
+
+            // explode the URL query string
+            var x = document.location.search.substring(1).split('&');
+
+            // loop through each query string segment and get keys/values
+            for (var i in x)
+            {
+                var z = x[i].split('=',2);
+                vars[z[0]] = unescape(z[1]);
+            }
+
+            // an array of all the parameters passed into the footer file
+            var x = ['topage','page', 'webpage', 'section', 'subsection', 'subsubsection'];
+
+            for(var i in x) {
+                var y = document.getElementsByClassName(x[i]);
+
+                if (x[i] == 'section') {
+                    y[j].innerHTML = "<span>David Ruiz i Marina Company S.L. CIF: B-60719721. R.M. Barna tomo 28105 folio 90 sec. gral hoja 130554 Insc1&#170;.</span>";
+                }
+                else {
+                    for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="subst()">
+<table style="width: 100%; font-size: 8px">
+  <tr>
+    <td class="section"></td>
+    <td style="text-align:right">
+      <span class="page"></span>/<span class="topage"></span>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

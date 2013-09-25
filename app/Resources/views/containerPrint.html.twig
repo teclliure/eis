@@ -1,7 +1,8 @@
 {% extends '::baseAbsolute.html.twig' %}
 
 {% block body %}
-<div id ="mainContainer">
+<img src="{{ baseUrl ~ asset('img/rc_logo.jpeg') }}" alt="RC Logo" width="180px" style="margin-left: -30px;" />
+<div id ="mainContainer" style="font-size: 12px">
     {% block content %}
     {% endblock %}
 </div>

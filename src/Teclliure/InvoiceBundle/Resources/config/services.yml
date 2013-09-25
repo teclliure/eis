@@ -76,6 +76,11 @@ services:
             fromEmail: %teclliure_from_mail%
         tags:
             - { name: kernel.event_subscriber }
+
+  twig.extension.intl:
+    class: Twig_Extensions_Extension_Intl
+    tags:
+        - { name: twig.extension }
 #    teclliure_invoice.example:
 #        class: %teclliure_invoice.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

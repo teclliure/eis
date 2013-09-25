@@ -128,12 +128,16 @@ class QuoteController extends Controller
             'print'  => true
         ));
 
+        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig');
+
+        $pdfRenderer = $this->get('knp_snappy.pdf');
+        $pdfRenderer->setOption('load-error-handling', 'ignore');
         return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'attachment; filename="quote'.$quote->getQuote()->getCreated()->format('d-m-Y').$quote->getQuote()->getNumber().'.pdf"'
+                'Content-Disposition'   => 'attachment; filename="quote'.$quote->getQuote()->getCreated()->format('d-m-Y').$quote->getQuote()->getNumber().'.pdf"',
             )
         );
     }

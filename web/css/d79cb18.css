@@ -48,6 +48,18 @@ body {
     min-height: 400px;
 }
 
+.absolute_body {
+    background-color: white;
+}
+
+.absolute_body #mainContainer {
+    border: none;
+}
+
+.absolute_body #inside_content {
+    margin-left: 100px;
+}
+
 #languages {
     float: right;
     clear: both;
