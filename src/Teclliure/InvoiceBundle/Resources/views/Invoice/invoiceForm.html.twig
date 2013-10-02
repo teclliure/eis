@@ -7,6 +7,8 @@
     <script src="{{ asset('bundles/teclliureinvoice/js/jquery-ui-1.10.3.custom.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/teclliureinvoice/js/autocompleteCustomer.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/teclliureinvoice/js/datePicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/wysiwyg.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/teclliureinvoice/js/wysiwyg.js') }}" type="text/javascript"></script>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -104,7 +106,12 @@
             <br />
             <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
             <h3>{{ 'Description'|trans }}</h3>
-            {{ form_widget(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge', 'placeholder': 'Description'|trans} }) }}
+                <script>
+                    textareaId = "invoice_description";
+                    toolbarId = "wysihtml5Toolbar";
+                </script>
+                {{ include('TeclliureInvoiceBundle:Common:wysihtml_toolbar.html.twig') }}
+                {{ form_widget(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge wysihtmleditor', 'placeholder': 'Description'|trans} }) }}
             </div>
 
             <h3>{{ 'Invoice lines'|trans }}</h3>

@@ -31,7 +31,8 @@
     {% endjavascripts %}
     {% block javascripts %}{% endblock %}
     <script type="text/javascript">
-        basePath = '{{app.request.baseurl}}';
+        basePath = '{{app.request.basepath}}';
+        baseUrl = '{{app.request.baseurl}}';
     </script>
   </body>
 </html>

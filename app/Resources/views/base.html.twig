@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <!-- Bootstrap -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
     {% stylesheets
-        '../app/Resources/public/css/bootstrap.min.css'
-        '../app/Resources/public/css/bootstrap-responsive.min.css'
         '../app/Resources/public/css/style.css'
     %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
@@ -25,12 +25,14 @@
         '../app/Resources/public/js/bootstrap.min.js'
         '../app/Resources/public/js/alerts.js'
         '../app/Resources/public/js/bootbox.min.js'
+        '../web/js/wysiwyg-html5/wysihtml5-0.3.0.min.js'
     %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
     {% block javascripts %}{% endblock %}
     <script type="text/javascript">
-        basePath = '{{app.request.baseurl}}';
+        basePath = '{{app.request.basepath}}';
+        baseUrl = '{{app.request.baseurl}}';
     </script>
   </body>
 </html>

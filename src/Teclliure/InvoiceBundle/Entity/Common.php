@@ -509,4 +509,21 @@ class Common {
         }
         return round($amount,2);
     }
+
+    public function getTaxAmountArray()
+    {
+        $taxesArray = array();
+        $lines = $this->getCommonLines();
+        foreach ($lines as $line) {
+            $taxes = $line->getTaxes();
+            foreach ($taxes as $tax) {
+                if (!isset($taxesArray[$tax->getId()])) {
+                    $taxesArray[$tax->getId()]['tax'] = $tax;
+                    $taxesArray[$tax->getId()]['amount'] = 0;
+                }
+                $taxesArray[$tax->getId()]['amount'] += round(($line->getNetAmount()*$tax->getValue())/100, 2);
+            }
+        }
+        return $taxesArray;
+    }
 }

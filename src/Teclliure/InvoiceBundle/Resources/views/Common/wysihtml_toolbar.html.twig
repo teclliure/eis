@@ -1,0 +1,65 @@
+<div id="wysihtml5Toolbar" class="btn-toolbar" data-role="editor-toolbar" style="margin-left: -10px;" data-target="#">
+    <div class="btn-group btn-small">
+        <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-font"></i>&nbsp;
+            <span class="current-font">Normal text</span>&nbsp;<b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="div">Normal text</a></li>
+            <li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2"><h2>Heading 1</h2></a></li>
+            <li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3"><h3>Heading 2</h3></a></li>
+        </ul>
+    </div>
+
+    <div class="btn-group btn-small">
+        <a class="btn btn-small" data-wysihtml5-command="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+    </div>
+    <div class="btn-group btn-small">
+        <a class="btn btn-small" data-wysihtml5-command="insertunorderedlist" title="" title="Bullet list"><i class="icon-list-ul"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="insertorderedlist" title="" title="Number list"><i class="icon-list-ol"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="outdent" title="" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="indent" title="" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
+    </div>
+    <div class="btn-group btn-small">
+        <a class="btn btn-small" data-wysihtml5-command="justifyLeft" title="" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="justifyCenter" title="" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="justifyRight" title="" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
+    </div>
+
+    <a class="btn btn-small" data-wysihtml5-command="insertImage"><i class="icon-picture"></i></a>
+    <div class="btn-group">
+        <!-- Some wysihtml5 commands like 'createLink' require extra paramaters specified by the user (eg. href) -->
+        <a class="btn btn-small" data-wysihtml5-command="createLink" title="Hyperlink"><i class="icon-link"></i></a>
+        <a class="btn btn-small" data-wysihtml5-command="unlink" title="" title="Remove Hyperlink"><i class="icon-cut"></i></a>
+    </div>
+
+    <a class="btn btn-small" title="{{ 'Change HTML view'|trans }}" data-wysihtml5-action="change_view"><i class="icon-html5"></i></a>
+
+    <div data-wysihtml5-dialog="insertImage" style="display: none;">
+        <label>
+            {{ 'Image'|trans }}:
+            <input data-wysihtml5-dialog-field="src" value="http://">
+
+        </label>
+        <label>
+            {{ 'Align'|trans }}:
+            <select data-wysihtml5-dialog-field="className">
+                <option value="">{{ 'default'|trans }}</option>
+                <option value="wysiwyg-float-left">{{ 'left'|trans }}</option>
+                <option value="wysiwyg-float-right">{{ 'right'|trans }}</option>
+            </select>
+        </label>
+        <a class="btn btn-small btn-success" data-wysihtml5-dialog-action="save">{{ 'Save'|trans }}</a>
+        <a class="btn btn-small btn-warning" data-wysihtml5-dialog-action="cancel">{{ 'Cancel'|trans }}</a>
+    </div>
+
+    <div data-wysihtml5-dialog="createLink" style="display: none;">
+        <label>
+            {{ 'Link'|trans }}:
+            <input data-wysihtml5-dialog-field="href" value="http://" class="text">
+        </label>
+        <a class="btn btn-small btn-success" data-wysihtml5-dialog-action="save">{{ 'Save'|trans }}</a>
+        <a class="btn btn-small btn-warning" data-wysihtml5-dialog-action="cancel">{{ 'Cancel'|trans }}</a>
+    </div>
+</div>
