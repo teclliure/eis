@@ -595,7 +595,8 @@ td.lineTaxes div.tax {
 
 .wysihtmleditor {
     overflow:scroll;
-    /*max-height:300px*/
+    width: 660px;
+    min-height: 300px;
 }
 
 .wysihtml5-action-active, .wysihtml5-command-active {

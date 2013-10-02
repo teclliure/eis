@@ -89,10 +89,13 @@
             <div class="inputDiv control-group {% if form.description.vars.errors|length > 0 %}error{% endif %}">
             <h3>{{ 'Description'|trans }}</h3>
                 <script>
-                    textareaId = "quote_description";
-                    toolbarId = "wysihtml5Toolbar";
+                    var wysihtmlEditors = new Array();
+                    wysihtml = new Object();
+                    wysihtml.textareaId = "quote_description";
+                    wysihtml.toolbarId = "wysihtml5Toolbar";
+                    wysihtmlEditors[0] = wysihtml;
                 </script>
-                {{ include('TeclliureInvoiceBundle:Common:wysihtml_toolbar.html.twig') }}
+                {{ include('TeclliureInvoiceBundle:Common:wysihtml_toolbar.html.twig', {'toolbarId': 'wysihtml5Toolbar'}) }}
                 {{ form_widget(form.description, { 'attr': {'rows': 10, 'class': 'input-xxlarge wysihtmleditor', 'placeholder': 'Description'|trans} }) }}
             </div>
 
@@ -149,7 +152,14 @@
 
             <div class="inputDiv control-group {% if form.quote.footnote.vars.errors|length > 0 %}error{% endif %}">
                 <h3>{{ 'Footnote'|trans }}</h3>
-                {{ form_widget(form.quote.footnote, { 'attr': {'rows': 5, 'class': 'input-xxlarge', 'placeholder': 'Footnote'|trans} }) }}
+                <script>
+                    wysihtml2 = new Object();
+                    wysihtml2.textareaId = "quote_quote_footnote";
+                    wysihtml2.toolbarId = "wysihtml5ToolbarFootnote";
+                    wysihtmlEditors[1] = wysihtml2;
+                </script>
+                {{ include('TeclliureInvoiceBundle:Common:wysihtml_toolbar.html.twig', {'toolbarId': 'wysihtml5ToolbarFootnote'}) }}
+                {{ form_widget(form.quote.footnote, { 'attr': {'rows': 5, 'class': 'input-xxlarge wysihtmleditor', 'placeholder': 'Footnote'|trans} }) }}
             </div>
             <div style="clear: both">&nbsp;</div>
             {{ form_rest(form) }}

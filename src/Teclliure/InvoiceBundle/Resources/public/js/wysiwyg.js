@@ -559,9 +559,11 @@ var wysihtml5ParserRules = {
 };
 
 jQuery(document).ready(function() {
-    var editor = new wysihtml5.Editor(textareaId, {
-        toolbar: toolbarId,
-        stylesheets: basePath + "/css/stylesheet_wysihtml5.css",
-        parserRules: wysihtml5ParserRules
-    });
+    for (i=0; i<wysihtmlEditors.length; i++) {
+            new wysihtml5.Editor(wysihtmlEditors[i].textareaId, {
+            toolbar: wysihtmlEditors[i].toolbarId,
+            stylesheets: basePath + "/css/stylesheet_wysihtml5.css",
+            parserRules: wysihtml5ParserRules
+        });
+    }
 });
