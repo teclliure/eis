@@ -18,7 +18,7 @@
         <br />
         <br />
         <div class="inputDiv control-group">
-            {{ common.description|nl2br }}
+            {{ common.description|raw }}
         </div>
 
         <table id="commonLines" class="lines" style="margin-top: 40px; width: 100%;">
@@ -57,7 +57,7 @@
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ common.deliveryNote.footnote|nl2br }}
+            {{ common.deliveryNote.footnote|raw }}
         </div>
 
         {% if (print != true) %}
