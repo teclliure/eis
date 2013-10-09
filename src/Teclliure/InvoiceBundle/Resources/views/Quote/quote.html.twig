@@ -1,6 +1,6 @@
 
-    <div id="inside_content">
-        <i>Barcelona, {{ common.quote.created|localizeddate('long','none') }}</i>
+    <div id="inside_content"  style="font-size: 0.8em;">
+        Barcelona, {{ common.quote.created|localizeddate('long','none') }}
         <br /><br />
         <b>{{ common.customerName }}</b><br />
         {% if common.quote.contactName or common.quote.contactEmail %}
@@ -11,7 +11,7 @@
         {{ common.customerZipCode }} {{ common.customerCity }}<br />
         {{ common.customerState }} {{ common.customerCountry }}<br />
         <br />
-        <i><b>{{ 'Quote'|trans }} - {{ common.quote.number }}</b></i>
+        <b>{{ 'Quote'|trans }} - {{ common.quote.number }}</b>
         <br />
         <br />
         <div class="inputDiv control-group">
@@ -44,29 +44,27 @@
             </tr>
             </tfoot>
         </table>
+        <div style="margin-left: 7px; font-size: 0.8em;">IVA no incluido</div>
 
-        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
+        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both; font-size: 0.7em;">
             {{ common.quote.footnote|raw }}
         </div>
 
         <br /><br /><br />
         <div style="float: left; width: 40%">
-            <i>
             Aceptación presupuesto<br /><br /><br /><br />
 
             {% if common.quote.contactName %}
                 Att. {{ common.quote.contactName }} en nombre de<br />
             {% endif %}
             {{ common.customerName }}
-            </i>
         </div>
 
         <div style="float: right; width: 40%">
-            <i>
             Aceptación presupuesto<br /><br /><br /><br />
 
             Ruiz+Company
-            </i>
+
         </div>
 
         <div style="clear:both;"></div>

@@ -1,6 +1,6 @@
 
-    <div id="inside_content">
-        <i>Barcelona, {{ common.deliveryNote.created|localizeddate('long','none') }}</i>
+    <div id="inside_content"  style="font-size: 0.8em;">
+        Barcelona, {{ common.deliveryNote.created|localizeddate('long','none') }}
         <br /><br />
         <b>{{ common.customerName }}</b><br />
         {% if common.deliveryNote.contactName or common.deliveryNote.contactEmail %}
@@ -11,7 +11,7 @@
         {{ common.customerZipCode }} {{ common.customerCity }}<br />
         {{ common.customerState }} {{ common.customerCountry }}<br />
         <br />
-        <i><b>{{ 'Order'|trans }} - {{ common.deliveryNote.number }}</b></i>
+        <b>{{ 'Order'|trans }} - {{ common.deliveryNote.number }}</b>
         {% if common.quote  %}
             <br /><br /><b>{{ 'Based on'|trans }} {{ 'quote'|trans }}: {{ common.quote.number }}</b>
         {% endif %}
@@ -56,7 +56,7 @@
             </tfoot>
         </table>
 
-        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
+        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both; font-size: 0.7em;">
             {{ common.deliveryNote.footnote|raw }}
         </div>
 

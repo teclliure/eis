@@ -1,6 +1,6 @@
 
-    <div id="inside_content">
-        <i>Barcelona, {{ common.invoice.issueDate|localizeddate('long','none') }}</i>
+    <div id="inside_content" style="font-size: 0.8em;">
+        Barcelona, {{ common.invoice.issueDate|localizeddate('long','none') }}
         <br /><br />
         <b>{{ common.customerName }}</b><br />
         {% if common.invoice.contactName or common.invoice.contactEmail %}
@@ -11,7 +11,7 @@
         {{ common.customerZipCode }} {{ common.customerCity }}<br />
         {{ common.customerState }} {{ common.customerCountry }}<br />
         <br />
-        <i><b>{{ 'Invoice'|trans }} - {{ common.invoice.number }}</b></i>
+        <b>{{ 'Invoice'|trans }} - {{ common.invoice.number }}</b>
         {% if common.quote  %}
             <br /><br /><b>{{ 'Based on'|trans }} {{ 'quote'|trans }}: {{ common.quote.number }}</b>
         {% endif %}
@@ -61,7 +61,7 @@
             </tfoot>
         </table>
 
-        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
+        <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both; font-size: 0.7em">
             {{ common.invoice.footnote|raw }}
         </div>
 
