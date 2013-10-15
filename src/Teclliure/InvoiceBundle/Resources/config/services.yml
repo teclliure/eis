@@ -64,8 +64,21 @@ services:
           arguments:
               - @doctrine.orm.entity_manager
 
-  teclliure.common.mailer.subscriber:
-        class: Teclliure\InvoiceBundle\Listener\CommonMailerSubscriber
+#  teclliure.common.mailer.subscriber:
+#        class: Teclliure\InvoiceBundle\Listener\CommonMailerSubscriber
+#        arguments:
+#            mailer: @mailer
+#            transport: @swiftmailer.transport.real
+#            translator: @translator
+#            pdfGenerator: "@knp_snappy.pdf"
+#            templating: @templating
+#            config: @craue_config
+#            fromEmail: %teclliure_from_mail%
+#        tags:
+#            - { name: kernel.event_subscriber }
+
+  invoice_mailer:
+        class: Teclliure\InvoiceBundle\Mailer\Mailer
         arguments:
             mailer: @mailer
             transport: @swiftmailer.transport.real
@@ -74,8 +87,6 @@ services:
             templating: @templating
             config: @craue_config
             fromEmail: %teclliure_from_mail%
-        tags:
-            - { name: kernel.event_subscriber }
 
   twig.extension.intl:
     class: Twig_Extensions_Extension_Intl

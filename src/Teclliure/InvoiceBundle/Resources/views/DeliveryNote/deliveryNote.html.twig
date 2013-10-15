@@ -1,6 +1,6 @@
 
     <div id="inside_content"  style="font-size: 0.8em;">
-        Barcelona, {{ common.deliveryNote.created|localizeddate('long','none') }}
+        Barcelona, {{ common.deliveryNote.updated|localizeddate('long','none') }}
         <br /><br />
         <b>{{ common.customerName }}</b><br />
         {% if common.deliveryNote.contactName or common.deliveryNote.contactEmail %}
