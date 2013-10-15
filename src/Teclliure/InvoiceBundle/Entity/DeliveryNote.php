@@ -67,7 +67,7 @@ class DeliveryNote {
     private $updated;
 
     /**
-     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     * @ORM\Column(type="string", length=150, nullable=true )
      *
      * @var String
      */
@@ -75,7 +75,7 @@ class DeliveryNote {
 
     /**
      *
-     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     * @ORM\Column(type="string", length=150, nullable=true )
      *
      * @var String
      */

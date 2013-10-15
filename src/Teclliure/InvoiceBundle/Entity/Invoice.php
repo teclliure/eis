@@ -158,7 +158,7 @@ class Invoice {
     protected $payments;
 
     /**
-     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     * @ORM\Column(type="string", length=150, nullable=true )
      *
      * @var String
      */
@@ -166,7 +166,7 @@ class Invoice {
 
     /**
      *
-     * @ORM\Column(type="string", length=150, unique=true, nullable=true )
+     * @ORM\Column(type="string", length=150, nullable=true )
      *
      * @var String
      */

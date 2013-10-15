@@ -867,3 +867,7 @@ ul.wysihtml5-toolbar div[data-wysihtml5-command-value="orange"] {
 .wysiwyg-clear-left {
     clear: left;
 }
+
+.invoicePrint, .orderPrint, .quotePrint {
+
+}
