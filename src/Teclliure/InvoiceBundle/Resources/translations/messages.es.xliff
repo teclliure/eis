@@ -386,6 +386,22 @@
          <source>Contact</source>
          <target>Contacto</target>
       </trans-unit>
+      <trans-unit id="11">
+         <source>Print listing</source>
+         <target>Imprimir listado</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Based on</source>
+        <target>Basado en el</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>order</source>
+        <target>albarán</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>quote</source>
+        <target>presupuesto</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

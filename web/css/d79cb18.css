@@ -869,5 +869,6 @@ ul.wysihtml5-toolbar div[data-wysihtml5-command-value="orange"] {
 }
 
 .invoicePrint, .orderPrint, .quotePrint {
-
+    font-family: 'Helvetica', 'Helvetica Neue Light';
+    font-size: 9px;
 }
