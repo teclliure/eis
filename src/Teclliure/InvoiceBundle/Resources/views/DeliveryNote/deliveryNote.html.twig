@@ -1,5 +1,5 @@
 
-    <div id="inside_content"  class="orderPrint" style="font-size: 0.8em;">
+    <div id="inside_content"  class="orderPrint">
         Barcelona, {{ common.deliveryNote.updated|localizeddate('long','none') }}
         <br /><br />
         <b>{{ common.customerName }}</b><br />
@@ -32,26 +32,28 @@
                 <td colspan="2">&nbsp;</td>
             </tr>
             {% if common.discountAmount %}
-                <tr id="add_line_link_li" class="not_delete">
-                    <td style="color: black; font-size: 9px;">{{ 'Base'|trans }}</td>
-                    <td id="total_base_amount" style="color: black; font-size: 9px; text-align: right;">{{ common.baseAmount|number_format(2, '.', ',') }} €</td>
+                <tr id="add_line_link_li" class="totals1">
+                    <td style="color: black;">{{ 'Base'|trans }}</td>
+                    <td id="total_base_amount" style="color: black; text-align: right;">{{ common.baseAmount|number_format(2, '.', ',') }} €</td>
                 </tr>
-                <tr id="add_line_link_li" class="not_delete">
+                <tr id="add_line_link_li" class="totals1">
                     <td style="color: black; font-size: 9px;">{{ 'Discount'|trans }}</td>
-                    <td id="total_discount" style="color: black; font-size: 9px; text-align: right;">- {{ common.discountAmount|number_format(2, '.', ',') }} €</td>
+                    <td id="total_discount" style="color: black;text-align: right;">- {{ common.discountAmount|number_format(2, '.', ',') }} €</td>
                 </tr>
             {% endif %}
             {% for tax in common.getTaxAmountArray %}
                 {% if tax.amount %}
-                <tr id="add_line_link_li" class="not_delete">
-                    <td style="color: black; font-size: 9px;">{{ tax.tax.name|trans }} ({{ tax.tax.value|trans }}%)</td>
-                    <td id="total_discount" style="color: black; font-size: 9px; text-align: right;">{{ tax.amount|number_format(2, '.', ',') }} €</td>
-                </tr>
+                    <tr id="add_line_link_li" class="totals1">
+                        <td style="color: black;">{{ tax.tax.name|trans }} ({{ tax.tax.value|trans }}%)</td>
+                        <td id="total_discount" style="color: black; text-align: right;">{{ tax.amount|number_format(2, '.', ',') }} €</td>
+                    </tr>
                 {% endif %}
             {% endfor %}
-            <tr id="add_line_link_li" class="not_delete" style="border-bottom: solid 2px black; color: black;">
-                <td style="width: 80%;  font-size: 10px;"><b>{{ 'TOTAL'|trans }}</b></td>
-                <td style="width: 20%;  font-size: 10px; text-align: right;" id="total_subtotal"><b>{{ common.grossAmount|number_format(2, '.', ',') }} €</b></td>
+            <tr id="add_line_link_li" class="totals2" style="border-bottom: solid 2px black; color: black;">
+                <td style="width: 80%;"><b>{{ 'TOTAL'|trans }}</b></td>
+                <td style="width: 20%; text-align: right;" id="total_subtotal">
+                    <b>{{ common.grossAmount|number_format(2, '.', ',') }} €</b>
+                </td>
             </tr>
             </tfoot>
         </table>

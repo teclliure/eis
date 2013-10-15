@@ -1,5 +1,5 @@
 
-    <div id="inside_content" class="quotePrint"  style="font-size: 0.8em;">
+    <div id="inside_content" class="quotePrint">
         Barcelona, {{ common.quote.updated  |localizeddate('long','none') }}
         <br /><br />
         <b>{{ common.customerName }}</b><br />
@@ -30,17 +30,17 @@
             </tr>
             {% if common.discountAmount %}
                 <tr id="add_line_link_li" class="not_delete">
-                    <td style="color: black; font-size: 9px;">{{ 'Base'|trans }}</td>
-                    <td id="total_base_amount" style="color: black; font-size: 9px; text-align: right;">{{ common.baseAmount|number_format(2, '.', ',') }} €</td>
+                    <td style="color: black;">{{ 'Base'|trans }}</td>
+                    <td id="total_base_amount" style="color: black; text-align: right;">{{ common.baseAmount|number_format(2, '.', ',') }} €</td>
                 </tr>
                 <tr id="add_line_link_li" class="not_delete">
                     <td style="color: black; font-size: 9px;">{{ 'Discount'|trans }}</td>
-                    <td id="total_discount" style="color: black; font-size: 9px; text-align: right;">- {{ common.discountAmount|number_format(2, '.', ',') }} €</td>
+                    <td id="total_discount" style="color: black; text-align: right;">- {{ common.discountAmount|number_format(2, '.', ',') }} €</td>
                 </tr>
             {% endif %}
-            <tr id="add_line_link_li" class="not_delete" style="border-bottom: solid 2px black; color: black;">
-                <td style="width: 80%;  font-size: 10px"><b>{{ 'TOTAL'|trans }}</b></td>
-                <td style="width: 20%;  font-size: 10px; text-align: right;" id="total_subtotal"><b>{{ common.netAmount|number_format(2, '.', ',') }} €</b></td>
+            <tr id="add_line_link_li" class="totals2" style="border-bottom: solid 2px black; color: black;">
+                <td style="width: 80%;"><b>{{ 'TOTAL'|trans }}</b></td>
+                <td style="width: 20%; text-align: right;" id="total_subtotal"><b>{{ common.netAmount|number_format(2, '.', ',') }} €</b></td>
             </tr>
             </tfoot>
         </table>
