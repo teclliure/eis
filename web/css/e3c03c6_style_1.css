@@ -38,7 +38,7 @@ body {
 }
 
 .absolute_body #inside_content {
-    margin-left: 100px;
+    /*margin-left: 100px;*/
 }
 
 #languages {
