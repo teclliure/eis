@@ -131,7 +131,6 @@ class QuoteController extends Controller
         $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig');
 
         $pdfRenderer = $this->get('knp_snappy.pdf');
-        $pdfRenderer->setOption('load-error-handling', 'ignore');
         return new Response(
             $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm')),
             200,

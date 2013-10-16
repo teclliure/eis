@@ -109,10 +109,13 @@ class CommonController extends Controller
             $commonLine->setDiscount($line['discount']);
             $commonLine->setUnitaryCost($line['unitary_cost']);
 
-            foreach ($line['taxes'] as $tax) {
-                $tax = $taxRepository->find($tax);
-                if ($tax) {
-                    $commonLine->addTax($tax);
+
+            if (isset($line['taxes']) && is_array($line['taxes'])) {
+                foreach ($line['taxes'] as $tax) {
+                    $tax = $taxRepository->find($tax);
+                    if ($tax) {
+                        $commonLine->addTax($tax);
+                    }
                 }
             }
             $lines['invoice_common_common_lines_'.$key] = $commonLine;
