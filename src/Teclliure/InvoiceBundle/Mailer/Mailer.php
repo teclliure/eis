@@ -135,7 +135,7 @@ class Mailer implements MailerInterface
      * @param string $toEmail
      * @param string $attach
      */
-    protected function sendEmailMessage($subject, $body, $fromEmail, $toEmail, $attach = nulll)
+    protected function sendEmailMessage($subject, $body, $fromEmail, $toEmail, $attach = null)
     {
         // Send an email to contact
         $message = $this->mailer->createMessage()
