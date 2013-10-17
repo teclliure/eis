@@ -23,8 +23,8 @@ monolog:
             type:         fingers_crossed
             action_level: error
             handler:      nested
-            level: error
+            level:        ERROR
         nested:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
-            level: error
+            level: ERROR
