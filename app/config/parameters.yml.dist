@@ -13,3 +13,6 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeItAAA
+
+    test_user_user_pass: userP
+    test_user_admin_pass: adminP
