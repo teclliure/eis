@@ -73,7 +73,7 @@ function addLineFormDeleteLink($lineFormLi) {
 function updatePrice(that) {
     $.ajax({
         type: "POST",
-        url: basePath + "/updatePrices?baseObject="+baseObject,
+        url: baseUrl + "/updatePrices?baseObject="+baseObject,
         data: $('#invoiceForm').serialize(),
         beforeSend: function() {
             //that.$element is a variable that stores the element the plugin was called on

@@ -14,7 +14,7 @@ $(function() {
                 xhr.abort();
                 // alert('close');
             }
-            xhr = $.getJSON(basePath + "/searchCustomer",
+            xhr = $.getJSON(baseUrl + "/searchCustomer",
                 param,
                 response);
         },
@@ -56,7 +56,7 @@ $(function() {
                 xhrContact.abort();
                 // alert('close');
             }
-            xhrContact = $.getJSON(basePath + "/searchContact",
+            xhrContact = $.getJSON(baseUrl + "/searchContact",
                 param,
                 response);
         },

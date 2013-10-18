@@ -11,7 +11,7 @@ $(function() {
                 xhr.abort();
                 // alert('close');
             }
-            xhr = $.getJSON(basePath + "/searchCustomerName",
+            xhr = $.getJSON(baseUrl + "/searchCustomerName",
                 param,
                 response);
         }
