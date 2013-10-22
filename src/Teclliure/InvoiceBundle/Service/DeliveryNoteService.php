@@ -69,7 +69,14 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
+
                     $fieldName = preg_replace('/^d_/', 'd.',preg_replace('/^c_/', 'c.', $key));
+                    if (strpos('c.', $key) !== false) {
+                        $this->customChecker->checkTableFieldExists('TeclliureInvoiceBundle:Common', $key);
+                    }
+                    else {
+                        $this->customChecker->checkTableFieldExists('TeclliureInvoiceBundle:DeliveryNote', $key);
+                    }
                     $value = $filter;
                     if (is_array($filter)) {
                         $queryBuilder->andWhere($fieldName.' IN (:where'.$key.')')

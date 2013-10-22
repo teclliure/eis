@@ -12,10 +12,10 @@ namespace Teclliure\CustomerBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Craue\ConfigBundle\Util\Config;
 use Knp\Component\Pager\Paginator;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 use Teclliure\CustomerBundle\Entity\Customer;
 use Teclliure\CustomerBundle\Entity\Contact;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Teclliure\InvoiceBundle\Util\DoctrineCustomChecker;
 
 /**
  * Customer service. It "should" be the ONLY class used directly by controllers in order to deal with customers.
@@ -45,9 +45,9 @@ class CustomerService implements PaginatorAwareInterface {
     private $paginator;
 
     /**
-     * @var Array
+     * @var DoctrineCustomChecker
      */
-    private $cachedSchemas;
+    private $customChecker;
 
     /**
      * Constructor.
@@ -55,9 +55,10 @@ class CustomerService implements PaginatorAwareInterface {
      * @param EntityManager
      *
      */
-    public function __construct(EntityManager $em, Config $config) {
+    public function __construct(EntityManager $em, Config $config, DoctrineCustomChecker $customChecker) {
         $this->em = $em;
         $this->config = $config;
+        $this->customChecker = $customChecker;
     }
 
     /**
@@ -127,6 +128,8 @@ class CustomerService implements PaginatorAwareInterface {
                     $dql = 'c.name LIKE :find OR c.legal_name LIKE :find2';
                 }
                 else {
+                    // Check that key is a a field of the table to avoid SQL Injection
+                    $this->customChecker->checkTableFieldExists('TeclliureCustomerBundle:Customer', $key);
                     $dql = 'c.'.$key. ' LIKE :find';
                 }
                 if ($andOr == 'AND') {
@@ -166,7 +169,6 @@ class CustomerService implements PaginatorAwareInterface {
      * @api 0.1
      */
     public function getCustomers($limit = 10, $page = 1, $filters = array()) {
-
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('c')
             ->from('TeclliureCustomerBundle:Customer','c');
@@ -182,17 +184,15 @@ class CustomerService implements PaginatorAwareInterface {
 
             foreach ($filters as $key=>$filter) {
                 // print $key.'-'.$filter.'__';
-                if ($filter != '') {
+                if ($filter !== '') {
                     $fieldName = preg_replace('/^c_/', 'c.', $key);
                     $value = $filter;
-                    // Check that key is a a field of the table to avoid SQL Injection
-                    $this->checkTableFieldExists('TeclliureCustomerBundle:Customer',$key);
+                    $this->customChecker->checkTableFieldExists('TeclliureCustomerBundle:Customer', $key);
                     if (is_array($filter)) {
                         $queryBuilder->andWhere($fieldName.' IN (:where'.$key.')')
                             ->setParameter('where'.$key, $value);
                     }
                     else {
-
                         if (is_object($value)) {
                             $value = $value->getId();
                             $queryBuilder->andWhere($fieldName.' = :where'.$key)
@@ -446,26 +446,6 @@ class CustomerService implements PaginatorAwareInterface {
         foreach ($results as $key=>$result) {
             $result->setTotalPaid($this->getCustomerPayments($result));
             $result->setTotalDue($this->getCustomerDue($result));
-        }
-    }
-
-    protected function checkTableFieldExists($table, $field) {
-
-        try {
-            if (!isset($this->cachedSchemas[$table]) || !$columns) {
-                $schemaManager = $this->getEntityManager()->getConnection()->getSchemaManager();
-                $columns = $schemaManager->listTableColumns($table);
-                $this->cachedSchemas[$table] = $columns;
-            }
-            foreach ($columns as $column) {
-                if ($column->getName() == $field) {
-                    return true;
-                }
-            }
-            throw new FatalErrorException('Trying to make an SQL injection '.$field.' in '.$table);
-        }
-        catch (Exception $e) {
-            throw new FatalErrorException('Trying to make an SQL injection '.$field.' in '.$table);
         }
     }
 }

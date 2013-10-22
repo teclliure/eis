@@ -10,6 +10,7 @@ use Knp\Component\Pager\Paginator;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Craue\ConfigBundle\Util\Config;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Teclliure\InvoiceBundle\Util\DoctrineCustomChecker;
 
 /*
  * This file is part of Teclliure developed package build on 6/25/13.
@@ -52,15 +53,21 @@ class CommonService implements PaginatorAwareInterface {
     private $eventDispatcher;
 
     /**
+     * @var DoctrineCustomChecker
+     */
+    private $customChecker;
+
+    /**
      * Constructor.
      *
      * @param EntityManager
      *
      */
-    public function __construct(EntityManager $em, Config $config, EventDispatcher $eventDispatcher) {
+    public function __construct(EntityManager $em, Config $config, EventDispatcher $eventDispatcher,  DoctrineCustomChecker $customChecker) {
         $this->em = $em;
         $this->config = $config;
         $this->eventDispatcher = $eventDispatcher;
+        $this->customChecker = $customChecker;
     }
 
     /**
