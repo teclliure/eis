@@ -69,7 +69,6 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
-
                     $fieldName = preg_replace('/^d_/', 'd.',preg_replace('/^c_/', 'c.', $key));
                     if (strpos($fieldName, 'c.') !== false) {
                         $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:Common', preg_replace('/^c./', '', $fieldName));

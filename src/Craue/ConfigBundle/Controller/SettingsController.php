@@ -17,15 +17,12 @@ class SettingsController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 		$allStoredSettings = $em->createQuery("SELECT s FROM ".get_class(new Setting())." s ORDER BY s.sort_order asc")->getResult();
 
-		$formData = array(
-			'settings' => $allStoredSettings,
-		);
+		$formData = array('settings' => $allStoredSettings);
 
 		$form = $this->createForm(new ModifySettingsForm(), $formData);
 		$request = $this->get('request');
 		if ($request->getMethod() === 'POST') {
-			$form->bind($request);
-
+			$form->bindRequest($request);
 			if ($form->isValid()) {
 				foreach ($formData['settings'] as $formSetting) {
 					$storedSetting = $this->getSettingByName($allStoredSettings, $formSetting->getName());
@@ -34,11 +31,9 @@ class SettingsController extends Controller {
 						$em->persist($storedSetting);
 					}
 				}
-
 				$em->flush();
 
-				$this->get('session')->getFlashBag()->set('info',
-						$this->get('translator')->trans('settings_changed', array(), 'CraueConfigBundle'));
+				$this->get('session')->getFlashBag()->set('info', $this->get('translator')->trans('settings_changed', array(), 'CraueConfigBundle'));
 				return $this->redirect($this->generateUrl($this->container->getParameter('craue_config.redirectRouteAfterModify')));
 			}
 		}

@@ -44,9 +44,7 @@ class DefaultController extends Controller
         $customerService = $this->get('customer_service');
         if ($request->get('id')) {
             $customer = $customerService->getCustomer($request->get('id'));
-
             // Create an array of the current CommonLines objects in the database
-
             foreach ($customer->getContacts() as $contact) {
                 $originalContacts[] = $contact;
             }
@@ -55,7 +53,6 @@ class DefaultController extends Controller
             $customer = $customerService->createCustomer();
         }
         $form = $this->createForm(new CustomerType(), $customer);
-
         // process the form on POST
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
