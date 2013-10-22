@@ -71,11 +71,11 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
                 if ($filter) {
 
                     $fieldName = preg_replace('/^d_/', 'd.',preg_replace('/^c_/', 'c.', $key));
-                    if (strpos('c.', $key) !== false) {
-                        $this->customChecker->checkTableFieldExists('TeclliureInvoiceBundle:Common', $key);
+                    if (strpos($fieldName, 'c.') !== false) {
+                        $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:Common', preg_replace('/^c./', '', $fieldName));
                     }
                     else {
-                        $this->customChecker->checkTableFieldExists('TeclliureInvoiceBundle:DeliveryNote', $key);
+                        $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:DeliveryNote', preg_replace('/^d./', '', $fieldName));
                     }
                     $value = $filter;
                     if (is_array($filter)) {

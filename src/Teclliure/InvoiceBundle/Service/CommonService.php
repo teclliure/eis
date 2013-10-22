@@ -125,6 +125,16 @@ class CommonService implements PaginatorAwareInterface {
     }
 
     /**
+     * Returns the DoctrineCustomChecker instance.
+     *
+     * @return Paginator
+     */
+    public function getDoctrineCustomChecker()
+    {
+        return $this->customChecker;
+    }
+
+    /**
      * Create a new customer
      *
      * Create a new customer if the identification doesn't exists

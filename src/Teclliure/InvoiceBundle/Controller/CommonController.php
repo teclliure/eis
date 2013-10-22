@@ -74,7 +74,7 @@ class CommonController extends Controller
         $returnArray = array();
         foreach ($customers as $customer) {
             $customerArray = array();
-            $customerArray['label'] = $customer->getName();
+            $customerArray['label'] = $customer->getLegalName();
             $returnArray[] = $customerArray;
         }
 

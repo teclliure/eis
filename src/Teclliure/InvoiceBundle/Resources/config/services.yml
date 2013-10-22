@@ -7,13 +7,18 @@ parameters:
     teclliure_from_mail: 'send@example.net'
 
 services:
+  doctrine_custom_checker:
+      class: "%doctrine_custom_checker.class%"
+      arguments:
+        em: "@doctrine.orm.entity_manager"
+
   invoice_service:
       class: "%teclliure_invoice_service.class%"
       arguments:
         em: "@doctrine.orm.entity_manager"
         config: "@craue_config"
         eventDispatcher: "@event_dispatcher"
-        customChecker: "@doctrine_custome_checker"
+        customChecker: "@doctrine_custom_checker"
       tags:
         - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
@@ -23,7 +28,7 @@ services:
           em: "@doctrine.orm.entity_manager"
           config: "@craue_config"
           eventDispatcher: "@event_dispatcher"
-          customChecker: "@doctrine_custome_checker"
+          customChecker: "@doctrine_custom_checker"
         tags:
           - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
@@ -33,7 +38,7 @@ services:
           em: "@doctrine.orm.entity_manager"
           config: "@craue_config"
           eventDispatcher: "@event_dispatcher"
-          customChecker: "@doctrine_custome_checker"
+          customChecker: "@doctrine_custom_checker"
         tags:
           - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 
@@ -42,11 +47,6 @@ services:
         arguments:
           em: "@doctrine.orm.entity_manager"
           config: "@craue_config"
-
-  doctrine_custome_checker:
-          class: "%doctrine_custom_checker.class%"
-          arguments:
-            em: "@doctrine.orm.entity_manager"
 
 
   teclliure.form.type_extension.collection:

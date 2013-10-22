@@ -70,6 +70,12 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
                     $fieldName = preg_replace('/^q_/', 'q.',preg_replace('/^c_/', 'c.', $key));
+                    if (strpos($fieldName, 'c.') !== false) {
+                        $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:Common',  preg_replace('/^c./', '',$fieldName));
+                    }
+                    else {
+                        $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:Quote',  preg_replace('/^q./', '',$fieldName));
+                    }
                     $value = $filter;
                     if (is_array($filter)) {
                         $queryBuilder->andWhere($fieldName.' IN (:where'.$key.')')

@@ -8,7 +8,7 @@ services:
     arguments:
       em: "@doctrine.orm.entity_manager"
       config: "@craue_config"
-      customChecker: "@doctrine_custome_checker"
+      customChecker: "@doctrine_custom_checker"
     tags:
       - { name: "knp_paginator.injectable", alias: "knp_paginator" }
 #    teclliure_customer.example:

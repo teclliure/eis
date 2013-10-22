@@ -71,6 +71,12 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
                     $fieldName = preg_replace('/^i_/', 'i.',preg_replace('/^c_/', 'c.', $key));
+                    if (strpos($fieldName, 'c.') !== false) {
+                        $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:Common',  preg_replace('/^c./', '',$fieldName));
+                    }
+                    else {
+                        $this->getDoctrineCustomChecker()->checkTableFieldExists('TeclliureInvoiceBundle:Invoice',  preg_replace('/^i./', '',$fieldName));
+                    }
                     $value = $filter;
                     if (is_array($filter)) {
                         $queryBuilder->andWhere($fieldName.' IN (:where'.$key.')')
