@@ -29,10 +29,12 @@ class Quote {
      /**
      *
      * Possible status are
-     *  - DRAFT         - 0
-     *  - PENDING       - 1
-     *  - REJECTED      - 2
-     *  - APPROVED      - 3
+     *  - DRAFT             - 0
+     *  - PENDING           - 1
+     *  - REJECTED          - 2
+     *  - DELIVERED         - 3
+     *  - INVOICED          - 4
+     *  - PARTLYINVOICED    - 5
      *
      * @var integer $number
      *
@@ -82,6 +84,22 @@ class Quote {
      * @var String
      */
     protected $contact_email;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Invoice", mappedBy="related_quote")
+     */
+    private $related_invoices;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\DeliveryNote", mappedBy="related_quote")
+     */
+    private $related_delivery_notes;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common")
+     */
+    private $common;
 
     /**
      * Set number
@@ -213,6 +231,12 @@ class Quote {
      *
      * Get status name
      *
+     *  - DRAFT             - 0
+     *  - PENDING           - 1
+     *  - REJECTED          - 2
+     *  - DELIVERED         - 3
+     *  - INVOICED          - 4
+     *  - PARTLYINVOICED    - 5
      *
      * @return string
      *
@@ -228,7 +252,13 @@ class Quote {
             return 'Rejected';
         }
         elseif ($this->getStatus() == 3) {
-            return 'Approved';
+            return 'Delivered';
+        }
+        elseif ($this->getStatus() == 4) {
+            return 'Invoiced';
+        }
+        elseif ($this->getStatus() == 5) {
+            return 'Partly invoiced';
         }
     }
 
@@ -299,5 +329,78 @@ class Quote {
     public function getContactEmail()
     {
         return $this->contact_email;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->related_invoices = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add related_invoices
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Invoice $relatedInvoices
+     * @return Quote
+     */
+    public function addRelatedInvoice(\Teclliure\InvoiceBundle\Entity\Invoice $relatedInvoices)
+    {
+        $this->related_invoices[] = $relatedInvoices;
+    
+        return $this;
+    }
+
+    /**
+     * Remove related_invoices
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Invoice $relatedInvoices
+     */
+    public function removeRelatedInvoice(\Teclliure\InvoiceBundle\Entity\Invoice $relatedInvoices)
+    {
+        $this->related_invoices->removeElement($relatedInvoices);
+    }
+
+    /**
+     * Get related_invoices
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRelatedInvoices()
+    {
+        return $this->related_invoices;
+    }
+
+    /**
+     * Add related_delivery_notes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\DeliveryNote $relatedDeliveryNotes
+     * @return Quote
+     */
+    public function addRelatedDeliveryNote(\Teclliure\InvoiceBundle\Entity\DeliveryNote $relatedDeliveryNotes)
+    {
+        $this->related_delivery_notes[] = $relatedDeliveryNotes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove related_delivery_notes
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\DeliveryNote $relatedDeliveryNotes
+     */
+    public function removeRelatedDeliveryNote(\Teclliure\InvoiceBundle\Entity\DeliveryNote $relatedDeliveryNotes)
+    {
+        $this->related_delivery_notes->removeElement($relatedDeliveryNotes);
+    }
+
+    /**
+     * Get related_delivery_notes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRelatedDeliveryNotes()
+    {
+        return $this->related_delivery_notes;
     }
 }

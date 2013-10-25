@@ -42,9 +42,9 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      */
     public function getQuotes($limit = 10, $page = 1, $filters = array()) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-                        ->select('c, q')
-                        ->from('TeclliureInvoiceBundle:Common','c')
-                        ->innerJoin('c.quote','q');
+                        ->select('q, c')
+                        ->from('TeclliureInvoiceBundle:Quote','q')
+                        ->innerJoin('q.common','c');
 
         if ($filters) {
             if (isset($filters['search']) && $filters['search']) {
@@ -118,9 +118,9 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      */
     public function getQuote($commonId) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-            ->select('c, q')
-            ->from('TeclliureInvoiceBundle:Common','c')
-            ->innerJoin('c.quote','q')
+            ->select('q, c')
+            ->from('TeclliureInvoiceBundle:Quote','q')
+            ->innerJoin('q.common','c')
             ->where('c.id = :commonId')
             ->setParameter('commonId', $commonId);
 

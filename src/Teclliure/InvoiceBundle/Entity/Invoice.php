@@ -173,6 +173,21 @@ class Invoice {
     protected $contact_email;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Quote", inversedBy="related_invoices")
+     */
+    private $related_quote;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Entity\DeliveryNote", inversedBy="related_invoices")
+     */
+    private $related_delivery_note;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common")
+     */
+    private $common;
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -619,5 +634,74 @@ class Invoice {
     public function getContactEmail()
     {
         return $this->contact_email;
+    }
+
+    /**
+     * Set related_quote
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Quote $relatedQuote
+     * @return Invoice
+     */
+    public function setRelatedQuote(\Teclliure\InvoiceBundle\Entity\Quote $relatedQuote = null)
+    {
+        $this->related_quote = $relatedQuote;
+    
+        return $this;
+    }
+
+    /**
+     * Get related_quote
+     *
+     * @return \Teclliure\InvoiceBundle\Entity\Quote 
+     */
+    public function getRelatedQuote()
+    {
+        return $this->related_quote;
+    }
+
+    /**
+     * Set related_delivery_note
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\DeliveryNote $relatedDeliveryNote
+     * @return Invoice
+     */
+    public function setRelatedDeliveryNote(\Teclliure\InvoiceBundle\Entity\DeliveryNote $relatedDeliveryNote = null)
+    {
+        $this->related_delivery_note = $relatedDeliveryNote;
+    
+        return $this;
+    }
+
+    /**
+     * Get related_delivery_note
+     *
+     * @return \Teclliure\InvoiceBundle\Entity\DeliveryNote 
+     */
+    public function getRelatedDeliveryNote()
+    {
+        return $this->related_delivery_note;
+    }
+
+    /**
+     * Set common
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Common $common
+     * @return Invoice
+     */
+    public function setCommon(\Teclliure\InvoiceBundle\Entity\Common $common = null)
+    {
+        $this->common = $common;
+    
+        return $this;
+    }
+
+    /**
+     * Get common
+     *
+     * @return \Teclliure\InvoiceBundle\Entity\Common 
+     */
+    public function getCommon()
+    {
+        return $this->common;
     }
 }

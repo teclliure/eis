@@ -205,7 +205,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
-        if ($common->getQuote() && $common->getQuote()->getStatus() != 3) {
+        if ($common->getQuote() && $common->getQuote()->getStatus() < 3) {
             $common->getQuote()->setStatus(3);
         }
         $this->updateCustomerFromCommon($common);

@@ -21,22 +21,6 @@ class Common {
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Quote", cascade={"persist", "remove"})
-     */
-    private $quote;
-
-
-    /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\DeliveryNote", cascade={"persist", "remove"})
-     */
-    private $delivery_note;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Invoice", cascade={"persist", "remove"})
-     */
-    private $invoice;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(min = 2, max = 10000)
@@ -110,8 +94,9 @@ class Common {
     private $customer_country;
 
      /**
-     * @ORM\OneToMany(targetEntity="Teclliure\InvoiceBundle\Entity\CommonLine", mappedBy="common", cascade={"persist", "remove"})
-     * @var Common
+     *
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\CommonLine", inversedBy="common", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="common_lines")
      */
     protected $common_lines;
 
@@ -295,85 +280,6 @@ class Common {
         return $this->customer_country;
     }
 
-    /**
-     * Set quote
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Quote $quote
-     * @return Common
-     */
-    public function setQuote(\Teclliure\InvoiceBundle\Entity\Quote $quote = null)
-    {
-        $this->quote = $quote;
-    
-        return $this;
-    }
-
-    /**
-     * Get quote
-     *
-     * @return \Teclliure\InvoiceBundle\Entity\Quote 
-     */
-    public function getQuote()
-    {
-        return $this->quote;
-    }
-
-    /**
-     * Set invoice
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Invoice $invoice
-     * @return Common
-     */
-    public function setInvoice(\Teclliure\InvoiceBundle\Entity\Invoice $invoice = null)
-    {
-        $this->invoice = $invoice;
-    
-        return $this;
-    }
-
-    /**
-     * Get invoice
-     *
-     * @return \Teclliure\InvoiceBundle\Entity\Invoice 
-     */
-    public function getInvoice()
-    {
-        return $this->invoice;
-    }
-
-    /**
-     * Add common_lines
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\CommonLine $commonLines
-     * @return Common
-     */
-    public function addCommonLine(\Teclliure\InvoiceBundle\Entity\CommonLine $commonLines)
-    {
-        $commonLines->setCommon($this);
-        $this->common_lines[] = $commonLines;
-    
-        return $this;
-    }
-
-    /**
-     * Remove common_lines
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\CommonLine $commonLines
-     */
-    public function removeCommonLine(\Teclliure\InvoiceBundle\Entity\CommonLine $commonLines)
-    {
-        $this->common_lines->removeElement($commonLines);
-    }
-
-    /**
-     * Get common_lines
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCommonLines()
-    {
-        return $this->common_lines;
-    }
 
     /**
      * Set customer
@@ -435,29 +341,6 @@ class Common {
             $this->getInvoice()->setTaxAmount($this->getInvoice()->calculateTaxAmount($this));
             $this->getInvoice()->setGrossAmount($this->getInvoice()->calculateGrossAmount($this));
         }*/
-    }
-
-    /**
-     * Set delivery_note
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\DeliveryNote $deliveryNote
-     * @return Common
-     */
-    public function setDeliveryNote(\Teclliure\InvoiceBundle\Entity\DeliveryNote $deliveryNote = null)
-    {
-        $this->delivery_note = $deliveryNote;
-
-        return $this;
-    }
-
-    /**
-     * Get delivery_note
-     *
-     * @return \Teclliure\InvoiceBundle\Entity\DeliveryNote 
-     */
-    public function getDeliveryNote()
-    {
-        return $this->delivery_note;
     }
 
     public function getBaseAmount()
@@ -525,5 +408,38 @@ class Common {
             }
         }
         return $taxesArray;
+    }
+
+    /**
+     * Add common_lines
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\CommonLine $commonLines
+     * @return Common
+     */
+    public function addCommonLine(\Teclliure\InvoiceBundle\Entity\CommonLine $commonLines)
+    {
+        $this->common_lines[] = $commonLines;
+    
+        return $this;
+    }
+
+    /**
+     * Remove common_lines
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\CommonLine $commonLines
+     */
+    public function removeCommonLine(\Teclliure\InvoiceBundle\Entity\CommonLine $commonLines)
+    {
+        $this->common_lines->removeElement($commonLines);
+    }
+
+    /**
+     * Get common_lines
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommonLines()
+    {
+        return $this->common_lines;
     }
 }

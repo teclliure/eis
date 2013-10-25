@@ -52,6 +52,7 @@ doctrine:
         user:     %database_user%
         password: %database_password%
         charset:  UTF8
+        schema_filter: ~^(?!custom_)~
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
@@ -103,7 +104,7 @@ knp_snappy:
 
 parameters:
     pdo.db_options:
-        db_table:    session
+        db_table:    custom_session
         db_id_col:   session_id
         db_data_col: session_value
         db_time_col: session_time

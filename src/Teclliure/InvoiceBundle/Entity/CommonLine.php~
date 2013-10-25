@@ -53,8 +53,7 @@ class CommonLine {
     private $discount = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common", inversedBy="common_lines")
-     * @var Common
+     * @ORM\ManyToMany(targetEntity="Teclliure\InvoiceBundle\Entity\Common", mappedBy="common_lines")
      */
     protected $common;
 
@@ -149,29 +148,6 @@ class CommonLine {
     public function getDiscount()
     {
         return $this->discount;
-    }
-
-    /**
-     * Set common
-     *
-     * @param \Teclliure\InvoiceBundle\Entity\Common $common
-     * @return CommonLine
-     */
-    public function setCommon(\Teclliure\InvoiceBundle\Entity\Common $common = null)
-    {
-        $this->common = $common;
-    
-        return $this;
-    }
-
-    /**
-     * Get common
-     *
-     * @return \Teclliure\InvoiceBundle\Entity\Common 
-     */
-    public function getCommon()
-    {
-        return $this->common;
     }
 
     /**
@@ -309,5 +285,38 @@ class CommonLine {
     public function removeTaxe(\Teclliure\InvoiceBundle\Entity\Tax $taxes)
     {
         $this->taxes->removeElement($taxes);
+    }
+
+    /**
+     * Add common
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Common $common
+     * @return CommonLine
+     */
+    public function addCommon(\Teclliure\InvoiceBundle\Entity\Common $common)
+    {
+        $this->common[] = $common;
+    
+        return $this;
+    }
+
+    /**
+     * Remove common
+     *
+     * @param \Teclliure\InvoiceBundle\Entity\Common $common
+     */
+    public function removeCommon(\Teclliure\InvoiceBundle\Entity\Common $common)
+    {
+        $this->common->removeElement($common);
+    }
+
+    /**
+     * Get common
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommon()
+    {
+        return $this->common;
     }
 }

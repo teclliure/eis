@@ -247,8 +247,8 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         else {
             throw new Exception('Only invoices with status draft could be edited');
         }
-        if ($common->getQuote() && $common->getQuote()->getStatus() != 3) {
-            $common->getQuote()->setStatus(3);
+        if ($common->getQuote() && $common->getQuote()->getStatus() != 4) {
+            $common->getQuote()->setStatus(4);
         }
         if ($common->getDeliveryNote() && $common->getDeliveryNote()->getStatus() != 2) {
             $common->getDeliveryNote()->setStatus(2);

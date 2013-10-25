@@ -64,6 +64,31 @@ class Tax {
      */
     private $lines;
 
+
+    /**
+     *
+     * var bool
+     *
+     */
+    private $is_empty = false;
+
+
+    /**
+     * @param mixed $is_empty
+     */
+    public function setIsEmpty($is_empty)
+    {
+        $this->is_empty = $is_empty;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsEmpty()
+    {
+        return $this->is_empty;
+    }
+
     /**
      * Get id
      *
