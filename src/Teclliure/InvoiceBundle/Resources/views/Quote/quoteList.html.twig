@@ -21,35 +21,35 @@
             <td>{{ quote.common.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
                 {% if quote.status == 0  %}
-                <a href="{{ path('quote_edit', {'id': quote.common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
-                <a href="{{ path('quote_close', {'id': quote.common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
+                <a href="{{ path('quote_edit', {'id': quote.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                <a href="{{ path('quote_close', {'id': quote.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
                 {% endif %}
                 <div style="margin: 5px 0">
                 {% if quote.status == 1 %}
                     {% if not quote.status < 3 %}
-                        <a href="{{ path('quote_order', {'id': quote.common.id }) }}" alt="{{ 'Make order'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make order'|trans }}</a>
+                        <a href="{{ path('quote_order', {'id': quote.id }) }}" alt="{{ 'Make order'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make order'|trans }}</a>
                     {% endif %}
                     {% if not quote < 4 %}
-                        <a href="{{ path('quote_invoice', {'id': quote.common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
+                        <a href="{{ path('quote_invoice', {'id': quote.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
                     {% endif %}
                     <br />
-                    {% if not quote.common.deliveryNote and not quote.common.invoice %}
-                        <a href="{{ path('quote_deny', {'id': quote.common.id }) }}" alt="{{ 'Denied'|trans }}" class="btn btn-mini btn-danger"><i class="icon-lock"></i> {{ 'Denied'|trans }}</a>
+                    {% if not quote.status < 3 %}
+                        <a href="{{ path('quote_deny', {'id': quote.id }) }}" alt="{{ 'Denied'|trans }}" class="btn btn-mini btn-danger"><i class="icon-lock"></i> {{ 'Denied'|trans }}</a>
                     {% endif %}
                 {% endif %}
                 </div>
                 {% if quote.status > 0 %}
-                <a href="{{ path('quote_view', {'id': quote.common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
+                <a href="{{ path('quote_view', {'id': quote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
                 {% endif %}
-                {% if quote.common.deliveryNote %}
-                    <a href="{{ path('delivery_note_view', {'id': quote.common.id }) }}" alt="{{ 'View delivery note'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Order view'|trans }}</a>
+                {% if quote.status == 3 %}
+                    <a href="{{ path('delivery_note_view', {'id': quote.id, 'type': 'quote'}) }}" alt="{{ 'View delivery note'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Order view'|trans }}</a>
                 {% endif %}
-                {% if quote.common.invoice %}
-                    <a href="{{ path('invoice_view', {'id': quote.common.id }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Invoice view'|trans }}</a>
+                {% if quote.status > 3 %}
+                    <a href="{{ path('invoice_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Invoice view'|trans }}</a>
                 {% endif %}
                 {% if (quote.status > 0) %}
-                    <a href="{{ path('quote_print', {'id': quote.common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
-                    <a href="{{ path('quote_open', {'id': quote.common.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-small btn-warning"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
+                    <a href="{{ path('quote_print', {'id': quote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                    <a href="{{ path('quote_open', {'id': quote.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-small btn-warning"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
                 {% endif %}
             </td>
         </tr>
@@ -58,7 +58,7 @@
     <tfoot>
     <tr>
         <td colspan="8">
-            {{ knp_pagination_render(quotes, 'TeclliureInvoiceBundle:quote.common:simple_pagination.html.twig') }}
+            {{ knp_pagination_render(quotes, 'TeclliureInvoiceBundle:Common:simple_pagination.html.twig') }}
         </td>
     </tr>
     </tfoot>

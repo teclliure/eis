@@ -49,13 +49,13 @@ class QuoteController extends Controller
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
                 return $this->redirect($this->generateUrl('quote_list'));
             }
-            elseif ($quote->getQuote()->getStatus() != 0) {
+            elseif ($quote->getStatus() != 0) {
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft could not be edited.'));
                 return $this->redirect($this->generateUrl('quote_list'));
             }
 
             // Create an array of the current CommonLines objects in the database
-            foreach ($quote->getCommonLines() as $commonLine) {
+            foreach ($quote->getCommon()->getCommonLines() as $commonLine) {
                 $originalLines[] = $commonLine;
             }
         }
@@ -91,7 +91,7 @@ class QuoteController extends Controller
         return $this->render('TeclliureInvoiceBundle:Quote:quoteForm.html.twig', array(
             'form' => $form->createView(),
             'config' => $this->get('craue_config')->all(),
-            'common' => $quote
+            'quote' => $quote
         ));
     }
 
@@ -106,7 +106,7 @@ class QuoteController extends Controller
         }
 
         return $this->render('TeclliureInvoiceBundle:Quote:quotePrint.html.twig', array(
-            'common' => $quote,
+            'quote' => $quote,
             'config' => $this->get('craue_config')->all(),
             'print'  => false
         ));
@@ -123,7 +123,7 @@ class QuoteController extends Controller
         }
 
         $html = $this->renderView('TeclliureInvoiceBundle:Quote:quotePrint.html.twig', array(
-            'common' => $quote,
+            'quote' => $quote,
             'config' => $this->get('craue_config')->all(),
             'print'  => true
         ));
@@ -136,7 +136,7 @@ class QuoteController extends Controller
             200,
             array(
                 'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'attachment; filename="quote'.$quote->getQuote()->getCreated()->format('d-m-Y').$quote->getQuote()->getNumber().'.pdf"',
+                'Content-Disposition'   => 'attachment; filename="quote'.$quote->getCreated()->format('d-m-Y').$quote->getNumber().'.pdf"',
             )
         );
     }
@@ -146,11 +146,11 @@ class QuoteController extends Controller
         $quoteService = $this->get('quote_service');
         $quote = $quoteService->getQuote($request->get('id'));
 
-        if ($quote->getDeliveryNote()) {
+        if ($quote->getStatus() == 3) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Quote cannot be re-opened! It already generated an order.'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
-        else if ($quote->getInvoice()) {
+        else if ($quote->getStatus() > 3) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Quote cannot be re-opened! It already generated an invoice.'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
@@ -192,7 +192,7 @@ class QuoteController extends Controller
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
-        elseif ($quote->getQuote()->getStatus() > 1) {
+        elseif ($quote->getStatus() > 1) {
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft or pending could not be invoiced.'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
@@ -208,7 +208,7 @@ class QuoteController extends Controller
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
-        elseif ($quote->getQuote()->getStatus() > 1) {
+        elseif ($quote->getStatus() > 1) {
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft or pending could not be ordered.'));
             return $this->redirect($this->generateUrl('quote_list'));
         }

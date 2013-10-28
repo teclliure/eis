@@ -14,7 +14,7 @@ class CommonController extends Controller
     public function searchCustomerAction(Request $request)
     {
         $baseObject = $request->get('base');
-        $field = str_replace($baseObject.'_customer_', '', $request->get('field'));
+        $field = str_replace($baseObject.'_common_customer_', '', $request->get('field'));
         $customerService = $this->get('customer_service');
         $customers = $customerService->searchCustomers(array($field=>$request->get('term')), 10);
 
@@ -92,18 +92,19 @@ class CommonController extends Controller
         $className = ucfirst($inflector->camelize($baseObject));
         if ($request->get('id')) {
             $methodName = 'get'.$className;
-            $common = $commonService->$methodName($request->get('id'));
+            $object = $commonService->$methodName($request->get('id'));
         }
         else {
             $methodName = 'create'.$className;
-            $common = $commonService->$methodName();
+            $object = $commonService->$methodName();
         }
-        $form = $this->createForm($this->get('teclliure.form.type.'.$baseObject), $common);
+        $common = $object->getCommon();
+        $form = $this->createForm($this->get('teclliure.form.type.'.$baseObject), $object);
         $form->handleRequest($request);
 
         $taxRepository = $this->getDoctrine()->getRepository('TeclliureInvoiceBundle:Tax');
         $lines = array();
-        foreach ($data['common_lines'] as $key=>$line) {
+        foreach ($data['common']['common_lines'] as $key=>$line) {
             $commonLine = new CommonLine();
             $commonLine->setQuantity($line['quantity']);
             $commonLine->setDiscount($line['discount']);

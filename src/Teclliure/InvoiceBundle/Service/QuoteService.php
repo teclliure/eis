@@ -110,19 +110,19 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
     /**
      * Get quote
      *
-     * @param integer $commonId
+     * @param integer $quoteId
      *
-     * @return mixed Common or null
+     * @return mixed Quote or null
      *
      * @api 0.1
      */
-    public function getQuote($commonId) {
+    public function getQuote($quoteId) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('q, c')
             ->from('TeclliureInvoiceBundle:Quote','q')
             ->innerJoin('q.common','c')
-            ->where('c.id = :commonId')
-            ->setParameter('commonId', $commonId);
+            ->where('q.id = :quoteId')
+            ->setParameter('quoteId', $quoteId);
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
@@ -130,13 +130,12 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
     /**
      * Create quote
      *
-     * @return Common
+     * @return Quote
      *
      * @api 0.1
      */
     public function createQuote() {
         $common = new Common();
-
         $quote = new Quote();
         if ($this->getConfig()->get('default_country')) {
             $common->setCustomerCountry($this->getConfig()->get('default_country'));
@@ -144,9 +143,9 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         if ($this->getConfig()->get('default_footnote_quote')) {
             $quote->setFootnote($this->getConfig()->get('default_footnote_quote'));
         }
-        $common->setQuote($quote);
+        $quote->setCommon($common);
 
-        return $common;
+        return $quote;
     }
 
     /**
@@ -154,11 +153,12 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * Save quote and calculate amounts
      *
-     * @param Common $common Quote to save
+     * @param Quote $quote Quote to save
      *
      * @api 0.1
      */
-    public function saveQuote(Common $common, $originalLines = array()) {
+    public function saveQuote(Quote $quote, $originalLines = array()) {
+        $common = $quote->getCommon();
         if ($originalLines)  {
             foreach ($common->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
@@ -174,26 +174,23 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             }
         }
 
-        if (!$common->getQuote()) {
-            throw new Exception('Common is not an quote');
-        }
-        elseif ($common->getQuote()->getStatus() > 0) {
+        if ($quote->getStatus() > 0) {
             throw new Exception('Only quotes with status draft could be edited');
         }
 
-        if (!$common->getQuote()->getNumber()) {
+        if (!$quote->getNumber()) {
             // We get WRITE lock to avoid duplicated quote numbers
             $em = $this->getEntityManager();
             $em->getConnection()->exec('LOCK TABLE quote q0_ WRITE;');
-            if (!$common->getQuote()->getNumber()) {
-                if ($common->getQuote()->getCreated()) {
-                    $createdDate = $common->getQuote()->getCreated();
+            if (!$quote->getNumber()) {
+                if ($quote->getCreated()) {
+                    $createdDate = $quote->getCreated();
                 }
                 else {
                     $createdDate = new \DateTime();
                 }
                 $nextQuoteNumber = $this->getNextQuoteNumber($createdDate);
-                $common->getQuote()->setNumber($nextQuoteNumber);
+                $quote->setNumber($nextQuoteNumber);
             }
             $em->persist($common);
             $em->flush();
@@ -212,21 +209,21 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * Set status to closed and generate quote number
      *
-     * @param Common $common Quote to close
+     * @param Quote $quote Quote to close
      *
      * @api 0.1
      */
-    public function closeQuote(Common $common) {
-        if ($common->getQuote()->getStatus() != 0) {
+    public function closeQuote(Quote $quote) {
+        if ($quote->getStatus() != 0) {
             throw new Exception('Only quotes with status draft could be closed');
         }
-        $common->getQuote()->setStatus(1);
+        $quote->setStatus(1);
         $em = $this->getEntityManager();
-        $em->persist($common);
+        $em->persist($quote);
         $em->flush();
 
         // Dispatch Event
-        $closeEvent = new CommonEvent($common);
+        $closeEvent = new CommonEvent($quote->getCommon());
         $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_CLOSED, $closeEvent);
 
         if ($closeEvent->isPropagationStopped()) {
@@ -241,17 +238,17 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * Set status to closed and generate quote number
      *
-     * @param Common $common Quote to close
+     * @param Quote $quote Quote to close
      *
      * @api 0.1
      */
-    public function denyQuote(Common $common) {
-        if ($common->getQuote()->getStatus() > 1 ) {
+    public function denyQuote(Quote $quote) {
+        if ($quote->getStatus() > 1 ) {
             throw new Exception('Only quotes with status draft could be rejected');
         }
-        $common->getQuote()->setStatus(2);
+        $quote->setStatus(2);
         $em = $this->getEntityManager();
-        $em->persist($common);
+        $em->persist($quote);
         $em->flush();
     }
 
@@ -260,17 +257,17 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * Set status to open
      *
-     * @param Common $common Quote to open
+     * @param Quote $quote Quote to open
      *
      * @api 0.1
      */
-    public function openQuote(Common $common) {
-        if (!($common->getQuote()->getStatus() > 0)) {
+    public function openQuote(Quote $quote) {
+        if (!($quote->getStatus() > 0)) {
             throw new Exception('Only quotes with status different than draft could be opened');
         }
-        $common->getQuote()->setStatus(0);
+        $quote->setStatus(0);
         $em = $this->getEntityManager();
-        $em->persist($common);
+        $em->persist($quote);
         $em->flush();
     }
 

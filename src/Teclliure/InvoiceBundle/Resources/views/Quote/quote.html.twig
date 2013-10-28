@@ -2,8 +2,8 @@
     <div id="inside_content">
 
         <div id="companyInfo">
-            <h4>{{ 'Quote'|trans }} - {{ common.quote.number }}</h4>
-            <b>{{ 'Created'|trans }}</b>: {{ common.quote.created|date("d/m/Y") }}<br />
+            <h4>{{ 'Quote'|trans }} - {{ quote.number }}</h4>
+            <b>{{ 'Created'|trans }}</b>: {{ quote.created|date("d/m/Y") }}<br />
             <div class="inputDiv control-group">
             {{ config.company_name }} - {{ config.company_identification }}
             </div>
@@ -26,38 +26,38 @@
 
         <h3>{{ 'Customer'|trans }}</h3>
         <div class="inputDiv control-group">
-            {{ common.customerIdentification }}
+            {{ quote.common.customerIdentification }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerName }}
+            {{ quote.common.customerName }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerZipCode }}
+            {{ quote.common.customerZipCode }}
         </div>
         <br />
         <div class="inputDiv control-group">
-            {{ common.customerAddress }}
+            {{ quote.common.customerAddress }}
         </div>
         <br />
         <div class="inputDiv control-group">
-            {{ common.customerCity }}
+            {{ quote.common.customerCity }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerState }}
+            {{ quote.common.customerState }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerCountry }}
+            {{ quote.common.customerCountry }}
         </div>
-        {% if common.quote.contactName or common.quote.contactEmail %}
+        {% if quote.contactName or quote.contactEmail %}
         <h4>{{ 'Contact'|trans }}</h4>
         <div class="inputDiv control-group">
-            {{ common.quote.contactName }} {{ common.quote.contactEmail }}
+            {{ quote.contactName }} {{ quote.contactEmail }}
         </div>
         {% endif %}
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
-            {{ common.description|nl2br }}
+            {{ quote.common.description|nl2br }}
         </div>
 
         <table id="commonLines" class="lines" style="margin-top: 40px">
@@ -72,7 +72,7 @@
             </tr>
             </thead>
             <tbody id="tbody_lines">
-            {% for line in common.commonLines %}
+            {% for line in quote.common.commonLines %}
                 {{ include('TeclliureInvoiceBundle:Common:line.html.twig', {'line': line}) }}
             {% endfor %}
             </tbody>
@@ -81,50 +81,50 @@
                 <td colspan="4" rowspan="2">
                 </td>
                 <th class="border_total">{{ 'Base'|trans }}</th>
-                <td class="border_total common_totals" id="total_base_amount">{{ common.baseAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_base_amount">{{ quote.common.baseAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <th class="border_total">{{ 'Discount'|trans }}</th>
-                <td class="border_total common_totals" id="total_discount">{{ common.discountAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_discount">{{ quote.common.discountAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
                 <th class="border_total">{{ 'Subtotal'|trans }}</th>
-                <td class="border_total common_totals" id="total_subtotal">{{ common.netAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_subtotal">{{ quote.common.netAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
                 <th class="border_total">{{ 'Taxes'|trans }}</th>
-                <td class="border_total common_totals" id="total_taxes">{{ common.taxAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_taxes">{{ quote.common.taxAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
                 <th class="border_total">{{ 'Total'|trans }}</th>
-                <td class="border_total common_totals" id="total_total">{{ common.grossAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_total">{{ quote.common.grossAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             </tfoot>
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ common.quote.footnote|nl2br }}
+            {{ quote.footnote|nl2br }}
         </div>
 
         <div class="list_primary_buttons">
-            {% if (common.quote) and (common.quote.status != 0) and (print != true) and not common.invoice and not common.deliveryNote %}
-                <a href="{{ path('quote_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+            {% if (quote) and (quote.status != 0) and (print != true) and not quote.status > 2 %}
+                <a href="{{ path('quote_open', {'id': quote.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% endif %}
             {% if (print != true) %}
-                {% if common.invoice %}
-                    <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
+                {% if quote.status > 3 %}
+                    <a href="{{ path('invoice_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
                 {% endif %}
-                {% if common.deliveryNote  %}
-                    <a href="{{ path('delivery_note_view', {'id': common.id }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
+                {% if quote.status == 3  %}
+                    <a href="{{ path('delivery_note_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
                 {% endif %}
                 <a href="{{ path('quote_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-                <a href="{{ path('quote_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                <a href="{{ path('quote_print', {'id': quote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
             {% endif %}
         </div>
         <div style="clear:both;"></div>
