@@ -93,7 +93,7 @@ class DeliveryNote {
     private $related_invoices;
 
     /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common")
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common",    cascade={"persist", "remove"})
      */
     private $common;
 

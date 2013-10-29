@@ -51,7 +51,7 @@ class Invoice {
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
-     * @Assert\Type(type="date")
+     * @Assert\Type(type="datetime")
      *
      */
     private $issue_date;
@@ -62,7 +62,7 @@ class Invoice {
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank()
-     * @Assert\Type(type="date")
+     * @Assert\Type(type="datetime")
      *
      */
     private $due_date;
@@ -183,7 +183,7 @@ class Invoice {
     private $related_delivery_note;
 
     /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common")
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common",  cascade={"persist", "remove"})
      */
     private $common;
 

@@ -16,20 +16,20 @@
         <tbody>
         {% set dueAmount = 0 %}
         {% set grossAmount = 0 %}
-        {% for common in invoices %}
+        {% for invoice in invoices %}
             <tr>
                 <td>
-                    {{ common.invoice.number }}
+                    {{ invoice.number }}
                 </td>
-                <td>{{ common.customerName }}</td>
-                <td>{{ common.invoice.issueDate|date('d/m/Y') }}</td>
-                <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
-                <td>{{ common.invoice.statusName|trans }}</td>
-                <td>{{ common.invoice.dueAmount|number_format(2, '.', ',') }} €</td>
-                <td>{{ common.invoice.grossAmount|number_format(2, '.', ',') }} €</td>
+                <td>{{ invoice.common.customerName }}</td>
+                <td>{{ invoice.issueDate|date('d/m/Y') }}</td>
+                <td>{{ invoice.dueDate|date('d/m/Y') }}</td>
+                <td>{{ invoice.statusName|trans }}</td>
+                <td>{{ invoice.dueAmount|number_format(2, '.', ',') }} €</td>
+                <td>{{ invoice.grossAmount|number_format(2, '.', ',') }} €</td>
             </tr>
-            {% set dueAmount = common.invoice.dueAmount + dueAmount %}
-            {% set grossAmount = common.invoice.grossAmount + grossAmount %}
+            {% set dueAmount = invoice.dueAmount + dueAmount %}
+            {% set grossAmount = invoice.grossAmount + grossAmount %}
         {% endfor %}
         </tbody>
         <tfoot>

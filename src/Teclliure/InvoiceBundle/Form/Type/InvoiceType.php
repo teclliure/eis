@@ -6,10 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Teclliure\InvoiceBundle\Form\Type\CommonType;
-use Teclliure\InvoiceBundle\Form\Type\InvoiceSubType;
 use Doctrine\ORM\EntityManager;
 
-class InvoiceType extends CommonType
+class InvoiceType extends AbstractType
 {
     protected $em;
 
@@ -20,14 +19,27 @@ class InvoiceType extends CommonType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-        $builder->add('invoice', new InvoiceSubType());
+        $builder->add('issue_date', 'date', array(
+            'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy'
+        ));
+        $builder->add('due_date', 'date', array(
+            'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy'
+        ));
+        $builder->add('footnote');
+        $builder->add('serie');
+        $builder->add('contact_name');
+        $builder->add('contact_email');
+        $builder->add('common', new CommonType($this->em), array(
+            'label'          => false
+        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Teclliure\InvoiceBundle\Entity\Common'
+            'data_class' => 'Teclliure\InvoiceBundle\Entity\Invoice'
         ));
     }
 

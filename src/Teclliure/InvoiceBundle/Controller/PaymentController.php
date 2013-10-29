@@ -4,21 +4,20 @@ namespace Teclliure\InvoiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Teclliure\InvoiceBundle\Entity\Common;
+use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Form\Type\PaymentType;
 
 class PaymentController extends Controller
 {
-    public function paymentsAction(Common $common)
+    public function paymentsAction(Invoice $invoice)
     {
         $paymentService = $this->get('payment_service');
-        $payments = $paymentService->searchPayments(array('invoice'=>$common->getInvoice()->getId()));
+        $payments = $paymentService->searchPayments(array('invoice'=>$invoice->getId()));
 
         $form = $this->createForm(new PaymentType(), $paymentService->createPayment());
 
         return $this->render('TeclliureInvoiceBundle:Payment:payments.html.twig', array(
-            'invoice'                => $common->getInvoice(),
+            'invoice'               => $invoice,
             'payments'              => $payments,
             'paymentForm'           => $form->createView()
         ));

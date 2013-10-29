@@ -75,7 +75,7 @@ class InvoiceController extends Controller
             }
 
             // Create an array of the current CommonLines objects in the database
-            foreach ($invoice->getCommonLines() as $commonLine) {
+            foreach ($invoice->getCommon()->getCommonLines() as $commonLine) {
                 $originalLines[] = $commonLine;
             }
         }
@@ -112,7 +112,7 @@ class InvoiceController extends Controller
             'form' => $form->createView(),
             'config' => $this->get('craue_config')->all(),
             'new' => $request->get('new'),
-            'common' => $invoice
+            'invoice' => $invoice
         ));
     }
 
@@ -127,7 +127,7 @@ class InvoiceController extends Controller
         }
 
         return $this->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
-            'common' => $invoice,
+            'invoice' => $invoice,
             'config' => $this->get('craue_config')->all(),
             'print'  => false
         ));
@@ -144,7 +144,7 @@ class InvoiceController extends Controller
         }
 
         $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
-            'common' => $invoice,
+            'invoice' => $invoice,
             'config' => $this->get('craue_config')->all(),
             'print'  => true
         ));
@@ -154,7 +154,7 @@ class InvoiceController extends Controller
             200,
             array(
                 'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'attachment; filename="invoice'.$invoice->getInvoice()->getIssueDate()->format('d-m-Y').$invoice->getInvoice()->getNumber().'.pdf"'
+                'Content-Disposition'   => 'attachment; filename="invoice'.$invoice->getIssueDate()->format('d-m-Y').$invoice->getNumber().'.pdf"'
             )
         );
     }

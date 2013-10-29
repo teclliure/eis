@@ -10,7 +10,6 @@
 
 namespace Teclliure\InvoiceBundle\Service;
 
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Entity\Invoice;
@@ -43,9 +42,9 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      */
     public function getInvoices($limit = 10, $page = 1, $filters = array()) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-                        ->select('c, i')
-                        ->from('TeclliureInvoiceBundle:Common','c')
-                        ->innerJoin('c.invoice','i');
+                        ->select('i, c')
+                        ->from('TeclliureInvoiceBundle:Invoice','i')
+                        ->innerJoin('i.common','c');
 
         if ($filters) {
             if (isset($filters['search']) && $filters['search']) {
@@ -116,26 +115,26 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
     /**
      * Get invoice
      *
-     * @param integer $commonId
+     * @param integer $invoiceId
      *
-     * @return mixed Common or null
+     * @return mixed Invoice or null
      *
      * @api 0.1
      */
-    public function getInvoice($commonId, $new = false) {
-        // $query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Common c LEFT JOIN c.invoice i :where ORDER BY :order');
+    public function getInvoice($invoiceId, $new = false) {
+        // $query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Invoice c LEFT JOIN c.invoice i :where ORDER BY :order');
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('c, i')
-            ->from('TeclliureInvoiceBundle:Common','c')
-            ->where('c.id = :commonId')
-            ->setParameter('commonId', $commonId);
+            ->from('TeclliureInvoiceBundle:Invoice','i')
+            ->where('i.id = :invoiceId')
+            ->setParameter('invoiceId', $invoiceId);
 
         if ($new) {
-            $queryBuilder->leftJoin('c.invoice','i');
+            $queryBuilder->leftJoin('i.common','c');
         }
         else {
-            $queryBuilder->innerJoin('c.invoice','i');
+            $queryBuilder->innerJoin('i.common','c');
         }
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
@@ -167,15 +166,15 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      * @api 0.1
      */
     public function createInvoice() {
-        $common = new Common();
-        $this->putDefaults($common);
-        return $common;
+        $invoice = new Invoice();
+        $this->putDefaults($invoice);
+        return $invoice;
     }
 
-    public function putDefaults(Common $common) {
-        $invoice = $common->getInvoice();
-        if (!$invoice) {
-            $invoice = new Invoice();
+    public function putDefaults(Invoice $invoice) {
+        $common = $invoice->getCommon();
+        if (!$common) {
+            $common = new Common();
         }
 
         if (!$invoice->getIssueDate) {
@@ -202,10 +201,9 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         if ($this->getConfig()->get('default_footnote_invoice') && !$invoice->getFootnote()) {
             $invoice->setFootnote($this->getConfig()->get('default_footnote_invoice'));
         }
-        if (!$common->getInvoice()) {
-            $common->setInvoice($invoice);
+        if (!$invoice->getCommon()) {
+            $invoice->setCommon($common);
         }
-
     }
 
     /**
@@ -213,13 +211,13 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * Save invoice and calculate amounts
      *
-     * @param Common $common Invoice to save
+     * @param Invoice $invoice Invoice to save
      *
      * @api 0.1
      */
-    public function saveInvoice(Common $common, $originalLines = array()) {
+    public function saveInvoice(Invoice $invoice, $originalLines = array()) {
         if ($originalLines)  {
-            foreach ($common->getCommonLines() as $commonLine) {
+            foreach ($invoice->getCommon()->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
                     if ($toDel->getId() === $commonLine->getId()) {
                         unset($originalLines[$key]);
@@ -233,31 +231,29 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             }
         }
 
-        if ($common->getInvoice() && !$common->getInvoice()->getStatus()) {
-            $common->getInvoice()->setBaseAmount($common->getBaseAmount());
-            $common->getInvoice()->setDiscountAmount($common->getDiscountAmount());
-            $common->getInvoice()->setNetAmount($common->getNetAmount());
-            $common->getInvoice()->setTaxAmount($common->getTaxAmount());
-            $common->getInvoice()->setGrossAmount($common->getGrossAmount());
-            $common->getInvoice()->setDueAmount($common->getGrossAmount()-$common->getInvoice()->getPaidAmount());
-        }
-        elseif (!$common->getInvoice()) {
-            throw new Exception('Common is not an invoice');
+        if ($invoice && !$invoice->getStatus()) {
+            $invoice->setBaseAmount($invoice->getCommon()->getBaseAmount());
+            $invoice->setDiscountAmount($invoice->getCommon()->getDiscountAmount());
+            $invoice->setNetAmount($invoice->getCommon()->getNetAmount());
+            $invoice->setTaxAmount($invoice->getCommon()->getTaxAmount());
+            $invoice->setGrossAmount($invoice->getCommon()->getGrossAmount());
+            $invoice->setDueAmount($invoice->getCommon()->getGrossAmount()-$invoice->getPaidAmount());
         }
         else {
             throw new Exception('Only invoices with status draft could be edited');
         }
-        if ($common->getQuote() && $common->getQuote()->getStatus() != 4) {
+        // TODO: Change Status with events
+        /*if ($common->getQuote() && $common->getQuote()->getStatus() != 4) {
             $common->getQuote()->setStatus(4);
         }
         if ($common->getDeliveryNote() && $common->getDeliveryNote()->getStatus() != 2) {
             $common->getDeliveryNote()->setStatus(2);
-        }
-        $this->updateCustomerFromCommon($common);
+        }*/
+        $this->updateCustomerFromCommon($invoice->getCommon());
 
         $em = $this->getEntityManager();
         // print count($common->getCommonLines());
-        $em->persist($common);
+        $em->persist($invoice);
         $em->flush();
     }
 
@@ -266,29 +262,29 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * Set status to closed and generate invoice number
      *
-     * @param Common $common Invoice to close
+     * @param Common $invoice Invoice to close
      *
      * @api 0.1
      */
-    public function closeInvoice(Common $common) {
-        if ($common->getInvoice()->getStatus() != 0) {
+    public function closeInvoice(Invoice $invoice) {
+        if ($invoice->getStatus() != 0) {
             throw new Exception('Only invoices with status draft could be closed');
         }
-        $common->getInvoice()->setStatus(1);
+        $invoice->setStatus(1);
 
         // We get WRITE lock to avoid duplicated invoice numbers
         $em = $this->getEntityManager();
         $em->getConnection()->exec('LOCK TABLE invoice i0_ WRITE;');
-        if (!$common->getInvoice()->getNumber()) {
-            $nextInvoiceNumber = $this->getNextInvoiceNumber($common->getInvoice()->getSerie(), $common->getInvoice()->getIssueDate());
-            $common->getInvoice()->setNumber($nextInvoiceNumber);
+        if (!$invoice->getNumber()) {
+            $nextInvoiceNumber = $this->getNextInvoiceNumber($invoice->getSerie(), $invoice->getIssueDate());
+            $invoice->setNumber($nextInvoiceNumber);
         }
-        $em->persist($common);
+        $em->persist($invoice);
         $em->flush();
         $em->getConnection()->exec('UNLOCK TABLES;');
 
         // Dispatch Event
-        $closeEvent = new CommonEvent($common);
+        $closeEvent = new CommonEvent($invoice->getCommon());
         $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_CLOSED, $closeEvent);
 
         if ($closeEvent->isPropagationStopped()) {
@@ -303,17 +299,17 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * Set status to open
      *
-     * @param Common $common Invoice to open
+     * @param Invoice $invoice Invoice to open
      *
      * @api 0.1
      */
-    public function openInvoice(Common $common) {
-        if (!($common->getInvoice()->getStatus() > 0)) {
+    public function openInvoice(Invoice $invoice) {
+        if (!($invoice->getStatus() > 0)) {
             throw new Exception('Only invoices with status different than draft could be opened');
         }
-        $common->getInvoice()->setStatus(0);
+        $invoice->setStatus(0);
         $em = $this->getEntityManager();
-        $em->persist($common);
+        $em->persist($invoice);
         $em->flush();
     }
 

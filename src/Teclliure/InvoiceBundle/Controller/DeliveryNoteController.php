@@ -49,7 +49,7 @@ class DeliveryNoteController extends Controller
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
-            elseif (!$request->get('new') && $deliveryNote->getDeliveryNote()->getStatus() != 0 ) {
+            elseif (!$request->get('new') && $deliveryNote->getStatus() != 0 ) {
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Order with status different to draft could not be edited.'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
@@ -57,7 +57,7 @@ class DeliveryNoteController extends Controller
                 $deliveryNoteService->putDefaults($deliveryNote);
             }
             // Create an array of the current CommonLines objects in the database
-            foreach ($deliveryNote->getCommonLines() as $commonLine) {
+            foreach ($deliveryNote->getCommon()->getCommonLines() as $commonLine) {
                 $originalLines[] = $commonLine;
             }
         }
@@ -94,7 +94,7 @@ class DeliveryNoteController extends Controller
             'form'      => $form->createView(),
             'config'    => $this->get('craue_config')->all(),
             'new'       => $request->get('new'),
-            'common'    => $deliveryNote
+            'deliveryNote'    => $deliveryNote
         ));
     }
 
@@ -109,7 +109,7 @@ class DeliveryNoteController extends Controller
         }
 
         return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNotePrint.html.twig', array(
-            'common' => $deliveryNote,
+            'deliveryNote' => $deliveryNote,
             'config' => $this->get('craue_config')->all(),
             'print'  => false
         ));
@@ -126,7 +126,7 @@ class DeliveryNoteController extends Controller
         }
 
         $html = $this->renderView('TeclliureInvoiceBundle:DeliveryNote:deliveryNotePrint.html.twig', array(
-            'common' => $deliveryNote,
+            'deliveryNote' => $deliveryNote,
             'config' => $this->get('craue_config')->all(),
             'print'  => true
         ));
@@ -136,7 +136,7 @@ class DeliveryNoteController extends Controller
             200,
             array(
                 'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'attachment; filename="deliveryNote'.$deliveryNote->getDeliveryNote()->getCreated()->format('d-m-Y').$deliveryNote->getDeliveryNote()->getNumber().'.pdf"'
+                'Content-Disposition'   => 'attachment; filename="deliveryNote'.$deliveryNote->getCreated()->format('d-m-Y').$deliveryNote->getNumber().'.pdf"'
             )
         );
     }
@@ -146,7 +146,7 @@ class DeliveryNoteController extends Controller
         $deliveryNoteService = $this->get('delivery_note_service');
         $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'));
 
-        if ($deliveryNote->getInvoice()) {
+        if ($deliveryNote->getStatus() > 1) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Order cannot be re-opened! It already generated an invoice.'));
             return $this->redirect($this->generateUrl('delivery_note_list'));
         }

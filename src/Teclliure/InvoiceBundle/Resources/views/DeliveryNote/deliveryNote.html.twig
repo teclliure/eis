@@ -2,10 +2,10 @@
     <div id="inside_content">
 
         <div id="companyInfo">
-            <h4>{{ 'Order'|trans }} - {{ common.deliveryNote.number }}</h4>
-            <b>{{ 'Created'|trans }}</b>: {{ common.deliveryNote.created|date("d/m/Y") }}<br />
-            {% if common.quote  %}<h6>{{ 'Quote'|trans }}: {% if not print %}<a href="{{ path('quote_view', {'id': common.id }) }}">{% endif %}{{ common.quote.number }}{% if not print %}</a>{% endif %}</h6>{% endif %}
-            {% if common.invoice  %}<h6>{{ 'Invoice'|trans }}: {% if common.invoice.number %}{% if not print %}<a href="{{ path('invoice_view', {'id': common.id }) }}">{% endif %}{{ common.invoice.number }}{% if not print %}</a>{% endif %}{% else %}{% if not print %}<a href="{{ path('invoice_edit', {'id': common.id }) }}">{% endif %}{{ 'Not assigned'|trans }}{% if not print %}</a>{% endif %}{% endif %}</h6>{% endif %}
+            <h4>{{ 'Order'|trans }} - {{ deliveryNote.number }}</h4>
+            <b>{{ 'Created'|trans }}</b>: {{ deliveryNote.created|date("d/m/Y") }}<br />
+            {% if deliveryNote.relatedQuote  %}<h6>{{ 'Quote'|trans }}: {% if not print %}<a href="{{ path('quote_view', {'id': deliveryNote.relatedQuote.id }) }}">{% endif %}{{ deliveryNote.relatedQuote.number }}{% if not print %}</a>{% endif %}</h6>{% endif %}
+            {% if (deliveryNote.status > 1) and (not print) %}<h6><a href="{{ path('invoice_view', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}">{{ 'View invoices'|trans }}</a></h6>{% endif %}
             <div class="inputDiv control-group">
             {{ config.company_name }} - {{ config.company_identification }}
             </div>
@@ -28,39 +28,39 @@
 
         <h3>{{ 'Customer'|trans }}</h3>
         <div class="inputDiv control-group">
-            {{ common.customerIdentification }}
+            {{ deliveryNote.common.customerIdentification }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerName }}
+            {{ deliveryNote.common.customerName }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerZipCode }}
+            {{ deliveryNote.common.customerZipCode }}
         </div>
         <br />
         <div class="inputDiv control-group">
-            {{ common.customerAddress }}
+            {{ deliveryNote.common.customerAddress }}
         </div>
         <br />
         <div class="inputDiv control-group">
-            {{ common.customerCity }}
+            {{ deliveryNote.common.customerCity }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerState }}
+            {{ deliveryNote.common.customerState }}
         </div>
         <div class="inputDiv control-group">
-            {{ common.customerCountry }}
+            {{ deliveryNote.common.customerCountry }}
         </div>
-        {% if common.deliveryNote.contactName or common.deliveryNote.contactEmail %}
+        {% if deliveryNote.contactName or deliveryNote.contactEmail %}
             <h4>{{ 'Contact'|trans }}</h4>
             <div class="inputDiv control-group">
-                {{ common.deliveryNote.contactName }} {{ common.deliveryNote.contactEmail }}
+                {{ deliveryNote.contactName }} {{ deliveryNote.contactEmail }}
             </div>
         {% endif %}
 
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
-            {{ common.description|nl2br }}
+            {{ deliveryNote.common.description|nl2br }}
         </div>
 
         <table id="commonLines" class="lines" style="margin-top: 40px">
@@ -75,7 +75,7 @@
             </tr>
             </thead>
             <tbody id="tbody_lines">
-            {% for line in common.commonLines %}
+            {% for line in deliveryNote.common.commonLines %}
                 {{ include('TeclliureInvoiceBundle:Common:line.html.twig', {'line': line}) }}
             {% endfor %}
             </tbody>
@@ -84,50 +84,50 @@
                 <td colspan="4" rowspan="2">
                 </td>
                 <th class="border_total">{{ 'Base'|trans }}</th>
-                <td class="border_total common_totals" id="total_base_amount">{{ common.baseAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_base_amount">{{ deliveryNote.common.baseAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <th class="border_total">{{ 'Discount'|trans }}</th>
-                <td class="border_total common_totals" id="total_discount">{{ common.discountAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_discount">{{ deliveryNote.common.discountAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
                 <th class="border_total">{{ 'Subtotal'|trans }}</th>
-                <td class="border_total common_totals" id="total_subtotal">{{ common.netAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_subtotal">{{ deliveryNote.common.netAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
                 <th class="border_total">{{ 'Taxes'|trans }}</th>
-                <td class="border_total common_totals" id="total_taxes">{{ common.taxAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_taxes">{{ deliveryNote.common.taxAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
                 <th class="border_total">{{ 'Total'|trans }}</th>
-                <td class="border_total common_totals" id="total_total">{{ common.grossAmount|number_format(2, '.', ',') }}€</td>
+                <td class="border_total common_totals" id="total_total">{{ deliveryNote.common.grossAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             </tfoot>
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ common.deliveryNote.footnote|nl2br }}
+            {{ deliveryNote.footnote|nl2br }}
         </div>
 
         <div class="list_primary_buttons">
-            {% if (common.quote) and (common.quote.status != 0) and (print != true) and not common.invoice %}
-                <a href="{{ path('delivery_note_open', {'id': common.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
+            {% if (deliveryNote.id) and (deliveryNote.status != 0) and (print != true) and not deliveryNote.status < 2 %}
+                <a href="{{ path('delivery_note_open', {'id': deliveryNote.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% endif %}
             {% if (print != true) %}
-                {% if common.invoice %}
-                    <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
+                {% if deliveryNote.status > 1 %}
+                    <a href="{{ path('invoice_view', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}" alt="{{ 'View invoices'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
                 {% endif %}
-                {% if common.quote  %}
-                    <a href="{{ path('quote_view', {'id': common.id }) }}" alt="{{ 'View quote'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View quote'|trans }}</a>
+                {% if deliveryNote.relatedQuote  %}
+                    <a href="{{ path('quote_view', {'id': deliveryNote.relatedQuote.id }) }}" alt="{{ 'View quote'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View quote'|trans }}</a>
                 {% endif %}
                 <a href="{{ path('delivery_note_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-                <a href="{{ path('delivery_note_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                <a href="{{ path('delivery_note_print', {'id': deliveryNote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
             {% endif %}
         </div>
         <div style="clear:both;"></div>

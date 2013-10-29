@@ -12,27 +12,27 @@
     </tr>
     </thead>
     <tbody>
-    {% for common in invoices %}
+    {% for invoice in invoices %}
         <tr>
             <td>
-                {{ common.invoice.number }}
+                {{ invoice.number }}
             </td>
-            <td>{{ common.customerName }}</td>
-            <td>{{ common.invoice.issueDate|date('d/m/Y') }}</td>
-            <td>{{ common.invoice.dueDate|date('d/m/Y') }}</td>
-            <td>{{ common.invoice.dueAmount|number_format(2, '.', ',') }} €</td>
-            <td>{{ common.invoice.statusName|trans }}</td>
-            <td>{{ common.invoice.grossAmount|number_format(2, '.', ',') }} €</td>
+            <td>{{ invoice.common.customerName }}</td>
+            <td>{{ invoice.issueDate|date('d/m/Y') }}</td>
+            <td>{{ invoice.dueDate|date('d/m/Y') }}</td>
+            <td>{{ invoice.dueAmount|number_format(2, '.', ',') }} €</td>
+            <td>{{ invoice.statusName|trans }}</td>
+            <td>{{ invoice.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
-                {% if common.invoice.status == 0  %}
-                <a href="{{ path('invoice_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-mini"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
-                <a href="{{ path('invoice_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
+                {% if invoice.status == 0  %}
+                <a href="{{ path('invoice_edit', {'id': invoice.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-mini"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                <a href="{{ path('invoice_close', {'id': invoice.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
                 {% else %}
-                <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'View'|trans }}" class="btn btn-mini"><i class="icon-zoom-in"></i> {{ 'View'|trans }}</a>
-                <a href="{{ path('invoice_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                <a href="{{ path('invoice_view', {'id': invoice.id }) }}" alt="{{ 'View'|trans }}" class="btn btn-mini"><i class="icon-zoom-in"></i> {{ 'View'|trans }}</a>
+                <a href="{{ path('invoice_print', {'id': invoice.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
                 {% endif %}
-                <div class="inputDivInline payments" id="payments{{ common.invoice.id }}">
-                    {{ render(controller('TeclliureInvoiceBundle:Payment:payments', { 'common': common })) }}
+                <div class="inputDivInline payments" id="payments{{ invoice.id }}">
+                    {{ render(controller('TeclliureInvoiceBundle:Payment:payments', { 'invoice': invoice })) }}
                 </div>
             </td>
         </tr>

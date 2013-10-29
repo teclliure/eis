@@ -10,7 +10,6 @@
 
 namespace Teclliure\InvoiceBundle\Service;
 
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Entity\DeliveryNote;
@@ -42,9 +41,9 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      */
     public function getDeliveryNotes($limit = 10, $page = 1, $filters = array()) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-                        ->select('c, d')
-                        ->from('TeclliureInvoiceBundle:Common','c')
-                        ->innerJoin('c.delivery_note','d');
+                        ->select('d, c')
+                        ->from('TeclliureInvoiceBundle:DeliveryNote','d')
+                        ->innerJoin('d.common','c');
 
         if ($filters) {
             if (isset($filters['search']) && $filters['search']) {
@@ -110,24 +109,24 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
     /**
      * Get order
      *
-     * @param integer $commonId
+     * @param integer $deliveryNoteId
      *
-     * @return mixed Common or null
+     * @return mixed DeliveryNote or null
      *
      * @api 0.1
      */
-    public function getDeliveryNote($commonId, $new = false) {
+    public function getDeliveryNote($deliveryNoteId, $new = false) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('c, d')
-            ->from('TeclliureInvoiceBundle:Common','c')
-            ->where('c.id = :commonId')
-            ->setParameter('commonId', $commonId);
+            ->from('TeclliureInvoiceBundle:DeliveryNote','d')
+            ->where('d.id = :deliveryNoteId')
+            ->setParameter('deliveryNoteId', $deliveryNoteId);
 
         if ($new) {
-            $queryBuilder->leftJoin('c.delivery_note','d');
+            $queryBuilder->leftJoin('d.common','c');
         }
         else {
-            $queryBuilder->innerJoin('c.delivery_note','d');
+            $queryBuilder->innerJoin('d.common','c');
         }
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
@@ -136,29 +135,28 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
     /**
      * Create deliveryNote
      *
-     * @return Common
+     * @return DeliveryNote
      *
      * @api 0.1
      */
     public function createDeliveryNote() {
-        $common = new Common();
-        $this->putDefaults($common);
-        return $common;
+        $deliveryNote = new DeliveryNote();
+        $this->putDefaults($deliveryNote);
+        return $deliveryNote;
     }
 
-    public function putDefaults(Common $common) {
-        $deliveryNote = $common->getDeliveryNote();
-        if (!$deliveryNote) {
-            $deliveryNote = new DeliveryNote();
+    public function putDefaults(DeliveryNote $deliveryNote) {
+        $common = $deliveryNote->getCommon();
+        if (!$common) {
+            $common = new Common();
         }
-
         if ($this->getConfig()->get('default_country') && !$common->getCustomerCountry()) {
             $common->setCustomerCountry($this->getConfig()->get('default_country'));
         }
         if ($this->getConfig()->get('default_footnote_order') && !$deliveryNote->getFootnote()) {
             $deliveryNote->setFootnote($this->getConfig()->get('default_footnote_order'));
         }
-        $common->setDeliveryNote($deliveryNote);
+        $deliveryNote->setCommon($common);
     }
 
     /**
@@ -166,13 +164,13 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * Save deliveryNote and calculate amounts
      *
-     * @param Common $common DeliveryNote to save
+     * @param DeliveryNote $deliveryNote DeliveryNote to save
      *
      * @api 0.1
      */
-    public function saveDeliveryNote(Common $common, $originalLines = array()) {
+    public function saveDeliveryNote(DeliveryNote $deliveryNote, $originalLines = array()) {
         if ($originalLines)  {
-            foreach ($common->getCommonLines() as $commonLine) {
+            foreach ($deliveryNote->getCommon()->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
                     if ($toDel->getId() === $commonLine->getId()) {
                         unset($originalLines[$key]);
@@ -186,33 +184,31 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             }
         }
 
-        if (!$common->getDeliveryNote()) {
-            throw new Exception('Common is not an order');
-        }
-        elseif ($common->getDeliveryNote()->getStatus() > 0) {
+        if ($deliveryNote->getStatus() > 0) {
             throw new Exception('Only orders with status draft could be edited');
         }
 
-        if (!$common->getDeliveryNote()->getNumber()) {
+        if (!$deliveryNote->getNumber()) {
             // We get WRITE lock to avoid duplicated deliveryNote numbers
             $em = $this->getEntityManager();
             $em->getConnection()->exec('LOCK TABLE delivery_note d0_ WRITE;');
-            if (!$common->getDeliveryNote()->getNumber()) {
+            if (!$deliveryNote->getNumber()) {
                 $nextDeliveryNoteNumber = $this->getNextDeliveryNoteNumber(new \DateTime());
-                $common->getDeliveryNote()->setNumber($nextDeliveryNoteNumber);
+                $deliveryNote->setNumber($nextDeliveryNoteNumber);
             }
-            $em->persist($common);
+            $em->persist($deliveryNote);
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
-        if ($common->getQuote() && $common->getQuote()->getStatus() < 3) {
+        // TODO: Change Status with events
+        /*if ($common->getQuote() && $common->getQuote()->getStatus() < 3) {
             $common->getQuote()->setStatus(3);
         }
-        $this->updateCustomerFromCommon($common);
+        */
+        $this->updateCustomerFromCommon($deliveryNote->getCommon());
 
         $em = $this->getEntityManager();
-        // print count($common->getCommonLines());
-        $em->persist($common);
+        $em->persist($deliveryNote);
         $em->flush();
     }
 
@@ -221,21 +217,21 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * Set status to closed and generate deliveryNote number
      *
-     * @param Common $common DeliveryNote to close
+     * @param DeliveryNote $deliveryNote DeliveryNote to close
      *
      * @api 0.1
      */
-    public function closeDeliveryNote(Common $common) {
-        if ($common->getDeliveryNote()->getStatus() != 0) {
+    public function closeDeliveryNote(DeliveryNote $deliveryNote) {
+        if ($deliveryNote->getStatus() != 0) {
             throw new Exception('Only orders with status draft could be closed');
         }
-        $common->getDeliveryNote()->setStatus(1);
+        $deliveryNote->setStatus(1);
         $em = $this->getEntityManager();
-        $em->persist($common);
+        $em->persist($deliveryNote);
         $em->flush();
 
         // Dispatch Event
-        $closeEvent = new CommonEvent($common);
+        $closeEvent = new CommonEvent($deliveryNote->getCommon());
         $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_CLOSED, $closeEvent);
 
         if ($closeEvent->isPropagationStopped()) {
@@ -250,17 +246,17 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * Set status to open
      *
-     * @param Common $common DeliveryNote to open
+     * @param DeliveryNote $deliveryNote DeliveryNote to open
      *
      * @api 0.1
      */
-    public function openDeliveryNote(Common $common) {
-        if (!($common->getDeliveryNote()->getStatus() > 0)) {
+    public function openDeliveryNote(DeliveryNote $deliveryNote) {
+        if (!($deliveryNote->getStatus() > 0)) {
             throw new Exception('Only orders with status different than draft could be opened');
         }
-        $common->getDeliveryNote()->setStatus(0);
+        $deliveryNote->setStatus(0);
         $em = $this->getEntityManager();
-        $em->persist($common);
+        $em->persist($deliveryNote);
         $em->flush();
     }
 

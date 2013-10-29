@@ -10,7 +10,6 @@
 
 namespace Teclliure\InvoiceBundle\Service;
 
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\InvoiceBundle\Entity\Quote;
@@ -158,9 +157,8 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      * @api 0.1
      */
     public function saveQuote(Quote $quote, $originalLines = array()) {
-        $common = $quote->getCommon();
         if ($originalLines)  {
-            foreach ($common->getCommonLines() as $commonLine) {
+            foreach ($quote->getCommon()->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
                     if ($toDel->getId() === $commonLine->getId()) {
                         unset($originalLines[$key]);
@@ -192,15 +190,14 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
                 $nextQuoteNumber = $this->getNextQuoteNumber($createdDate);
                 $quote->setNumber($nextQuoteNumber);
             }
-            $em->persist($common);
+            $em->persist($quote);
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
-        $this->updateCustomerFromCommon($common);
+        $this->updateCustomerFromCommon($quote->getCommon());
 
         $em = $this->getEntityManager();
-        // print count($common->getCommonLines());
-        $em->persist($common);
+        $em->persist($quote);
         $em->flush();
     }
 

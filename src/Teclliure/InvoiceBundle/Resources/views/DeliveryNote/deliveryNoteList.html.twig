@@ -10,34 +10,32 @@
     </tr>
     </thead>
     <tbody>
-    {% for common in deliveryNotes %}
+    {% for deliveryNote in deliveryNotes %}
         <tr>
             <td>
-                {{ common.deliveryNote.number }}
+                {{ deliveryNote.number }}
             </td>
-            <td>{{ common.customerName }}</td>
-            <td>{{ common.deliveryNote.created|date('d/m/Y') }}</td>
-            <td>{{ common.deliveryNote.statusName|trans }}</td>
-            <td>{{ common.grossAmount|number_format(2, '.', ',') }} €</td>
+            <td>{{ deliveryNote.common.customerName }}</td>
+            <td>{{ deliveryNote.created|date('d/m/Y') }}</td>
+            <td>{{ deliveryNote.statusName|trans }}</td>
+            <td>{{ deliveryNote.common.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
-                {% if common.deliveryNote.status == 0  %}
-                <a href="{{ path('delivery_note_edit', {'id': common.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-mini"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
-                <a href="{{ path('delivery_note_close', {'id': common.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-mini"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
-                {% elseif (common.deliveryNote.status == 1) %}
-                <a href="{{ path('delivery_note_open', {'id': common.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-mini"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
+                {% if deliveryNote.status == 0  %}
+                <a href="{{ path('delivery_note_edit', {'id': deliveryNote.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-mini"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
+                <a href="{{ path('delivery_note_close', {'id': deliveryNote.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-mini"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
+                {% elseif (deliveryNote.status == 1) %}
+                <a href="{{ path('delivery_note_open', {'id': deliveryNote.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-mini"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
                 {% endif %}
 
-                {% if (common.deliveryNote.status == 1) %}
-                    {% if not common.invoice %}
-                        <a href="{{ path('delivery_note_invoice', {'id': common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
-                    {% endif %}
+                {% if (deliveryNote.status == 1) %}
+                    <a href="{{ path('delivery_note_invoice', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
                 {% endif %}
-                {% if common.invoice %}
-                    <a href="{{ path('invoice_view', {'id': common.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Invoice view'|trans }}</a>
+                {% if deliveryNote.status > 1 %}
+                    <a href="{{ path('invoice_view', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-info"><i class="icon-file"></i> {{ 'Invoice view'|trans }}</a>
                 {% endif %}
-                {% if (common.deliveryNote.status != 0) %}
-                <a href="{{ path('delivery_note_view', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
-                <a href="{{ path('delivery_note_print', {'id': common.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+                {% if (deliveryNote.status != 0) %}
+                <a href="{{ path('delivery_note_view', {'id': deliveryNote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
+                <a href="{{ path('delivery_note_print', {'id': deliveryNote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
                 {% endif %}
             </td>
         </tr>

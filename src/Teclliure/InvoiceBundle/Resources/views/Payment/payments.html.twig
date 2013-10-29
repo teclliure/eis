@@ -1,4 +1,4 @@
-    {% if invoice.status == 1 or invoice.status == 2 %}
+    {% if invoice.status >= 1 %}
     <button data-toggle="modal" data-target="#modalPayments{{ invoice.id }}" alt="{{ 'Pay'|trans }}" class="btn btn-small btn-success"><i class="icon-barcode"></i> {{ 'Pay'|trans }}</button>
     {% endif %}
     <div class="modal hide fade modalPayments" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="modalPayments{{ invoice.id }}">
