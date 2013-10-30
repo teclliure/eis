@@ -156,7 +156,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             $searchData = array('i_related_quote'=>$quote);
         }
         else {
-            $searchData = array_merge(array('i_id'=>$id), $searchData);
+            $searchData = array('i_id'=>$id);
         }
         $invoices = $this->getInvoices($limit, $page, $searchData);
 
