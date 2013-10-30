@@ -3,6 +3,7 @@
 namespace Teclliure\InvoiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Teclliure\InvoiceBundle\Form\Type\SearchType;
@@ -193,12 +194,14 @@ class QuoteController extends Controller
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
-        elseif ($quote->getStatus() > 1) {
-            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft or pending could not be invoiced.'));
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to invoice!'));
+        try {
+            $invoice = $quoteService->createInvoiceFromQuote($quote);
+        }
+        catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans($e->getMessage()));
             return $this->redirect($this->generateUrl('quote_list'));
         }
-        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to invoice!'));
-        $invoice = $quoteService->createInvoiceFromQuote($quote);
         $invoiceService->putDefaults($invoice);
         $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
 

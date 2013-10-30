@@ -24,20 +24,20 @@
                 <a href="{{ path('quote_edit', {'id': quote.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-small"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
                 <a href="{{ path('quote_close', {'id': quote.id }) }}" alt="{{ 'Close'|trans }}" class="btn btn-small"><i class="icon-folder-close"></i> {{ 'Close'|trans }}</a>
                 {% endif %}
+                {% if (quote.status < 3) or (quote.status == 5) %}
                 <div style="margin: 5px 0">
-                {% if quote.status == 1 %}
-                    {% if not quote.status < 3 %}
+                    {% if quote.status < 3 %}
                         <a href="{{ path('quote_order', {'id': quote.id }) }}" alt="{{ 'Make order'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make order'|trans }}</a>
                     {% endif %}
-                    {% if not quote < 4 %}
+                    {% if (quote.status < 3) or (quote.status == 5) %}
                         <a href="{{ path('quote_invoice', {'id': quote.id }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
                     {% endif %}
                     <br />
-                    {% if not quote.status < 3 %}
+                    {% if quote.status < 3 %}
                         <a href="{{ path('quote_deny', {'id': quote.id }) }}" alt="{{ 'Denied'|trans }}" class="btn btn-mini btn-danger"><i class="icon-lock"></i> {{ 'Denied'|trans }}</a>
                     {% endif %}
-                {% endif %}
                 </div>
+                {% endif %}
                 {% if quote.status > 0 %}
                 <a href="{{ path('quote_view', {'id': quote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-mini"><i class="icon-file"></i> {{ 'View'|trans }}</a>
                 {% endif %}

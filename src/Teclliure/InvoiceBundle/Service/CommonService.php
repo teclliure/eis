@@ -2,7 +2,6 @@
 
 namespace Teclliure\InvoiceBundle\Service;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Teclliure\InvoiceBundle\Entity\Common;
 use Teclliure\CustomerBundle\Entity\Customer;
@@ -195,5 +194,20 @@ class CommonService implements PaginatorAwareInterface {
             $relatedObject = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($id);
         }
         return $relatedObject;
+    }
+
+    public function isCommonCovered (Common $commonToCover, $commons) {
+        // Maybe in the future check line by line
+        $amountToCover = $commonToCover->getGrossAmount();
+        $coveredAmount = 0;
+        foreach ($commons as $common) {
+            $coveredAmount += $common->getGrossAmount();
+        }
+        if ($amountToCover <= $coveredAmount) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

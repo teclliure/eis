@@ -33,7 +33,7 @@
                 <a href="{{ path('delivery_note_open', {'id': deliveryNote.id }) }}" alt="{{ '(Re)Open'|trans }}" class="btn btn-mini"><i class="icon-folder-open"></i> {{ '(Re)Open'|trans }}</a>
                 {% endif %}
 
-                {% if (deliveryNote.status == 1) %}
+                {% if ((deliveryNote.status == 1) or (deliveryNote.status == 3)) %}
                     <a href="{{ path('delivery_note_invoice', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}" alt="{{ 'Make invoice'|trans }}" class="btn btn-mini btn-success"><i class="icon-file"></i> {{ 'Make invoice'|trans }}</a>
                 {% endif %}
                 {% if deliveryNote.status > 1 %}

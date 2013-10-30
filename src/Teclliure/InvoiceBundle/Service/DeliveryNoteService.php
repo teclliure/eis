@@ -12,12 +12,13 @@ namespace Teclliure\InvoiceBundle\Service;
 
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Teclliure\InvoiceBundle\Entity\Common;
+use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Entity\DeliveryNote;
 use Teclliure\InvoiceBundle\Service\CommonService;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Teclliure\InvoiceBundle\Event\CommonEvent;
+use Teclliure\InvoiceBundle\Event\DeliveryNoteEvent;
 use Teclliure\InvoiceBundle\CommonEvents;
-
 
 /**
  * DeliveryNote service. It "should" be the ONLY class used directly by controllers.
@@ -218,6 +219,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
+
         // TODO: Change Status with events
         /*if ($common->getQuote() && $common->getQuote()->getStatus() < 3) {
             $common->getQuote()->setStatus(3);
@@ -232,6 +234,35 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
         $em = $this->getEntityManager();
         $em->persist($deliveryNote);
         $em->flush();
+
+        // Dispatch Event
+        $closeEvent = new DeliveryNoteEvent($deliveryNote);
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_SAVED, $closeEvent);
+
+        if ($closeEvent->isPropagationStopped()) {
+            // Things to do if stopped
+        } else {
+            // Things to do if not stopped
+        }
+    }
+
+    /**
+     * Create invoice from delivery note
+     *
+     * @param DeliveryNote $deliveryNote Delivery note to invoice
+     * @return Invoice $invoice
+     *
+     * @api 0.1
+     */
+    public function createInvoiceFromDeliveryNote (DeliveryNote $deliveryNote) {
+        if ($deliveryNote->getStatus() != 1 && $deliveryNote->getStatus() != 3) {
+            throw new Exception('Only orders with status closed or partly invoiced could be invoiced');
+        }
+        $invoice = new Invoice();
+        $common = clone ($deliveryNote->getCommon());
+        $invoice->setCommon($common);
+        // $invoice->setRelatedQuote($quote); - We set up in controller
+        return $invoice;
     }
 
     /**
@@ -295,7 +326,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
         $queryParams = array();
 
         // We have the year at first
-        $size = 6;
+        $size = 7;
         $selectSubstring = 'MAX(SUBSTRING(d.number, '.$size.')) as number';
 
         // Filter by date

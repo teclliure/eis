@@ -19,7 +19,7 @@ use Teclliure\InvoiceBundle\Event\CommonEvent;
 use Teclliure\InvoiceBundle\CommonEvents;
 use Teclliure\InvoiceBundle\Entity\DeliveryNote;
 use Teclliure\InvoiceBundle\Entity\Invoice;
-
+use Teclliure\InvoiceBundle\Event\QuoteEvent;
 /**
  * Quote service. It "should" be the ONLY class used directly by controllers.
  *
@@ -200,6 +200,16 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $em = $this->getEntityManager();
         $em->persist($quote);
         $em->flush();
+
+        // Dispatch Event
+        $closeEvent = new QuoteEvent($quote);
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_SAVED, $closeEvent);
+
+        if ($closeEvent->isPropagationStopped()) {
+            // Things to do if stopped
+        } else {
+            // Things to do if not stopped
+        }
     }
 
     /**

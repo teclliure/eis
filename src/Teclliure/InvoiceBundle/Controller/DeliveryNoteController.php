@@ -277,9 +277,30 @@ class DeliveryNoteController extends Controller
     public function invoiceDeliveryNoteAction(Request $request) {
         $t = $this->get('translator');
         $deliveryNoteService = $this->get('delivery_note_service');
+        $invoiceService = $this->get('invoice_service');
         $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'));
+        if (!$deliveryNote) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
+            return $this->redirect($this->generateUrl('delivery_note_list'));
+        }
         $this->get('session')->getFlashBag()->add('info', $t->trans('Order to invoice!'));
-        return $this->redirect($this->generateUrl('invoice_edit', array('id'=>$deliveryNote->getId(), 'new'=>true)));
+        try {
+            $invoice = $deliveryNoteService->createInvoiceFromDeliveryNote($deliveryNote);
+        }
+        catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans($e->getMessage()));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+
+        $invoiceService->putDefaults($invoice);
+        $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
+
+        return $this->render('TeclliureInvoiceBundle:Invoice:invoiceForm.html.twig', array(
+            'form'      => $form->createView(),
+            'config'    => $this->get('craue_config')->all(),
+            'urlParams' => array('id'=>$invoice->getId(), 'relatedDeliveryNote'=>$deliveryNote->getId()),
+            'invoice'   => $invoice
+        ));
     }
 
     protected function notFoundRedirect ($id) {

@@ -18,7 +18,7 @@ use Teclliure\InvoiceBundle\Service\CommonService;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Teclliure\InvoiceBundle\Event\CommonEvent;
 use Teclliure\InvoiceBundle\CommonEvents;
-
+use Teclliure\InvoiceBundle\Event\InvoiceEvent;
 
 /**
  * Invoice service. It "should" be the ONLY class used directly by controllers.
@@ -148,11 +148,12 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
     public function getInvoicesView($limit = 10, $page = 1, $id, $type = null, $searchData = array()) {
         if ($type == 'deliveryNote') {
             $deliveryNote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:DeliveryNote')->find($id);
-            $searchData = array_merge(array('i_related_delivery_note'=>$deliveryNote), $searchData);
+            // $searchData = array_merge(array('i_related_delivery_note'=>$deliveryNote), clone($searchData));
+            $searchData = array('i_related_delivery_note'=>$deliveryNote);
         }
         else if ($type == 'quote') {
             $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($id);
-            $searchData = array_merge(array('i_related_quote'=>$quote), $searchData);
+            $searchData = array('i_related_quote'=>$quote);
         }
         else {
             $searchData = array_merge(array('i_id'=>$id), $searchData);
@@ -267,6 +268,16 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         // print count($common->getCommonLines());
         $em->persist($invoice);
         $em->flush();
+
+        // Dispatch Event
+        $closeEvent = new InvoiceEvent($invoice);
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_SAVED, $closeEvent);
+
+        if ($closeEvent->isPropagationStopped()) {
+            // Things to do if stopped
+        } else {
+            // Things to do if not stopped
+        }
     }
 
     /**

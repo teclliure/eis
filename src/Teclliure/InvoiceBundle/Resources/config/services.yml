@@ -1,5 +1,6 @@
 parameters:
     teclliure_invoice_service.class: Teclliure\InvoiceBundle\Service\InvoiceService
+    teclliure_common_service.class: Teclliure\InvoiceBundle\Service\CommonService
     teclliure_quote_service.class: Teclliure\InvoiceBundle\Service\QuoteService
     teclliure_delivery_note_service.class: Teclliure\InvoiceBundle\Service\DeliveryNoteService
     teclliure_payment_service.class: Teclliure\InvoiceBundle\Service\PaymentService
@@ -11,6 +12,17 @@ services:
       class: "%doctrine_custom_checker.class%"
       arguments:
         em: "@doctrine.orm.entity_manager"
+
+  common_service:
+        class: "%teclliure_common_service.class%"
+        arguments:
+          em: "@doctrine.orm.entity_manager"
+          config: "@craue_config"
+          eventDispatcher: "@event_dispatcher"
+          customChecker: "@doctrine_custom_checker"
+        tags:
+          - { name: "knp_paginator.injectable", alias: "knp_paginator" }
+
 
   invoice_service:
       class: "%teclliure_invoice_service.class%"
@@ -86,6 +98,13 @@ services:
 #            fromEmail: %teclliure_from_mail%
 #        tags:
 #            - { name: kernel.event_subscriber }
+  teclliure.common.status.subscriber:
+        class: Teclliure\InvoiceBundle\Listener\StatusChangeSubscriber
+        arguments:
+            - @common_service
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: kernel.event_subscriber }
 
   invoice_mailer:
         class: Teclliure\InvoiceBundle\Mailer\Mailer
