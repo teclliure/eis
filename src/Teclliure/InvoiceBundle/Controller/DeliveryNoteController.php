@@ -39,23 +39,38 @@ class DeliveryNoteController extends Controller
         }
     }
 
+    public function orderQuoteAction(Request $request) {
+        $t = $this->get('translator');
+        $quoteService = $this->get('quote_service');
+        $quote = $quoteService->getQuote($request->get('id'));
+        if (!$quote) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        elseif ($quote->getStatus() != 1) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to pending could not be ordered.'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to order!'));
+        return $this->redirect($this->generateUrl('delivery_note_edit', array('id'=>$quote->getId(), 'new'=>true)));
+    }
+
     public function addEditDeliveryNoteAction(Request $request) {
         $t = $this->get('translator');
         $originalLines = array();
         $deliveryNoteService = $this->get('delivery_note_service');
+        $relatedQuote = null;
         if ($request->get('id')) {
             $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'), $request->get('new'));
             if (!$deliveryNote) {
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
-            elseif (!$request->get('new') && $deliveryNote->getStatus() != 0 ) {
+            elseif ($deliveryNote->getStatus() != 0 ) {
                 $this->get('session')->getFlashBag()->add('warning', $t->trans('Order with status different to draft could not be edited.'));
                 return $this->redirect($this->generateUrl('delivery_note_list'));
             }
-            if ($request->get('new')) {
-                $deliveryNoteService->putDefaults($deliveryNote);
-            }
+
             // Create an array of the current CommonLines objects in the database
             foreach ($deliveryNote->getCommon()->getCommonLines() as $commonLine) {
                 $originalLines[] = $commonLine;
@@ -63,6 +78,9 @@ class DeliveryNoteController extends Controller
         }
         else {
             $deliveryNote = $deliveryNoteService->createDeliveryNote();
+        }
+        if ($request->get('relatedQuote')) {
+            $relatedQuote = $request->get('relatedQuote');
         }
         $form = $this->createForm($this->get('teclliure.form.type.delivery_note'), $deliveryNote);
 
@@ -72,7 +90,7 @@ class DeliveryNoteController extends Controller
 
             $t = $this->get('translator');
             if ($form->isValid()) {
-                $deliveryNoteService->saveDeliveryNote($deliveryNote, $originalLines);
+                $deliveryNoteService->saveDeliveryNote($deliveryNote, $originalLines, $relatedQuote);
 
                 $action = $request->get('action');
                 if ($action == 'save_and_close') {
@@ -93,26 +111,113 @@ class DeliveryNoteController extends Controller
         return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNoteForm.html.twig', array(
             'form'      => $form->createView(),
             'config'    => $this->get('craue_config')->all(),
-            'new'       => $request->get('new'),
+            'urlParams' => array('id'=>$deliveryNote->getId(), 'relatedQuote'=>$relatedQuote),
             'deliveryNote'    => $deliveryNote
         ));
+    }
+
+    public function viewInvoiceAction(Request $request) {
+        $t = $this->get('translator');
+        $invoiceService = $this->get('invoice_service');
+        $basicSearchForm = $this->createForm(new SearchType(), array());
+        $basicSearchForm->handleRequest($request);
+        $extendedSearchForm = $this->createForm(new ExtendedSearchType(), array());
+        $extendedSearchForm->handleRequest($request);
+        if ($basicSearchForm->isValid()) {
+            $searchData = $basicSearchForm->getData();
+        }
+        else if ($extendedSearchForm->isValid()) {
+            $searchData = $extendedSearchForm->getData();
+        }
+        $type = $request->get('type');
+        $id = $request->get('id');
+        $invoices = $invoiceService->getInvoicesView(10,  $this->get('request')->query->get('page', 1), $id, $type, $searchData);
+
+        if (!$invoices || count($invoices)<1) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('No invoices found'));
+            return $this->redirect($this->generateUrl('invoice_list'));
+        }
+
+        if (count($invoices) == 1) {
+            return $this->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
+                'invoice' => $invoices[0],
+                'config' => $this->get('craue_config')->all(),
+                'print'  => false,
+            ));
+        }
+        else {
+            $related = $invoiceService->getRelatedObject($type, $id);
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
+                    'invoices'      => $invoices,
+                    'searchData'    => serialize($searchData),
+                    'related'       => $related,
+                    'relatedClass'  => $type
+                ));
+            }
+            else {
+                return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array(
+                    'invoices'              => $invoices,
+                    'searchData'            => serialize($searchData),
+                    'basicSearchForm'       => $basicSearchForm->createView(),
+                    'extendedSearchForm'    => $extendedSearchForm->createView(),
+                    'related'               => $related,
+                    'relatedClass'          => $type
+                ));
+            }
+        }
     }
 
     public function viewDeliveryNoteAction(Request $request) {
         $t = $this->get('translator');
         $deliveryNoteService = $this->get('delivery_note_service');
-        $deliveryNote = $deliveryNoteService->getDeliveryNote($request->get('id'));
-
-        if (!$deliveryNote) {
+        $searchData = array();
+        $basicSearchForm = $this->createForm(new SearchType(), array());
+        $basicSearchForm->handleRequest($request);
+        $extendedSearchForm = $this->createForm(new ExtendedSearchType(), array());
+        $extendedSearchForm->handleRequest($request);
+        if ($basicSearchForm->isValid()) {
+            $searchData = $basicSearchForm->getData();
+        }
+        else if ($extendedSearchForm->isValid()) {
+            $searchData = $extendedSearchForm->getData();
+        }
+        $type = $request->get('type');
+        $id = $request->get('id');
+        $deliveryNotes = $deliveryNoteService->getDeliveryNotesView(10,  $this->get('request')->query->get('page', 1), $id, $type, $searchData);
+        if (!$deliveryNotes || count($deliveryNotes) < 1) {
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Order does not exists!'));
             return $this->redirect($this->generateUrl('delivery_note_list'));
         }
 
-        return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNotePrint.html.twig', array(
-            'deliveryNote' => $deliveryNote,
-            'config' => $this->get('craue_config')->all(),
-            'print'  => false
-        ));
+        if (count($deliveryNotes) == 1) {
+            return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNotePrint.html.twig', array(
+                'deliveryNote' => $deliveryNotes[0],
+                'config' => $this->get('craue_config')->all(),
+                'print'  => false
+            ));
+        }
+        else {
+            $related = $deliveryNoteService->getRelatedObject($type, $id);
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNoteList.html.twig', array(
+                    'deliveryNotes' => $deliveryNotes,
+                    'searchData'    => serialize($searchData),
+                    'related'       => $related,
+                    'relatedClass'  => $type
+                ));
+            }
+            else {
+                return $this->render('TeclliureInvoiceBundle:DeliveryNote:index.html.twig', array(
+                    'deliveryNotes'         => $deliveryNotes,
+                    'searchData'            => serialize($searchData),
+                    'basicSearchForm'       => $basicSearchForm->createView(),
+                    'extendedSearchForm'    => $extendedSearchForm->createView(),
+                    'related'               => $related,
+                    'relatedClass'          => $type
+                ));
+            }
+        }
     }
 
     public function printDeliveryNoteAction(Request $request) {

@@ -17,7 +17,8 @@ use Teclliure\InvoiceBundle\Service\CommonService;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Teclliure\InvoiceBundle\Event\CommonEvent;
 use Teclliure\InvoiceBundle\CommonEvents;
-
+use Teclliure\InvoiceBundle\Entity\DeliveryNote;
+use Teclliure\InvoiceBundle\Entity\Invoice;
 
 /**
  * Quote service. It "should" be the ONLY class used directly by controllers.
@@ -258,7 +259,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function openQuote(Quote $quote) {
+    public function openQuote (Quote $quote) {
         if (!($quote->getStatus() > 0)) {
             throw new Exception('Only quotes with status different than draft could be opened');
         }
@@ -266,6 +267,44 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $em = $this->getEntityManager();
         $em->persist($quote);
         $em->flush();
+    }
+
+    /**
+     * Create delivery note from quote
+     *
+     * @param Quote $quote Quote to open
+     * @return DeliveryNote $deliveryNote
+     *
+     * @api 0.1
+     */
+    public function createDeliveryNoteFromQuote (Quote $quote) {
+        if ($quote->getStatus() != 1) {
+            throw new Exception('Only quotes with status pending could be ordered');
+        }
+        $deliveryNote = new DeliveryNote();
+        $common = clone ($quote->getCommon());
+        $deliveryNote->setCommon($common);
+        // $deliveryNote->setRelatedQuote($quote); - We set up in controller
+        return $deliveryNote;
+    }
+
+    /**
+     * Create invoice from quote
+     *
+     * @param Quote $quote Quote to open
+     * @return Invoice $invoice
+     *
+     * @api 0.1
+     */
+    public function createInvoiceFromQuote (Quote $quote) {
+        if ($quote->getStatus() != 5 && $quote->getStatus() != 1) {
+            throw new Exception('Only quotes with status pending or partly invoiced could be invoiced');
+        }
+        $invoice = new Invoice();
+        $common = clone ($quote->getCommon());
+        $invoice->setCommon($common);
+        // $invoice->setRelatedQuote($quote); - We set up in controller
+        return $invoice;
     }
 
     /**

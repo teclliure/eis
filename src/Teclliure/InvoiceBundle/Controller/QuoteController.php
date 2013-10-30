@@ -187,6 +187,7 @@ class QuoteController extends Controller
     public function invoiceQuoteAction(Request $request) {
         $t = $this->get('translator');
         $quoteService = $this->get('quote_service');
+        $invoiceService = $this->get('invoice_service');
         $quote = $quoteService->getQuote($request->get('id'));
         if (!$quote) {
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
@@ -197,23 +198,42 @@ class QuoteController extends Controller
             return $this->redirect($this->generateUrl('quote_list'));
         }
         $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to invoice!'));
-        return $this->redirect($this->generateUrl('invoice_edit', array('id'=>$quote->getId(), 'new'=>true)));
+        $invoice = $quoteService->createInvoiceFromQuote($quote);
+        $invoiceService->putDefaults($invoice);
+        $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
+
+        return $this->render('TeclliureInvoiceBundle:Invoice:invoiceForm.html.twig', array(
+            'form'      => $form->createView(),
+            'config'    => $this->get('craue_config')->all(),
+            'urlParams' => array('id'=>$invoice->getId(), 'relatedQuote'=>$quote->getId()),
+            'invoice'   => $invoice
+        ));
     }
 
     public function orderQuoteAction(Request $request) {
         $t = $this->get('translator');
         $quoteService = $this->get('quote_service');
+        $deliveryNoteService = $this->get('delivery_note_service');
         $quote = $quoteService->getQuote($request->get('id'));
         if (!$quote) {
             $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
-        elseif ($quote->getStatus() > 1) {
-            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to draft or pending could not be ordered.'));
+        elseif ($quote->getStatus() != 1) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote with status different to pending could not be ordered.'));
             return $this->redirect($this->generateUrl('quote_list'));
         }
         $this->get('session')->getFlashBag()->add('info', $t->trans('Quote to order!'));
-        return $this->redirect($this->generateUrl('delivery_note_edit', array('id'=>$quote->getId(), 'new'=>true)));
+        $deliveryNote = $quoteService->createDeliveryNoteFromQuote($quote);
+        $deliveryNoteService->putDefaults($deliveryNote);
+        $form = $this->createForm($this->get('teclliure.form.type.delivery_note'), $deliveryNote);
+
+        return $this->render('TeclliureInvoiceBundle:DeliveryNote:deliveryNoteForm.html.twig', array(
+            'form'      => $form->createView(),
+            'config'    => $this->get('craue_config')->all(),
+            'urlParams' => array('id'=>$deliveryNote->getId(), 'relatedQuote'=>$quote->getId()),
+            'deliveryNote'    => $deliveryNote
+        ));
     }
 
     protected function notFoundRedirect ($id) {

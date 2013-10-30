@@ -97,7 +97,7 @@ class Quote {
     private $related_delivery_notes;
 
     /**
-     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common")
+     * @ORM\OneToOne(targetEntity="Teclliure\InvoiceBundle\Entity\Common",  cascade={"persist", "remove"})
      */
     private $common;
 

@@ -28,7 +28,7 @@ class PaymentController extends Controller
         $invoiceService = $this->get('invoice_service');
         $paymentService = $this->get('payment_service');
 
-        $invoice = $invoiceService->getInvoiceById($request->get('invoice_id'));
+        $invoice = $invoiceService->getInvoice($request->get('invoice_id'));
         if (!$invoice) {
             $this->get('session')->getFlashBag()->add('error', $t->trans('Invoice does not exist'));
         }

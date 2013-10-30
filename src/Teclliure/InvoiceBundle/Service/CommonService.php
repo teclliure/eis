@@ -185,4 +185,15 @@ class CommonService implements PaginatorAwareInterface {
             }
         }
     }
+
+    public function getRelatedObject($type, $id) {
+        $relatedObject = null;
+        if ($type == 'deliveryNote') {
+            $relatedObject = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:DeliveryNote')->find($id);
+        }
+        elseif ($type == 'quote') {
+            $relatedObject = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($id);
+        }
+        return $relatedObject;
+    }
 }

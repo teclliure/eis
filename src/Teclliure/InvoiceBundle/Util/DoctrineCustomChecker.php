@@ -45,10 +45,10 @@ class DoctrineCustomChecker
 
             }
             $classMetadata = $this->cachedMetadata[$table];
-            if ($classMetadata->hasField($field)) {
+            if ($classMetadata->hasField($field) || $classMetadata->hasAssociation($field)) {
                 return;
             }
-            throw new \ErrorException('Trying to make an SQL injection '.$field.' in '.$table);
+            throw new \ErrorException('Trying to make an SQL injection ? Field '.$field.' does not exist in '.$table);
         }
         catch (Exception $e) {
             throw new \ErrorException('2: Trying to make an SQL injection '.$field.' in '.$table);

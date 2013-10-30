@@ -121,7 +121,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function getInvoice($invoiceId, $new = false) {
+    public function getInvoice($invoiceId) {
         // $query = $this->getEntityManager()->createQueryBuilder('SELECT c,i FROM TeclliureInvoiceBundle:Invoice c LEFT JOIN c.invoice i :where ORDER BY :order');
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
@@ -130,32 +130,36 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             ->where('i.id = :invoiceId')
             ->setParameter('invoiceId', $invoiceId);
 
-        if ($new) {
-            $queryBuilder->leftJoin('i.common','c');
-        }
-        else {
-            $queryBuilder->innerJoin('i.common','c');
-        }
+        $queryBuilder->innerJoin('i.common','c');
+
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
     /**
-     * Get invoice only
+     * Get invoices only
      *
-     * @param integer $invoiceId
+     * @param integer   $id
+     * @param string    $type
      *
-     * @return mixed Invoice or null
+     * @return DoctrineCollection Invoices
      *
      * @api 0.1
      */
-    public function getInvoiceById($invoiceId) {
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-            ->select('i')
-            ->from('TeclliureInvoiceBundle:Invoice','i')
-            ->where('i.id = :invoiceId')
-            ->setParameter('invoiceId', $invoiceId);
+    public function getInvoicesView($limit = 10, $page = 1, $id, $type = null, $searchData = array()) {
+        if ($type == 'deliveryNote') {
+            $deliveryNote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:DeliveryNote')->find($id);
+            $searchData = array_merge(array('i_related_delivery_note'=>$deliveryNote), $searchData);
+        }
+        else if ($type == 'quote') {
+            $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($id);
+            $searchData = array_merge(array('i_related_quote'=>$quote), $searchData);
+        }
+        else {
+            $searchData = array_merge(array('i_id'=>$id), $searchData);
+        }
+        $invoices = $this->getInvoices($limit, $page, $searchData);
 
-        return $queryBuilder->getQuery()->getOneOrNullResult();
+        return $invoices;
     }
 
     /**
@@ -215,7 +219,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function saveInvoice(Invoice $invoice, $originalLines = array()) {
+    public function saveInvoice(Invoice $invoice, $originalLines = array(), $relatedQuote = null, $relatedDeliveryNote = null) {
         if ($originalLines)  {
             foreach ($invoice->getCommon()->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
@@ -251,6 +255,14 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         }*/
         $this->updateCustomerFromCommon($invoice->getCommon());
 
+        if ($relatedQuote) {
+            $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($relatedQuote);
+            $invoice->setRelatedQuote($quote);
+        }
+        if ($relatedDeliveryNote) {
+            $deliveryNote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:DeliveryNote')->find($relatedDeliveryNote);
+            $invoice->setRelatedDeliveryNote($deliveryNote);
+        }
         $em = $this->getEntityManager();
         // print count($common->getCommonLines());
         $em->persist($invoice);

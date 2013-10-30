@@ -42,7 +42,7 @@
                 {% endif %}
             </div>
         </div>
-        <form id="invoiceForm" action="{% if invoice.id %}{{ path('invoice_edit', {'id': invoice.id, 'new': new }) }}{% else %}{{ path('invoice_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+        <form id="invoiceForm" action="{% if invoice.id %}{{ path('invoice_edit', urlParams) }}{% else %}{{ path('invoice_add', urlParams) }}{% endif %}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
 
             <h3>{{ 'Customer'|trans }}</h3>

@@ -41,7 +41,7 @@
                 {% endif %}
             </div>
         </div>
-        <form id="invoiceForm" action="{% if deliveryNote.id %}{{ path('delivery_note_edit', {'id': deliveryNote.id, 'new': new }) }}{% else %}{{ path('delivery_note_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+        <form id="invoiceForm" action="{% if deliveryNote.id %}{{ path('delivery_note_edit', urlParams ) }}{% else %}{{ path('delivery_note_add', urlParams) }}{% endif %}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
 
             <h3>{{ 'Customer'|trans }}</h3>
@@ -91,7 +91,7 @@
                 <script>
                     var wysihtmlEditors = new Array();
                     wysihtml = new Object();
-                    wysihtml.textareaId = "delivery_note_description";
+                    wysihtml.textareaId = "delivery_note_common_description";
                     wysihtml.toolbarId = "wysihtml5Toolbar";
                     wysihtmlEditors[0] = wysihtml;
                 </script>
@@ -154,7 +154,7 @@
                 <h3>{{ 'Footnote'|trans }}</h3>
                 <script>
                     wysihtml2 = new Object();
-                    wysihtml2.textareaId = "delivery_note_deliveryNote_footnote";
+                    wysihtml2.textareaId = "delivery_note_footnote";
                     wysihtml2.toolbarId = "wysihtml5ToolbarFootnote";
                     wysihtmlEditors[1] = wysihtml2;
                 </script>

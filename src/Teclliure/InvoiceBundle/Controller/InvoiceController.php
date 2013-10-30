@@ -67,12 +67,10 @@ class InvoiceController extends Controller
     public function addEditInvoiceAction(Request $request) {
         $originalLines = array();
         $invoiceService = $this->get('invoice_service');
+        $relatedQuote = null;
+        $relatedDeliveryNote = null;
         if ($request->get('id')) {
-            $invoice = $invoiceService->getInvoice($request->get('id'), $request->get('new'));
-
-            if ($request->get('new')) {
-                $invoiceService->putDefaults($invoice);
-            }
+            $invoice = $invoiceService->getInvoice($request->get('id'));
 
             // Create an array of the current CommonLines objects in the database
             foreach ($invoice->getCommon()->getCommonLines() as $commonLine) {
@@ -82,6 +80,12 @@ class InvoiceController extends Controller
         else {
             $invoice = $invoiceService->createInvoice();
         }
+        if ($request->get('relatedQuote')) {
+            $relatedQuote = $request->get('relatedQuote');
+        }
+        if ($request->get('relatedDeliveryNote')) {
+            $relatedDeliveryNote = $request->get('relatedDeliveryNote');
+        }
         $form = $this->createForm($this->get('teclliure.form.type.invoice'), $invoice);
 
         // process the form on POST
@@ -90,8 +94,7 @@ class InvoiceController extends Controller
 
             $t = $this->get('translator');
             if ($form->isValid()) {
-                $invoiceService->saveInvoice($invoice, $originalLines);
-
+                $invoiceService->saveInvoice($invoice, $originalLines, $relatedQuote, $relatedDeliveryNote);
                 $action = $request->get('action');
                 if ($action == 'save_and_close') {
                     $invoiceService->closeInvoice($invoice);
@@ -111,7 +114,7 @@ class InvoiceController extends Controller
         return $this->render('TeclliureInvoiceBundle:Invoice:invoiceForm.html.twig', array(
             'form' => $form->createView(),
             'config' => $this->get('craue_config')->all(),
-            'new' => $request->get('new'),
+            'urlParams' => array('id'=>$invoice->getId(), 'relatedQuote'=>$relatedQuote, 'relatedDeliveryNote'=>$relatedDeliveryNote),
             'invoice' => $invoice
         ));
     }
@@ -119,18 +122,53 @@ class InvoiceController extends Controller
     public function viewInvoiceAction(Request $request) {
         $t = $this->get('translator');
         $invoiceService = $this->get('invoice_service');
-        $invoice = $invoiceService->getInvoice($request->get('id'));
+        $basicSearchForm = $this->createForm(new SearchType(), array());
+        $basicSearchForm->handleRequest($request);
+        $extendedSearchForm = $this->createForm(new ExtendedSearchType(), array());
+        $extendedSearchForm->handleRequest($request);
+        if ($basicSearchForm->isValid()) {
+            $searchData = $basicSearchForm->getData();
+        }
+        else if ($extendedSearchForm->isValid()) {
+            $searchData = $extendedSearchForm->getData();
+        }
+        $type = $request->get('type');
+        $id = $request->get('id');
+        $invoices = $invoiceService->getInvoicesView(10,  $this->get('request')->query->get('page', 1), $id, $type, $searchData);
 
-        if (!$invoice) {
-            $this->get('session')->getFlashBag()->add('warning', $t->trans('Invoice does not exists!'));
+        if (!$invoices || count($invoices)<1) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('No invoices found'));
             return $this->redirect($this->generateUrl('invoice_list'));
         }
 
-        return $this->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
-            'invoice' => $invoice,
-            'config' => $this->get('craue_config')->all(),
-            'print'  => false
-        ));
+        if (count($invoices) == 1) {
+            return $this->render('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
+                'invoice' => $invoices[0],
+                'config' => $this->get('craue_config')->all(),
+                'print'  => false,
+            ));
+        }
+        else {
+            $related = $invoiceService->getRelatedObject($type, $id);
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
+                    'invoices'      => $invoices,
+                    'searchData'    => serialize($searchData),
+                    'related'       => $related,
+                    'relatedClass'  => $type
+                ));
+            }
+            else {
+                return $this->render('TeclliureInvoiceBundle:Invoice:index.html.twig', array(
+                    'invoices'              => $invoices,
+                    'searchData'            => serialize($searchData),
+                    'basicSearchForm'       => $basicSearchForm->createView(),
+                    'extendedSearchForm'    => $extendedSearchForm->createView(),
+                    'related'               => $related,
+                    'relatedClass'          => $type
+                ));
+            }
+        }
     }
 
     public function printInvoiceAction(Request $request) {
@@ -143,7 +181,7 @@ class InvoiceController extends Controller
             return $this->redirect($this->generateUrl('invoice_list'));
         }
 
-        $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
+        $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoice.html.twig', array(
             'invoice' => $invoice,
             'config' => $this->get('craue_config')->all(),
             'print'  => true

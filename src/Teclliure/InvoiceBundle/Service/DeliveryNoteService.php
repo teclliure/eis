@@ -115,21 +115,39 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * @api 0.1
      */
-    public function getDeliveryNote($deliveryNoteId, $new = false) {
+    public function getDeliveryNote($deliveryNoteId) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('c, d')
             ->from('TeclliureInvoiceBundle:DeliveryNote','d')
             ->where('d.id = :deliveryNoteId')
             ->setParameter('deliveryNoteId', $deliveryNoteId);
 
-        if ($new) {
-            $queryBuilder->leftJoin('d.common','c');
-        }
-        else {
-            $queryBuilder->innerJoin('d.common','c');
-        }
+        $queryBuilder->innerJoin('d.common','c');
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * Get delivery notes only
+     *
+     * @param integer   $id
+     * @param string    $type
+     *
+     * @return DoctrineCollection DeliveryNotes
+     *
+     * @api 0.1
+     */
+    public function getDeliveryNotesView($limit = 10, $page = 1, $id, $type = null, $searchData = array()) {
+        if ($type == 'quote') {
+            $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($id);
+            $searchData = array_merge(array('d_related_quote'=>$quote), $searchData);
+        }
+        else {
+            $searchData = array_merge(array('d_id'=>$id), $searchData);
+        }
+        $invoices = $this->getDeliveryNotes($limit, $page, $searchData);
+
+        return $invoices;
     }
 
     /**
@@ -168,7 +186,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * @api 0.1
      */
-    public function saveDeliveryNote(DeliveryNote $deliveryNote, $originalLines = array()) {
+    public function saveDeliveryNote(DeliveryNote $deliveryNote, $originalLines = array(), $relatedQuote = null) {
         if ($originalLines)  {
             foreach ($deliveryNote->getCommon()->getCommonLines() as $commonLine) {
                 foreach ($originalLines as $key => $toDel) {
@@ -205,6 +223,10 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             $common->getQuote()->setStatus(3);
         }
         */
+        if ($relatedQuote) {
+            $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($relatedQuote);
+            $deliveryNote->setRelatedQuote($quote);
+        }
         $this->updateCustomerFromCommon($deliveryNote->getCommon());
 
         $em = $this->getEntityManager();

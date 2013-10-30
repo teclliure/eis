@@ -872,3 +872,9 @@ ul.wysihtml5-toolbar div[data-wysihtml5-command-value="orange"] {
     font-family: 'Helvetica', 'Helvetica Neue Light';
     font-size: 9px;
 }
+
+.relatedObjectBox {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
