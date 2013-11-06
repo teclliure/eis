@@ -448,4 +448,28 @@ class CustomerService implements PaginatorAwareInterface {
             $result->setTotalDue($this->getCustomerDue($result));
         }
     }
+
+    public function calculateDueDate($customerId = null, $issueDate) {
+        $daysToPay = 30;
+        if ($customerId) {
+            $customer = $this->getCustomer($customerId);
+            if ($customer->getPaymentPeriod()) {
+                $daysToPay = $customer->getPaymentPeriod();
+            }
+        }
+        //print $daysToPay.'__'.$daysToPay%30;
+        if (!$daysToPay%30) {
+            $months = $daysToPay/30;
+            if ($months > 1) {
+                $issueDate->modify('+'.$months.' months');
+            }
+            else {
+                $issueDate->modify('+'.$months.' month');
+            }
+        }
+        else {
+            $issueDate->modify('+'.$daysToPay.' days');
+        }
+        return $issueDate;
+    }
 }

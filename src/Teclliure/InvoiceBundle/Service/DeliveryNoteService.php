@@ -66,6 +66,12 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
                     ->setParameter('end_issue_date', $filters['end_issue_date'], \Doctrine\DBAL\Types\Type::DATETIME);
                 unset ($filters['end_issue_date']);
             }
+            if (isset($filters['d_id']) && $filters['d_id']) {
+                $queryBuilder->andWhere('d.id = :id')
+                    ->setParameter('id', $filters['d_id']);
+                unset ($filters['d_id']);
+            }
+
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {

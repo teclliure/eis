@@ -66,6 +66,12 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
                     ->setParameter('end_issue_date', $filters['end_issue_date'], \Doctrine\DBAL\Types\Type::DATETIME);
                 unset ($filters['end_issue_date']);
             }
+            if (isset($filters['i_id']) && $filters['i_id']) {
+                $queryBuilder->andWhere('i.id = :id')
+                    ->setParameter('id', $filters['i_id']);
+                unset ($filters['i_id']);
+            }
+
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
@@ -182,7 +188,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             $common = new Common();
         }
 
-        if (!$invoice->getIssueDate) {
+        if (!$invoice->getIssueDate()) {
             $issueDate = new \DateTime('now');
             $invoice->setIssueDate($issueDate);
         }

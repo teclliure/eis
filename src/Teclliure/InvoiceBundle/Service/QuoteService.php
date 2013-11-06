@@ -66,6 +66,11 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
                     ->setParameter('end_issue_date', $filters['end_issue_date'], \Doctrine\DBAL\Types\Type::DATETIME);
                 unset ($filters['end_issue_date']);
             }
+            if (isset($filters['q_id']) && $filters['q_id']) {
+                $queryBuilder->andWhere('q.id = :id')
+                    ->setParameter('id', $filters['q_id']);
+                unset ($filters['q_id']);
+            }
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {

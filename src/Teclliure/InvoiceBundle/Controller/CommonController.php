@@ -128,5 +128,13 @@ class CommonController extends Controller
 
         return $response;
     }
-}
 
+    public function calculateDueDateAction(Request $request) {
+        $invoice = $request->get('invoice');
+        $issueDate = \DateTime::createFromFormat('d/m/Y', $invoice['issue_date']);
+        $customerService = $this->get('customer_service');
+        $dueDate = $customerService->calculateDueDate($invoice['common']['customer'], $issueDate);
+        return new Response ($dueDate->format('d/m/Y'), 200);
+    }
+
+}

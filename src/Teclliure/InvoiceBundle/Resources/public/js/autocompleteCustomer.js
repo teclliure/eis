@@ -20,23 +20,23 @@ $(function() {
         },
         change: function( event, ui ) {
             if (autocompleteSelected == false) {
-                $('#' + baseObject + '_customer').val('');
+                $('#' + baseObject + '_customer').val('').trigger('change');
             }
             else {
                 autocompleteSelected = false;
             }
         },
         select: function( event, ui ) {
-            $('#'+ baseObject + '_common_customer').val(ui.item.id);
-            $('#'+ baseObject + '_common_customer_identification').val(ui.item.identification);
-            $('#'+ baseObject + '_common_customer_address').val(ui.item.address);
-            $('#'+ baseObject + '_common_customer_zip_code').val(ui.item.zip_code);
-            $('#'+ baseObject + '_common_customer_city').val(ui.item.city);
-            $('#'+ baseObject + '_common_customer_state').val(ui.item.state);
-            $('#'+ baseObject + '_common_customer_country').val(ui.item.country);
-            $('#'+ baseObject + '_common_customer_name').val(ui.item.name);
-            $('#'+ baseObject + '_contact_name').val(ui.item.contact_name);
-            $('#'+ baseObject + '_contact_email').val(ui.item.contact_email);
+            $('#'+ baseObject + '_common_customer').val(ui.item.id).trigger('change');
+            $('#'+ baseObject + '_common_customer_identification').val(ui.item.identification).trigger('change');
+            $('#'+ baseObject + '_common_customer_address').val(ui.item.address).trigger('change');
+            $('#'+ baseObject + '_common_customer_zip_code').val(ui.item.zip_code).trigger('change');
+            $('#'+ baseObject + '_common_customer_city').val(ui.item.city).trigger('change');
+            $('#'+ baseObject + '_common_customer_state').val(ui.item.state).trigger('change');
+            $('#'+ baseObject + '_common_customer_country').val(ui.item.country).trigger('change');
+            $('#'+ baseObject + '_common_customer_name').val(ui.item.name).trigger('change');
+            $('#'+ baseObject + '_contact_name').val(ui.item.contact_name).trigger('change');
+            $('#'+ baseObject + '_contact_email').val(ui.item.contact_email).trigger('change');
             autocompleteSelected = true;
             return false;
         }
@@ -61,8 +61,8 @@ $(function() {
                 response);
         },
         select: function( event, ui ) {
-            $('#'+ baseObject + '_contact_name').val(ui.item.contact_name);
-            $('#'+ baseObject + '_contact_email').val(ui.item.contact_email);
+            $('#'+ baseObject + '_contact_name').val(ui.item.contact_name).trigger('change');
+            $('#'+ baseObject + '_contact_email').val(ui.item.contact_email).trigger('change');
             return false;
         }
     });

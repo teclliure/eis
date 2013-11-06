@@ -15,3 +15,7 @@ search_customer_name:
 update_prices:
     pattern: /updatePrices
     defaults: { _controller: TeclliureInvoiceBundle:Common:updatePrices }
+
+invoice_due:
+    pattern:  /calculateDueDate
+    defaults: { _controller: TeclliureInvoiceBundle:Common:calculateDueDate }
