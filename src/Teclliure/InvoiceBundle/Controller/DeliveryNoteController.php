@@ -236,8 +236,11 @@ class DeliveryNoteController extends Controller
             'print'  => true
         ));
 
+        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig');
+
+        $pdfRenderer = $this->get('knp_snappy.pdf');
         return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm', 'margin-bottom'=>'5mm')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',
