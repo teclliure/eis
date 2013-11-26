@@ -27,7 +27,7 @@
             <td>{{ invoice.issueDate|date('d/m/Y') }}</td>
             <td>{{ invoice.dueDate|date('d/m/Y') }}</td>
             <td>{{ invoice.dueAmount|number_format(2, '.', ',') }} €</td>
-            <td>{{ invoice.statusName|trans }}</td>
+            <td id="invoice-{{ invoice.id }}-status" class="invoice-status-{{ invoice.status }}">{{ invoice.statusName|trans }}</td>
             <td>{{ invoice.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
                 {% if invoice.status == 0  %}

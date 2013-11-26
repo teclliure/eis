@@ -21,18 +21,18 @@ use Teclliure\CustomerBundle\Entity\Contact;
 use Teclliure\InvoiceBundle\Entity\Tax;
 use Teclliure\InvoiceBundle\Entity\CommonLine;
 
-class MigrateQfactCommand extends ContainerAwareCommand
+class MigrateSiwappCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('migrate:qfact')
-            ->setDescription('Migrate Qfact customer and quote data to EIS')
+            ->setName('migrate:siwapp')
+            ->setDescription('Migrate Siwapp customer and invoice data to EIS')
             ->addOption('clean', null, InputOption::VALUE_OPTIONAL, 'If set, the task will yell in uppercase letters', false)
-            ->addArgument('qfact_db_name', InputArgument::REQUIRED, 'The Qfact db name')
-            ->addArgument('qfact_db_username', InputArgument::REQUIRED, 'The Qfact db username')
-            ->addArgument('qfact_db_password', InputArgument::REQUIRED, 'The Qfact db password')
-            ->addArgument('qfact_db_host', InputArgument::REQUIRED, 'The Qfact db hostname')
+            ->addArgument('siwapp_db_name', InputArgument::REQUIRED, 'The Siwapp db name')
+            ->addArgument('siwapp_db_username', InputArgument::REQUIRED, 'The Siwapp db username')
+            ->addArgument('siwapp_db_password', InputArgument::REQUIRED, 'The Siwapp db password')
+            ->addArgument('siwapp_db_host', InputArgument::REQUIRED, 'The Siwapp db hostname')
         ;
     }
 
@@ -55,9 +55,9 @@ class MigrateQfactCommand extends ContainerAwareCommand
             $output->writeln('Deleted taxes');
         }
 
-        $qfactDb = new \PDO('mysql:host='.$input->getArgument('qfact_db_host').';dbname='.$input->getArgument('qfact_db_name'), $input->getArgument('qfact_db_username'), $input->getArgument('qfact_db_password'));
+        $qfactDb = new \PDO('mysql:host='.$input->getArgument('siwapp_db_host').';dbname='.$input->getArgument('siwapp_db_name'), $input->getArgument('siwapp_db_username'), $input->getArgument('siwapp_db_password'));
 
-        $stmt = $qfactDb->prepare('SELECT * from 2013_tipoiva where empresa=2');
+        $stmt = $siwappDb->prepare('SELECT * from 2013_tipoiva where empresa=2');
         $stmt->execute();
         $vatTypes = $stmt->fetchAll();
 

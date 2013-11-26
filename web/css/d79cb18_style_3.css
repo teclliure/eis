@@ -858,3 +858,19 @@ ul.wysihtml5-toolbar div[data-wysihtml5-command-value="orange"] {
     margin-right: auto;
     text-align: center;
 }
+
+.invoice-status-0 {
+    background-color: #C4BD97;
+}
+
+.invoice-status-1 {
+    background-color: #8DB3E2;
+}
+
+.invoice-status-2 {
+    background-color: #953734;
+}
+
+.invoice-status-3 {
+    background-color: #76923C;
+}

@@ -1,22 +1,27 @@
-            {% for flashMessage in app.session.flashbag.get('info') %}
-                <div class="alert alert-info fade in">
-                    {{ flashMessage }}
-                    <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
-                </div>
-            {% endfor %}
-            {% for flashMessage in app.session.flashbag.get('success') %}
-                <div class="alert alert-success fade in" style="margin-bottom: 20px;">
-                    {{ flashMessage }}
-                    <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
-                </div>
+    {% if app.request.isXmlHttpRequest %}
+        <script>
+            $('#invoice-{{ invoice.id }}-status').removeClass(null, 1000).addClass('invoice-status-{{ invoice.status }}', 1000);
+        </script>
+    {% endif %}
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="alert alert-info fade in">
+            {{ flashMessage }}
+            <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success fade in" style="margin-bottom: 20px;">
+            {{ flashMessage }}
+            <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+        </div>
 
-            {% endfor %}
-            {% for flashMessage in app.session.flashbag.get('error') %}
-                <div class="alert alert-error fade in" style="margin-bottom: 20px;">
-                    {{ flashMessage }}
-                    <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
-                </div>
-            {% endfor %}
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-error fade in" style="margin-bottom: 20px;">
+            {{ flashMessage }}
+            <a class="close close_notification" data-dismiss="alert" href="#">&times;</a>
+        </div>
+    {% endfor %}
 
     <ul class="payments" id="payments{{ invoice.id }}">
     {% for payment in payments %}

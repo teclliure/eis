@@ -1,5 +1,6 @@
 jQuery(document).ready(function() {
     $('.payments').on('submit', '.paymentForm', function(e) {
+        $(':submit', this).attr('disabled', true);
         e.preventDefault();
         id = $(this).attr('id').replace('paymentForm','');
 
@@ -10,6 +11,7 @@ jQuery(document).ready(function() {
             success: function(data)
             {
                 $('#payments'+id+' .modal-body').html(data);
+                $(':submit', this).removeAttr('disabled');
             }
         });
     });

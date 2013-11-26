@@ -347,9 +347,9 @@ class CustomerService implements PaginatorAwareInterface {
     protected function getCustomerPayments(Customer $customer) {
         $total = 0;
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-            ->select('c, i, p')
-            ->from('TeclliureInvoiceBundle:Common','c')
-            ->innerJoin('c.invoice','i')
+            ->select('i, c, p')
+            ->from('TeclliureInvoiceBundle:Invoice','i')
+            ->innerJoin('i.common','c')
             ->leftJoin('i.payments','p')
             ->where('c.customer = :customer')
             ->setParameter('customer', $customer->getId());
@@ -357,7 +357,7 @@ class CustomerService implements PaginatorAwareInterface {
         $results = $queryBuilder->getQuery()->getResult();
 
         foreach ($results as $result) {
-            foreach ($result->getInvoice()->getPayments() as $payment) {
+            foreach ($result->getPayments() as $payment) {
                 $total += $payment->getAmount();
             }
         }
@@ -427,16 +427,16 @@ class CustomerService implements PaginatorAwareInterface {
     protected function getCustomerDue(Customer $customer) {
         $total = 0;
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
-            ->select('c, i')
-            ->from('TeclliureInvoiceBundle:Common','c')
-            ->innerJoin('c.invoice','i')
+            ->select('i, c')
+            ->from('TeclliureInvoiceBundle:Invoice','i')
+            ->innerJoin('i.common','c')
             ->where('c.customer = :customer')
             ->setParameter('customer', $customer->getId());
 
         $results = $queryBuilder->getQuery()->getResult();
 
         foreach ($results as $result) {
-            $total += $result->getInvoice()->getDueAmount();
+            $total += $result->getDueAmount();
         }
         return $total;
     }
