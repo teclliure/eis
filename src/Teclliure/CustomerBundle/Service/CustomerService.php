@@ -174,13 +174,17 @@ class CustomerService implements PaginatorAwareInterface {
             ->from('TeclliureCustomerBundle:Customer','c');
 
         if ($filters) {
-            if (isset($filters['search']) && $filters['search']) {
-                $queryBuilder->where('c.name LIKE :search')
-                    ->setParameters(array(
-                        'search'    => '%'.$filters['search'].'%'
-                    ));
+            if (array_key_exists('search', $filters)) {
+                if ($filters['search']) {
+                    $queryBuilder->where('c.name LIKE :search OR c.legal_name LIKE :search2')
+                        ->setParameters(array(
+                            'search'    => '%'.$filters['search'].'%',
+                            'search2'    => '%'.$filters['search'].'%'
+                        ));
+                }
                 unset ($filters['search']);
             }
+
 
             foreach ($filters as $key=>$filter) {
                 // print $key.'-'.$filter.'__';
