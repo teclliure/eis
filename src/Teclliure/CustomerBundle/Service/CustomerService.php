@@ -457,8 +457,11 @@ class CustomerService implements PaginatorAwareInterface {
         $daysToPay = 30;
         if ($customerId) {
             $customer = $this->getCustomer($customerId);
-            if ($customer->getPaymentPeriod()) {
+            if ($customer->getPaymentPeriod() != null) {
                 $daysToPay = $customer->getPaymentPeriod();
+            }
+            else {
+                $daysToPay = 0;
             }
         }
         //print $daysToPay.'__'.$daysToPay%30;
@@ -471,7 +474,7 @@ class CustomerService implements PaginatorAwareInterface {
                 $issueDate->modify('+'.$months.' month');
             }
         }
-        else {
+        elseif ($daysToPay) {
             $issueDate->modify('+'.$daysToPay.' days');
         }
         return $issueDate;
