@@ -457,7 +457,7 @@ class CustomerService implements PaginatorAwareInterface {
         $daysToPay = 30;
         if ($customerId) {
             $customer = $this->getCustomer($customerId);
-            if ($customer->getPaymentPeriod() != null) {
+            if ($customer->getPaymentPeriod()) {
                 $daysToPay = $customer->getPaymentPeriod();
             }
             else {

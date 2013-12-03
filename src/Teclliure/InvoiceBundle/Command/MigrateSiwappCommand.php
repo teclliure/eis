@@ -39,124 +39,151 @@ class MigrateSiwappCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $quoteService = $this->getContainer()->get('quote_service');
+        $invoiceService = $this->getContainer()->get('invoice_service');
         $migratedIds = array();
         $migratedNames = array();
-        $output->writeln('Start migration');
+        $output->writeln('Started migration from Siwapp');
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
         if ($input->getOption('clean')) {
-            $entityManager->getConnection()->exec('DELETE from customer_contact');
-            $output->writeln('Deleted contacts');
-            $entityManager->getConnection()->exec('DELETE from customer');
-            $output->writeln('Deleted customers');
-            $entityManager->getConnection()->exec('DELETE from common_line');
-            $entityManager->getConnection()->exec('DELETE from common');
-            $output->writeln('Deleted quotes');
             $entityManager->getConnection()->exec('DELETE from tax');
             $output->writeln('Deleted taxes');
+            /*    $entityManager->getConnection()->exec('DELETE from customer_contact');
+                $output->writeln('Deleted contacts');
+                $entityManager->getConnection()->exec('DELETE from customer');
+                $output->writeln('Deleted customers');
+                $entityManager->getConnection()->exec('DELETE from common_line');
+                $entityManager->getConnection()->exec('DELETE from common');
+                $output->writeln('Deleted quotes');
+            */
         }
 
-        $qfactDb = new \PDO('mysql:host='.$input->getArgument('siwapp_db_host').';dbname='.$input->getArgument('siwapp_db_name'), $input->getArgument('siwapp_db_username'), $input->getArgument('siwapp_db_password'));
+        $siwappDb = new \PDO('mysql:host='.$input->getArgument('siwapp_db_host').';dbname='.$input->getArgument('siwapp_db_name'), $input->getArgument('siwapp_db_username'), $input->getArgument('siwapp_db_password'));
 
-        $stmt = $siwappDb->prepare('SELECT * from 2013_tipoiva where empresa=2');
+        $stmt = $siwappDb->prepare('SELECT * from tax');
         $stmt->execute();
         $vatTypes = $stmt->fetchAll();
 
         $taxes = array();
         foreach ($vatTypes as $vatType) {
             $tax = new Tax();
-            $tax->setName('Iva '.$vatType['iva']);
-            $tax->setValue($vatType['iva']);
+            $tax->setName($vatType['name']);
+            $tax->setValue($vatType['value']);
+            $tax->setActive($vatType['active']);
+            $tax->setIsDefault($vatType['is_default']);
             $entityManager->persist($tax);
-            $taxes[$vatType['codi']] = $tax;
+            $taxes[$vatType['id']] = $tax;
         }
 
-        $stmt = $qfactDb->prepare('SELECT * from 2013_clients where empresa=2');
+        // TODO: Migrate Series
+
+        $stmt = $siwappDb->prepare('SELECT * from customer');
         $stmt->execute();
         $results = $stmt->fetchAll();
 
         foreach ($results as $key=>$result) {
             $result = $this->convertEncodingArray($result);
-            if (!$result['rao_social']) {
-                $result['rao_social'] = 'NoLegalName'.$key;
+            if (!$result['name']) {
+                $result['name'] = 'NoLegalName'.$key;
             }
-            if (!$result['cif']) {
-                $result['cif'] = 'NoCIF'.$key;
+            if (!$result['identification']) {
+                $result['identification'] = 'NoIdent'.$key;
             }
-            if (in_array($result['cif'], $migratedIds)) {
-                $result['cif'] = 'Duplicated'.$key.'-'.$result['cif'];
+            if (in_array($result['identification'], $migratedIds)) {
+                $result['identification'] = 'Duplicated'.$key.'-'.$result['identification'];
             }
-            if (in_array(strtolower($result['rao_social']), $migratedNames)) {
-                $result['rao_social'] = 'Duplicated'.$key.'-'.$result['rao_social'];
+            if (in_array(strtolower($result['name']), $migratedNames)) {
+                $result['name'] = 'Duplicated'.$key.'-'.$result['name'];
             }
-            $output->write('+++ '.$result['nom'].'/'.$result['rao_social'].'/'.$result['cif'].' ... ');
+            $output->write('+++ '.$result['name'].'/'.$result['identification'].' ... ');
             $customer = new Customer();
-            $customer->setName($result['nom']);
-            $customer->setLegalName($result['rao_social']);
-            $customer->setIdentification($result['cif']);
+            $customer->setName($result['name']);
+            $customer->setLegalName($result['name']);
+            $customer->setIdentification($result['identification']);
             $customer->setEmail($result['email']);
-            $customer->setPhone($result['telefon']);
-            $customer->setWeb($result['url']);
-            $customer->setZipCode($result['codpos']);
-            $customer->setAddress($result['adressa']);
-            $customer->setCity($result['poblacio']);
-            $customer->setState($result['provincia']);
-            if ($result['pais'] == 'España' || $result['pais'] == 'E') {
-                $result['pais'] = 'ES';
-            }
-            elseif ($result['pais'] == 'Portugal') {
-                $result['pais'] = 'PT';
-            }
-            elseif ($result['pais'] == 'France') {
-                $result['pais'] = 'FR';
-            }
-            elseif ($result['pais'] == 'Italia') {
-                $result['pais'] = 'IT';
-            }
-            elseif ($result['pais'] == 'SEOUL KOREA') {
-                $result['pais'] = 'KR';
-            }
-            $customer->setCountry($result['pais']);
-            // $customer->setPaymentPeriod();
-            // $customer->setPaymentDay();
+            $customer->setAddress($result['invoicing_address']);
 
-            $stmt = $qfactDb->prepare('SELECT * from 2013_clients_contactes where client = '.$result['codi']);
+            $dbContact = new Contact();
+            $dbContact->setName(mb_convert_encoding ($result['contact_person'], "UTF-8"));
+            $dbContact->setEmail($result['email']);
+            $customer->addContact($dbContact);
+
+            $stmt = $siwappDb->prepare('SELECT * from common where customer_id = '.$result['id']);
             $stmt->execute();
-            $contacts = $stmt->fetchAll();
+            $commons = $stmt->fetchAll();
 
-            foreach ($contacts as $contact) {
-                $contact = $this->convertEncodingArray($contact);
+            foreach ($commons as $common) {
+                $common = $this->convertEncodingArray($common);
 
-                $dbContact = new Contact();
-                $dbContact->setName(mb_convert_encoding ($contact['nom'], "UTF-8"));
-                $dbContact->setEmail($contact['email']);
-                $dbContact->setPhone($contact['telefon']);
-                $dbContact->setSendQuote($contact['rep_presupost']);
-                $dbContact->setSendDeliveryNote($contact['rep_albara']);
-                $dbContact->setSendInvoice($contact['rep_factura']);
+                if ($common['type'] == 'Estimate') {
+                    $newObject = $quoteService->createQuote();
+                    /*
+                     * Quote - Siwapp
+                     * DRAFT    = 0;
+                     * REJECTED = 1;
+                     * PENDING  = 2;
+                     * APPROVED = 3;
+                     *
+                     * Quote - EIS
+                     * DRAFT             - 0
+                     * PENDING           - 1
+                     * REJECTED          - 2
+                     * DELIVERED         - 3
+                     * INVOICED          - 4
+                     * PARTLYINVOICED    - 5
+                     *
+                     */
+                    if ($common['status'] == 1) {
+                        $newObject->setStatus(2);
+                    }
+                    elseif ($common['status'] == 2) {
+                        $newObject->setStatus(1);
+                    }
+                    elseif ($common['status'] == 3) {
+                        $newObject->setStatus(4);
+                    }
+                    else {
+                        $newObject->setStatus($common['status']);
+                    }
+                }
+                elseif ($common['type'] == 'Invoice') {
+                    $newObject = $quoteService->createInvoice();
+                    /*
+                    *  Invoice status - Siwapp
+                    *  DRAFT   = 0;
+                    *  CLOSED  = 1;
+                    *  OPENED  = 2;
+                    *  OVERDUE = 3;
+                    *
+                    *  Invoice status - EIS
+                    *  DRAFT         - 0
+                    *  CLOSED        - 1
+                    *  OVERDUE       - 2
+                    *  PAID          - 3
+                    */
+                    if ($common['status'] == 1) {
+                        $newObject->setStatus(3);
+                    }
+                    elseif ($common['status'] == 2) {
+                        $newObject->setStatus(1);
+                    }
+                    elseif ($common['status'] == 3) {
+                        $newObject->setStatus(2);
+                    }
+                    else {
+                        $newObject->setStatus($common['status']);
+                    }
+                }
 
-                $customer->addContact($dbContact);
-            }
+                $newObject->getCommon()->setCustomer($customer);
+                $newObject->getCommon()->setCustomerName($common['customer_name']);
+                $newObject->getCommon()->setCustomerIdentification($common['customer_identification']);
+                $newObject->getCommon()->setCustomerAddress($common['invoicing_address']);
+                $newObject->setNumber($common['number']);
+                $newObject->setFootnote($common['notes']);
+                $newObject->setCreated(new \DateTime($common['created_at']));
+                $newObject->setUpdated(new \DateTime($common['updated_at']));
 
-            $stmt = $qfactDb->prepare('SELECT * from 2013_c_presupost where client = '.$result['codi']);
-            $stmt->execute();
-            $pres = $stmt->fetchAll();
-
-            foreach ($pres as $pre) {
-                $pre = $this->convertEncodingArray($pre);
-
-                $quote = $quoteService->createQuote();
-                $quote->setCustomer($customer);
-                $quote->setCustomerName($customer->getLegalName());
-                $quote->setCustomerIdentification($customer->getIdentification());
-                $quote->setCustomerZipCode($customer->getZipCode());
-                $quote->setCustomerAddress($customer->getAddress());
-                $quote->setCustomerCity($customer->getCity());
-                $quote->setCustomerState($customer->getState());
-                $quote->setCustomerCountry($customer->getCountry());
-                $quote->getQuote()->setFootnote($pre['text_peu']);
-                $quote->getQuote()->setCreated(new \DateTime($pre['data']));
-
-                $stmt = $qfactDb->prepare('SELECT * from 2013_d_presupost where num_pre = '.$pre['num_pre']);
+                $stmt = $siwappDb->prepare('SELECT * from item where common_id = '.$invoice['id']);
                 $stmt->execute();
                 $presLines = $stmt->fetchAll();
                 $desc = '';
@@ -178,11 +205,11 @@ class MigrateSiwappCommand extends ContainerAwareCommand
                 $quoteService->saveQuote($quote);
             }
 
-            /*$stmt = $qfactDb->prepare('SELECT * from 2013_c_presupost where client = '.$result['codi']);
+            /*$stmt = $siwappDb->prepare('SELECT * from 2013_c_presupost where client = '.$result['codi']);
             $stmt->execute();
             $pres = $stmt->fetchAll();
 
-            $stmt = $qfactDb->prepare('SELECT * from 2013_clients_contactes where client = '.$result['codi']);
+            $stmt = $siwappDb->prepare('SELECT * from 2013_clients_contactes where client = '.$result['codi']);
             $stmt->execute();
             $contacts = $stmt->fetchAll();*/
 
@@ -194,7 +221,7 @@ class MigrateSiwappCommand extends ContainerAwareCommand
 
         $entityManager->flush();
 
-        $output->writeln('End migration');
+        $output->writeln('End siwapp migration');
     }
 
     protected function convertEncodingArray($array) {
