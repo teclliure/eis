@@ -22,7 +22,7 @@ class SettingsController extends Controller {
 		$form = $this->createForm(new ModifySettingsForm(), $formData);
 		$request = $this->get('request');
 		if ($request->getMethod() === 'POST') {
-			$form->bindRequest($request);
+			$form->submit($request);
 			if ($form->isValid()) {
 				foreach ($formData['settings'] as $formSetting) {
 					$storedSetting = $this->getSettingByName($allStoredSettings, $formSetting->getName());
