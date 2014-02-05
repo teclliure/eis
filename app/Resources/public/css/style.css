@@ -302,6 +302,7 @@ ul.payments li ul li {
 #companyInfo {
     float: right;
     width: 30%;
+    font-size: 0.8em;
 }
 .lines {
     list-style-type: none;

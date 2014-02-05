@@ -129,7 +129,7 @@ class QuoteController extends Controller
             'print'  => true
         ));
 
-        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig');
+        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig',array('config' => $this->get('craue_config')->all()));
 
         $pdfRenderer = $this->get('knp_snappy.pdf');
         return new Response(
