@@ -130,10 +130,11 @@ class QuoteController extends Controller
         ));
 
         $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig',array('config' => $this->get('craue_config')->all()));
+        $headerHtml = $this->renderView('TeclliureInvoiceBundle:Common:headerPdf.html.twig',array('quote' => $quote));
 
         $pdfRenderer = $this->get('knp_snappy.pdf');
         return new Response(
-            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm')),
+            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'header-html'=>$headerHtml, 'margin-left'=> '2mm', 'margin-top'=> '10mm')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',

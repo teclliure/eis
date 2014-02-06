@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Easy Invoice System - {% block title %}No title{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <script>
+        function subst() {
+            var vars = {};
+
+            // explode the URL query string
+            var x = document.location.search.substring(1).split('&');
+
+            // loop through each query string segment and get keys/values
+            for (var i in x)
+            {
+                var z = x[i].split('=',2);
+                vars[z[0]] = unescape(z[1]);
+            }
+
+            if(vars['page'] == 1){ // If page is 1, set FakeHeaders display to none
+                document.getElementById("FakeHeaders").style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body onload="subst()">
+<table style="width: 100%; font-size: 8px;" id="FakeHeaders" >
+  <tr>
+    <td class="section" style="text-align: center;">
+        <b>{{ 'Quote'|trans }}</b>: {{ quote.number }} - <b>{{ 'Created on'|trans }}</b>: {{ quote.created|date("d/m/Y") }}
+    </td>
+  </tr>
+</table>
+<br />
+</body>
+</html>

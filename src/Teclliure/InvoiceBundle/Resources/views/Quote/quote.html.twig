@@ -1,7 +1,6 @@
 
     <div id="inside_content">
-
-        <div id="companyInfo">
+        <div id="companyInfo" style="margin-top: -60px;">
             <h5>{{ 'Quote'|trans }} - {{ quote.number }}</h5>
             <b>{{ 'Created on'|trans }}</b>: {{ quote.created|date("d/m/Y") }}<br />
             <br />
@@ -19,40 +18,44 @@
                     <a href="mailto: {{ config.company_mail }}">{{ config.company_mail }}</a>
                 {% endif %}
             </div>
-
         </div>
 
-        <h4>{{ 'Customer'|trans }}</h4>
-        <div class="control-group">
-            <b>{{ quote.common.customerName }} - {{ quote.common.customerIdentification }}</b><br />
+        <div style="margin-top: -60px;">
+            <h4>{{ 'Customer'|trans }}</h4>
+            <div class="control-group">
+                <b>{{ quote.common.customerName }} - {{ quote.common.customerIdentification }}</b><br />
+            </div>
+            <div class="inputDiv control-group">
+                {{ quote.common.customerAddress|nl2br }}<br />
+                {{ quote.common.customerZipCode }} - {{ quote.common.customerCity }} <br />
+                {{ quote.common.customerState }} {{ quote.common.customerCountry }}
+            </div>
+            <br />
+            {% if quote.contactName or quote.contactEmail %}
+            <h5>{{ 'Contact'|trans }}</h5>
+            <div class="inputDiv control-group">
+                {{ quote.contactName }} ({{ quote.contactEmail }})
+            </div>
+            {% endif %}
         </div>
-        <div class="inputDiv control-group">
-            {{ quote.common.customerAddress|nl2br }}<br />
-            {{ quote.common.customerZipCode }} - {{ quote.common.customerCity }} <br />
-            {{ quote.common.customerState }} {{ quote.common.customerCountry }}
-        </div>
-        <br />
-        {% if quote.contactName or quote.contactEmail %}
-        <h5>{{ 'Contact'|trans }}</h5>
-        <div class="inputDiv control-group">
-            {{ quote.contactName }} ({{ quote.contactEmail }})
-        </div>
-        {% endif %}
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
             {{ quote.common.description|raw }}
         </div>
 
-        <table id="commonLines" class="lines" style="margin-top: 40px; width: 90%;">
+        <table id="commonLines" class="lines" style="display: block; margin-top: 20px; width: 90%; page-break-inside: avoid !important;">
             <thead>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
             <tr class="lineHeader not_delete">
-                <th colspan="2" class="lineDesc">{{ 'Description'|trans }}</th>
+                <th colspan="2" class="lineDesc" style="width: 70%">{{ 'Description'|trans }}</th>
                 <!--<th class="lineQty">{{ 'Quantity'|trans }}</th>
                 <th class="lineUC">{{ 'Unitary cost'|trans }}</th>
                 <th class="lineTaxes">{{ 'Taxes'|trans }}</th>
                 <th class="lineDiscount">{{ 'Discount'|trans }}</th>-->
-                <th class="lineDiscount">{{ 'Price'|trans }}</th>
+                <th class="lineDiscount" style="width: 30%">{{ 'Price'|trans }}</th>
             </tr>
             </thead>
             <tbody id="tbody_lines">
@@ -62,7 +65,7 @@
             </tbody>
             <tfoot>
                 <tr id="add_line_link_li" class="not_delete">
-                    <td style="width: 80%"></td>
+                    <td style="width: 95%"></td>
                     <th class="border_total" style="text-align: right">{{ 'Base'|trans }}</th>
                     <td class="border_total common_totals" id="total_base_amount">{{ quote.common.baseAmount|number_format(2, '.', ',') }}€</td>
                 </tr>
