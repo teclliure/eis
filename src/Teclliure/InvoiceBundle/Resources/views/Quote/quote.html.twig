@@ -1,74 +1,61 @@
 
     <div id="inside_content">
-
-        <div id="companyInfo">
-            <h4>{{ 'Quote'|trans }} - {{ quote.number }}</h4>
-            <b>{{ 'Created'|trans }}</b>: {{ quote.created|date("d/m/Y") }}<br />
-            <div class="inputDiv control-group">
-            {{ config.company_name }} - {{ config.company_identification }}
-            </div>
+        <div id="companyInfo" style="margin-top: -60px;">
+            <h5>{{ 'Quote'|trans }} - {{ quote.number }}</h5>
+            <b>{{ 'Created on'|trans }}</b>: {{ quote.created|date("d/m/Y") }}<br />
             <br />
             <div class="inputDiv control-group">
+                <b>{{ config.company_name }} - {{ config.company_identification }}</b><br />
                 {{ config.company_address|nl2br }}
             </div>
             <br />
             <div class="inputDiv control-group">
                 {% if config.company_web %}
-                    {% if (print != true) %}<a href="{{ config.company_web }}">{% endif %}{{ config.company_web }}{% if (print != true) %}</a>{% endif %}
+                    <a href="{{ config.company_web }}">{{ config.company_web }}</a>
                 {% endif %}
                 {% if config.company_mail %}
                     <br />
-                    {% if (print != true) %}<a href="mailto: {{ config.company_mail }}">{% endif %}{{ config.company_mail }}{% if (print != true) %}</a>{% endif %}
+                    <a href="mailto: {{ config.company_mail }}">{{ config.company_mail }}</a>
                 {% endif %}
             </div>
-
         </div>
 
-        <h3>{{ 'Customer'|trans }}</h3>
-        <div class="inputDiv control-group">
-            {{ quote.common.customerIdentification }}
+        <div style="margin-top: -60px;">
+            <h4>{{ 'Customer'|trans }}</h4>
+            <div class="control-group">
+                <b>{{ quote.common.customerName }} - {{ quote.common.customerIdentification }}</b><br />
+            </div>
+            <div class="inputDiv control-group">
+                {{ quote.common.customerAddress|nl2br }}<br />
+                {{ quote.common.customerZipCode }} - {{ quote.common.customerCity }} <br />
+                {{ quote.common.customerState }} {{ quote.common.customerCountry }}
+            </div>
+            <br />
+            {% if quote.contactName or quote.contactEmail %}
+            <h5>{{ 'Contact'|trans }}</h5>
+            <div class="inputDiv control-group">
+                {{ quote.contactName }} ({{ quote.contactEmail }})
+            </div>
+            {% endif %}
         </div>
-        <div class="inputDiv control-group">
-            {{ quote.common.customerName }}
-        </div>
-        <div class="inputDiv control-group">
-            {{ quote.common.customerZipCode }}
-        </div>
-        <br />
-        <div class="inputDiv control-group">
-            {{ quote.common.customerAddress }}
-        </div>
-        <br />
-        <div class="inputDiv control-group">
-            {{ quote.common.customerCity }}
-        </div>
-        <div class="inputDiv control-group">
-            {{ quote.common.customerState }}
-        </div>
-        <div class="inputDiv control-group">
-            {{ quote.common.customerCountry }}
-        </div>
-        {% if quote.contactName or quote.contactEmail %}
-        <h4>{{ 'Contact'|trans }}</h4>
-        <div class="inputDiv control-group">
-            {{ quote.contactName }} {{ quote.contactEmail }}
-        </div>
-        {% endif %}
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
-            {{ quote.common.description|nl2br }}
+            {{ quote.common.description|raw }}
         </div>
 
-        <table id="commonLines" class="lines" style="margin-top: 40px">
+        <table id="commonLines" class="lines" style="display: block; margin-top: 20px; width: 90%; page-break-inside: avoid !important;">
             <thead>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
             <tr class="lineHeader not_delete">
-                <th class="lineDesc">{{ 'Description'|trans }}</th>
-                <th class="lineQty">{{ 'Quantity'|trans }}</th>
+                <th colspan="2" class="lineDesc" style="width: 70%">{{ 'Description'|trans }}</th>
+                <!--<th class="lineQty">{{ 'Quantity'|trans }}</th>
                 <th class="lineUC">{{ 'Unitary cost'|trans }}</th>
                 <th class="lineTaxes">{{ 'Taxes'|trans }}</th>
-                <th class="lineDiscount">{{ 'Discount'|trans }}</th>
-                <th class="lineDiscount">{{ 'Price'|trans }}</th>
+                <th class="lineDiscount">{{ 'Discount'|trans }}</th>-->
+                <th class="lineDiscount" style="width: 30%">{{ 'Price'|trans }}</th>
             </tr>
             </thead>
             <tbody id="tbody_lines">
@@ -77,39 +64,38 @@
             {% endfor %}
             </tbody>
             <tfoot>
-            <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4" rowspan="2">
-                </td>
-                <th class="border_total">{{ 'Base'|trans }}</th>
-                <td class="border_total common_totals" id="total_base_amount">{{ quote.common.baseAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
-            <tr id="add_line_link_li" class="not_delete">
-                <th class="border_total">{{ 'Discount'|trans }}</th>
-                <td class="border_total common_totals" id="total_discount">{{ quote.common.discountAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
-            <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4">
-                </td>
-                <th class="border_total">{{ 'Subtotal'|trans }}</th>
-                <td class="border_total common_totals" id="total_subtotal">{{ quote.common.netAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
-            <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4">
-                </td>
-                <th class="border_total">{{ 'Taxes'|trans }}</th>
-                <td class="border_total common_totals" id="total_taxes">{{ quote.common.taxAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
-            <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4">
-                </td>
-                <th class="border_total">{{ 'Total'|trans }}</th>
-                <td class="border_total common_totals" id="total_total">{{ quote.common.grossAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
+                <tr id="add_line_link_li" class="not_delete">
+                    <td style="width: 95%"></td>
+                    <th class="border_total" style="text-align: right">{{ 'Base'|trans }}</th>
+                    <td class="border_total common_totals" id="total_base_amount">{{ quote.common.baseAmount|number_format(2, '.', ',') }}€</td>
+                </tr>
+                {% if quote.common.discountAmount %}
+                <tr id="add_line_link_li" class="not_delete">
+                    <td></td>
+                    <th class="border_total"  style="text-align: right">{{ 'Discount'|trans }}</th>
+                    <td class="border_total common_totals" id="total_discount">{{ quote.common.discountAmount|number_format(2, '.', ',') }}€</td>
+                </tr>
+                <tr id="add_line_link_li" class="not_delete">
+                    <td></td>
+                    <th class="border_total"  style="text-align: right">{{ 'Subtotal'|trans }}</th>
+                    <td class="border_total common_totals" id="total_subtotal">{{ quote.common.netAmount|number_format(2, '.', ',') }}€</td>
+                </tr>
+                {% endif %}
+                <tr id="add_line_link_li" class="not_delete">
+                    <td></td>
+                    <th class="border_total"  style="text-align: right">{{ 'Taxes'|trans }}</th>
+                    <td class="border_total common_totals" id="total_taxes">{{ quote.common.taxAmount|number_format(2, '.', ',') }}€</td>
+                </tr>
+                <tr id="add_line_link_li" class="not_delete">
+                    <td></td>
+                    <th class="border_total"  style="text-align: right">{{ 'Total'|trans }}</th>
+                    <td class="border_total common_totals" id="total_total">{{ quote.common.grossAmount|number_format(2, '.', ',') }}€</td>
+                </tr>
             </tfoot>
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ quote.footnote|nl2br }}
+            {{ quote.footnote|raw }}
         </div>
 
         <div class="list_primary_buttons">

@@ -74,7 +74,7 @@
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
-            {{ invoice.common.description|nl2br }}
+            {{ invoice.common.description|raw }}
         </div>
 
         <table id="commonLines" class="lines" style="margin-top: 40px">
@@ -126,7 +126,7 @@
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ invoice.footnote|nl2br }}
+            {{ invoice.footnote|raw }}
         </div>
 
         <div class="list_primary_buttons">

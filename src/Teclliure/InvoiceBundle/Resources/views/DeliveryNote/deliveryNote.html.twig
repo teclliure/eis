@@ -60,7 +60,7 @@
         <br />
         <div class="inputDiv control-group">
             <h3>{{ 'Description'|trans }}</h3>
-            {{ deliveryNote.common.description|nl2br }}
+            {{ deliveryNote.common.description|raw }}
         </div>
 
         <table id="commonLines" class="lines" style="margin-top: 40px">
@@ -112,7 +112,7 @@
         </table>
 
         <div class="inputDiv control-group" style="margin: 40px 0 20px; clear: both;">
-            {{ deliveryNote.footnote|nl2br }}
+            {{ deliveryNote.footnote|raw }}
         </div>
 
         <div class="list_primary_buttons">

@@ -1,5 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <title>Easy Invoice System - {% block title %}No title{% endblock %}</title>
+    <meta charset="UTF-8" />
     <script>
         function subst() {
             var vars = {};
@@ -20,10 +23,7 @@
             for(var i in x) {
                 var y = document.getElementsByClassName(x[i]);
 
-                if (x[i] == 'section') {
-                    y[j].innerHTML = "<span>David Ruiz i Marina Company S.L. CIF: B-60719721. R.M. Barna tomo 28105 folio 90 sec. gral hoja 130554 Insc1&#170;.</span>";
-                }
-                else {
+                if (x[i] != 'section') {
                     for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
                 }
             }
@@ -33,7 +33,7 @@
 <body onload="subst()">
 <table style="width: 100%; font-size: 8px">
   <tr>
-    <td class="section"></td>
+    <td class="section" style="text-align: center;"><span>{{ config.company_name }} {{ config.company_identification }} {% if config.company_web %}- <a href="{{ config.company_web }}">{{ config.company_web }}</a>{% elseif config.company_mail %}- <a href="mailto: {{ config.company_mail }}">{{ config.company_mail }}</a>{% endif %}</span></td>
     <td style="text-align:right">
       <span class="page"></span>/<span class="topage"></span>
     </td>

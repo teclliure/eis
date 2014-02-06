@@ -1,10 +1,10 @@
 <tr class="invoiceLine">
-    <td class="lineDesc">
+    <td colspan="2" class="lineDesc">
         <div class="inputDiv">
         {{ line.description }}
         </div>
     </td>
-    <td class="lineQty">
+    <!--<td class="lineQty">
         <div class="inputDiv">
         {{ line.quantity }}
         </div>
@@ -19,7 +19,7 @@
 
         {% for tax in line.taxes %}
             <div class="tax">
-            {{ tax.value }}% {{ tax.name }}
+            {{ tax.value }}%
             </div>
         {% endfor %}
         </div>
@@ -28,8 +28,8 @@
         <div class="inputDiv">
             {{ line.discount }}
         </div>
-    </td>
+    </td>-->
     <td class="linePrice">
-        {{ line.totalAmount|number_format(2, '.', ',') }}€
+        {{ line.netAmount|number_format(2, '.', ',') }}€
     </td>
 </tr>
