@@ -97,6 +97,7 @@ knp_snappy:
         binary:     /usr/local/bin/wkhtmltopdf.sh
         options:
           ignore-load-errors: true
+          encoding: 'UTF-8'
     image:
         enabled:    false
         binary:     /usr/local/bin/wkhtmltoimage

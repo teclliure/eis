@@ -66,11 +66,6 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
                     ->setParameter('end_issue_date', $filters['end_issue_date'], \Doctrine\DBAL\Types\Type::DATETIME);
                 unset ($filters['end_issue_date']);
             }
-            if (isset($filters['q_id']) && $filters['q_id']) {
-                $queryBuilder->andWhere('q.id = :id')
-                    ->setParameter('id', $filters['q_id']);
-                unset ($filters['q_id']);
-            }
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {
@@ -150,6 +145,27 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         }
         $quote->setCommon($common);
 
+        return $quote;
+    }
+
+    /**
+     * Duplicate quote
+     *
+     * @return Quote
+     *
+     * @api 0.1
+     */
+    public function duplicateQuote(Quote $quote) {
+        $quote = clone($quote);
+        $quote->getCommon()->setCustomer(null);
+        $quote->getCommon()->setCustomerName('');
+        $quote->getCommon()->setCustomerIdentification('');
+        $quote->getCommon()->setCustomerAddress('');
+        $quote->getCommon()->setCustomerCity('');
+        $quote->getCommon()->setCustomerCountry('');
+        $quote->getCommon()->setCustomerState('');
+        $quote->getCommon()->setCustomerZipCode('');
+        $quote->setStatus(0);
         return $quote;
     }
 

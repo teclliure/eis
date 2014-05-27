@@ -136,5 +136,4 @@ class CommonController extends Controller
         $dueDate = $customerService->calculateDueDate($invoice['common']['customer'], $issueDate);
         return new Response ($dueDate->format('d/m/Y'), 200);
     }
-
 }

@@ -40,6 +40,26 @@ class QuoteController extends Controller
         }
     }
 
+    public function duplicateQuoteAction(Request $request, $id) {
+        $t = $this->get('translator');
+        $quoteService = $this->get('quote_service');
+
+        $quote = $quoteService->getQuote($id);
+        if (!$quote) {
+            $this->get('session')->getFlashBag()->add('warning', $t->trans('Quote does not exists!'));
+            return $this->redirect($this->generateUrl('quote_list'));
+        }
+        $quote = $quoteService->duplicateQuote($quote);
+
+        $form = $this->createForm($this->get('teclliure.form.type.quote'), $quote);
+
+        return $this->render('TeclliureInvoiceBundle:Quote:quoteForm.html.twig', array(
+            'form' => $form->createView(),
+            'config' => $this->get('craue_config')->all(),
+            'quote' => $quote
+        ));
+    }
+
     public function addEditQuoteAction(Request $request) {
         $t = $this->get('translator');
         $originalLines = array();
@@ -129,12 +149,17 @@ class QuoteController extends Controller
             'print'  => true
         ));
 
-        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig',array('config' => $this->get('craue_config')->all()));
-        $headerHtml = $this->renderView('TeclliureInvoiceBundle:Common:headerPdf.html.twig',array('quote' => $quote));
+        $headerHtml = $this->renderView('TeclliureInvoiceBundle:Common:headerPdf.html.twig', array(
+          'config' => $this->get('craue_config')->all(),
+        ));
+
+        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig', array(
+          'config' => $this->get('craue_config')->all(),
+        ));
 
         $pdfRenderer = $this->get('knp_snappy.pdf');
         return new Response(
-            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'header-html'=>$headerHtml, 'margin-left'=> '2mm', 'margin-top'=> '10mm')),
+            $pdfRenderer->getOutputFromHtml($html, array('header-html'=>$headerHtml,'footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm', 'margin-bottom'=>'5mm')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',

@@ -49,7 +49,7 @@ class ExtendedSearchType extends SearchType
                 'choices'   => array(
                     '0'     => 'Draft',
                     '1'     => 'Closed',
-                    '2'     => 'Overdue',
+                    '2'     => 'Overdued',
                     '3'     => 'Paid',
                 ),
                 'label'     => 'Status',

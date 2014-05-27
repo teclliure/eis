@@ -27,7 +27,7 @@
             <td>{{ invoice.issueDate|date('d/m/Y') }}</td>
             <td>{{ invoice.dueDate|date('d/m/Y') }}</td>
             <td>{{ invoice.dueAmount|number_format(2, '.', ',') }} €</td>
-            <td id="invoice-{{ invoice.id }}-status" class="invoice-status-{{ invoice.status }}">{{ invoice.statusName|trans }}</td>
+            <td class="invoice-status-{{ invoice.status }}">{{ invoice.statusName|trans }}</td>
             <td>{{ invoice.grossAmount|number_format(2, '.', ',') }} €</td>
             <td>
                 {% if invoice.status == 0  %}
@@ -55,7 +55,7 @@
 
 <div class="bottom-actions">
     {% if related is not defined %}
-    <a class="btn btn-small" href="{{ path('invoice_list_print', {'searchData': searchData}) }}">
+    <a class="btn btn-small printButton" href="{{ path('invoice_list_print', app.request.query.all) }}">
         <i class="icon-print"></i>
         {{ 'Print listing'|trans }}
     </a>

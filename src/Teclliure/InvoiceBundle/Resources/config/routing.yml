@@ -46,6 +46,10 @@ quote_edit:
     pattern:  /quote/edit/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Quote:addEditQuote }
 
+quote_duplicate:
+    pattern:  /quote/duplicate/{id}
+    defaults: { _controller: TeclliureInvoiceBundle:Quote:duplicateQuote }
+
 quote_view:
     pattern:  /quote/view/{id}
     defaults: { _controller: TeclliureInvoiceBundle:Quote:viewQuote }

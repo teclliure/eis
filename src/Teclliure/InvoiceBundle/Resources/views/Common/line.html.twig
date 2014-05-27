@@ -1,22 +1,21 @@
 <tr class="invoiceLine">
-    <td colspan="2" class="lineDesc">
+    <td class="lineDesc">
         <div class="inputDiv">
         {{ line.description }}
         </div>
     </td>
-    <!--<td class="lineQty">
+    <td class="lineQty">
         <div class="inputDiv">
         {{ line.quantity }}
         </div>
     </td>
     <td class="lineUC">
         <div class="inputDiv">
-        {{ line.unitaryCost }}
+        {{ line.unitaryCost|number_format(2, '.', ',') }}€
         </div>
     </td>
     <td class="lineTaxes">
         <div>
-
         {% for tax in line.taxes %}
             <div class="tax">
             {{ tax.value }}%
@@ -28,7 +27,7 @@
         <div class="inputDiv">
             {{ line.discount }}
         </div>
-    </td>-->
+    </td>
     <td class="linePrice">
         {{ line.netAmount|number_format(2, '.', ',') }}€
     </td>

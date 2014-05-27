@@ -27,6 +27,10 @@ body {
     padding: 30px 10px 20px 30px;
 }
 
+#inside_content.invoicePrint, #inside_content.quotePrint, #inside_content.orderPrint {
+    margin-left: 60px;
+}
+
 .container {
     margin-left: auto;
     margin-right: auto;

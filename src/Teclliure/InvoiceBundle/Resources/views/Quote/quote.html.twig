@@ -47,14 +47,14 @@
         <table id="commonLines" class="lines" style="display: block; margin-top: 20px; width: 90%; page-break-inside: avoid !important;">
             <thead>
             <tr>
-                <td colspan="3">&nbsp;</td>
+                <td colspan="6">&nbsp;</td>
             </tr>
             <tr class="lineHeader not_delete">
-                <th colspan="2" class="lineDesc" style="width: 70%">{{ 'Description'|trans }}</th>
-                <!--<th class="lineQty">{{ 'Quantity'|trans }}</th>
+                <th class="lineDesc" style="width: 70%">{{ 'Description'|trans }}</th>
+                <th class="lineQty">{{ 'Quantity'|trans }}</th>
                 <th class="lineUC">{{ 'Unitary cost'|trans }}</th>
                 <th class="lineTaxes">{{ 'Taxes'|trans }}</th>
-                <th class="lineDiscount">{{ 'Discount'|trans }}</th>-->
+                <th class="lineDiscount">{{ 'Discount'|trans }}</th>
                 <th class="lineDiscount" style="width: 30%">{{ 'Price'|trans }}</th>
             </tr>
             </thead>
@@ -65,29 +65,33 @@
             </tbody>
             <tfoot>
                 <tr id="add_line_link_li" class="not_delete">
-                    <td style="width: 95%"></td>
+                    <td colspan="4" style="width: 95%"></td>
                     <th class="border_total" style="text-align: right">{{ 'Base'|trans }}</th>
                     <td class="border_total common_totals" id="total_base_amount">{{ quote.common.baseAmount|number_format(2, '.', ',') }}€</td>
                 </tr>
                 {% if quote.common.discountAmount %}
                 <tr id="add_line_link_li" class="not_delete">
-                    <td></td>
+                    <td colspan="4"></td>
                     <th class="border_total"  style="text-align: right">{{ 'Discount'|trans }}</th>
                     <td class="border_total common_totals" id="total_discount">{{ quote.common.discountAmount|number_format(2, '.', ',') }}€</td>
                 </tr>
                 <tr id="add_line_link_li" class="not_delete">
-                    <td></td>
+                    <td colspan="4"></td>
                     <th class="border_total"  style="text-align: right">{{ 'Subtotal'|trans }}</th>
                     <td class="border_total common_totals" id="total_subtotal">{{ quote.common.netAmount|number_format(2, '.', ',') }}€</td>
                 </tr>
                 {% endif %}
+                {% for tax in quote.common.getTaxAmountArray %}
+                    {% if tax.amount %}
+                        <tr id="add_line_link_li" class="not_delete">
+                            <td colspan="4"></td>
+                            <th class="border_total">{{ tax.tax.name|trans }} ({{ tax.tax.value|trans }}%)</th>
+                            <td class="border_total common_totals" style="text-align: right;">{{ tax.amount|number_format(2, '.', ',') }}€</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
                 <tr id="add_line_link_li" class="not_delete">
-                    <td></td>
-                    <th class="border_total"  style="text-align: right">{{ 'Taxes'|trans }}</th>
-                    <td class="border_total common_totals" id="total_taxes">{{ quote.common.taxAmount|number_format(2, '.', ',') }}€</td>
-                </tr>
-                <tr id="add_line_link_li" class="not_delete">
-                    <td></td>
+                    <td colspan="4"></td>
                     <th class="border_total"  style="text-align: right">{{ 'Total'|trans }}</th>
                     <td class="border_total common_totals" id="total_total">{{ quote.common.grossAmount|number_format(2, '.', ',') }}€</td>
                 </tr>
@@ -98,20 +102,20 @@
             {{ quote.footnote|raw }}
         </div>
 
+        {% if (print != true) %}
         <div class="list_primary_buttons">
-            {% if (quote) and (quote.status != 0) and (print != true) and not quote.status > 2 %}
+            {% if (quote) and (quote.status != 0) and not quote.status > 2 %}
                 <a href="{{ path('quote_open', {'id': quote.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% endif %}
-            {% if (print != true) %}
-                {% if quote.status > 3 %}
-                    <a href="{{ path('invoice_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
-                {% endif %}
-                {% if quote.status == 3  %}
-                    <a href="{{ path('delivery_note_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
-                {% endif %}
-                <a href="{{ path('quote_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-                <a href="{{ path('quote_print', {'id': quote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+            {% if quote.status > 3 %}
+                <a href="{{ path('invoice_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View invoice'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
             {% endif %}
+            {% if quote.status == 3  %}
+                <a href="{{ path('delivery_note_view', {'id': quote.id, 'type': 'quote' }) }}" alt="{{ 'View order'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View order'|trans }}</a>
+            {% endif %}
+            <a href="{{ path('quote_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+            <a href="{{ path('quote_print', {'id': quote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
         </div>
+        {% endif %}
         <div style="clear:both;"></div>
     </div>

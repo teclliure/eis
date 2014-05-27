@@ -101,6 +101,11 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
                 }
             }
         }
+        if ($sort && is_array($sort)) {
+            foreach ($sort as $sortItem) {
+                $queryBuilder->addOrderBy($sortItem['sort'], $sortItem['sortOrder']);
+            }
+        }
         $queryBuilder->addOrderBy('i.issue_date', 'DESC');
         $query = $queryBuilder->getQuery();
 
@@ -370,6 +375,9 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         $where = '';
         if ($serie) {
             $where = 'AND i.serie = '.$serie->getId();
+        }
+        else {
+            $where = 'AND i.serie IS NULL';
         }
 
         $query = $this->em->createQuery('SELECT '.$selectSubstring.' FROM TeclliureInvoiceBundle:Invoice i

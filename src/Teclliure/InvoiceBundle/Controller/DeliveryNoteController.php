@@ -236,11 +236,17 @@ class DeliveryNoteController extends Controller
             'print'  => true
         ));
 
-        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig');
+        $headerHtml = $this->renderView('TeclliureInvoiceBundle:Common:headerPdf.html.twig', array(
+          'config' => $this->get('craue_config')->all(),
+        ));
+
+        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig', array(
+          'config' => $this->get('craue_config')->all(),
+        ));
 
         $pdfRenderer = $this->get('knp_snappy.pdf');
         return new Response(
-            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm', 'margin-bottom'=>'5mm')),
+            $pdfRenderer->getOutputFromHtml($html, array('header-html'=>$headerHtml, 'footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm', 'margin-bottom'=>'5mm')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',

@@ -43,9 +43,19 @@ class InvoiceController extends Controller
 
     public function printListAction(Request $request)
     {
-        $searchData = unserialize($request->get('searchData'));
+        $sortArray = array();
+        $sort = $request->get('sort');
+        $sortOrder = $request->get('direction');
+        if ($sort) {
+            if (!$sortOrder) {
+                $sortOrder = 'desc';
+            }
+            $sortArray[] = array('sort'=>$sort, 'sortOrder'=>$sortOrder);
+        }
+
+        $searchData = unserialize($this->get('session')->get('invoice/searchData'));
         $invoiceService = $this->get('invoice_service');
-        $invoices = $invoiceService->getInvoices(null, null, $searchData);
+        $invoices = $invoiceService->getInvoices(null, null, $searchData, $sortArray);
 
         $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoiceListPrint.html.twig', array(
             'invoices' => $invoices,
@@ -182,16 +192,23 @@ class InvoiceController extends Controller
         }
 
         $html = $this->renderView('TeclliureInvoiceBundle:Invoice:invoicePrint.html.twig', array(
-            'invoice' => $invoice,
-            'config' => $this->get('craue_config')->all(),
-            'print'  => true
+          'invoice' => $invoice,
+          'config' => $this->get('craue_config')->all(),
+          'print'  => true
         ));
 
-        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig');
+        $headerHtml = $this->renderView('TeclliureInvoiceBundle:Common:headerPdf.html.twig', array(
+          'config' => $this->get('craue_config')->all(),
+        ));
+
+        $footerHtml = $this->renderView('TeclliureInvoiceBundle:Common:footerPdf.html.twig', array(
+          'config' => $this->get('craue_config')->all(),
+        ));
+
 
         $pdfRenderer = $this->get('knp_snappy.pdf');
         return new Response(
-            $pdfRenderer->getOutputFromHtml($html, array('footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm', 'margin-bottom'=>'5mm')),
+            $pdfRenderer->getOutputFromHtml($html, array('header-html'=> $headerHtml, 'footer-html'=> $footerHtml, 'margin-left'=> '2mm', 'margin-top'=> '4mm', 'margin-bottom'=>'5mm')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',

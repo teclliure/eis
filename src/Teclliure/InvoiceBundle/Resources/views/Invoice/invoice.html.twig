@@ -110,12 +110,16 @@
                 <th class="border_total">{{ 'Subtotal'|trans }}</th>
                 <td class="border_total common_totals" id="total_subtotal">{{ invoice.netAmount|number_format(2, '.', ',') }}€</td>
             </tr>
-            <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4">
-                </td>
-                <th class="border_total">{{ 'Taxes'|trans }}</th>
-                <td class="border_total common_totals" id="total_taxes">{{ invoice.taxAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
+            {% for tax in invoice.common.getTaxAmountArray %}
+                {% if tax.amount %}
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ tax.tax.name|trans }} ({{ tax.tax.value|trans }}%)</th>
+                        <td class="border_total common_totals" style="text-align: right;">{{ tax.amount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
@@ -129,16 +133,16 @@
             {{ invoice.footnote|raw }}
         </div>
 
+        {% if (print != true) %}
         <div class="list_primary_buttons">
             {% if (invoice) and (invoice.status != 0) and (print != true) %}
                 <a href="{{ path('invoice_open', {'id': invoice.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% elseif (invoice) and (invoice.status == 0) and (print != true) %}
                 <a href="{{ path('invoice_edit', {'id': invoice.id}) }}" class="btn btn-success"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>
             {% endif %}
-            {% if (print != true) %}
-                <a href="{{ path('invoice_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-info"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-                <a href="{{ path('invoice_print', {'id': invoice.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
-            {% endif %}
+            <a href="{{ path('invoice_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-info"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+            <a href="{{ path('invoice_print', {'id': invoice.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
         </div>
+        {% endif %}
         <div style="clear:both;"></div>
     </div>

@@ -32,7 +32,9 @@ All the installation instructions are located in [documentation](https://github.
 
 TODO
 ----
-- 
+- Send by email
+- More Unit testing
+- BDD
 
 License
 ------

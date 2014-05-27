@@ -81,27 +81,32 @@
             </tbody>
             <tfoot>
             <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4" rowspan="2">
-                </td>
+                <td colspan="4"></td>
                 <th class="border_total">{{ 'Base'|trans }}</th>
                 <td class="border_total common_totals" id="total_base_amount">{{ deliveryNote.common.baseAmount|number_format(2, '.', ',') }}€</td>
             </tr>
+            {% if deliveryNote.common.discountAmount %}
             <tr id="add_line_link_li" class="not_delete">
+                <td colspan="4"></td>
                 <th class="border_total">{{ 'Discount'|trans }}</th>
                 <td class="border_total common_totals" id="total_discount">{{ deliveryNote.common.discountAmount|number_format(2, '.', ',') }}€</td>
             </tr>
             <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4">
-                </td>
+                <td colspan="4"></td>
                 <th class="border_total">{{ 'Subtotal'|trans }}</th>
                 <td class="border_total common_totals" id="total_subtotal">{{ deliveryNote.common.netAmount|number_format(2, '.', ',') }}€</td>
             </tr>
-            <tr id="add_line_link_li" class="not_delete">
-                <td colspan="4">
-                </td>
-                <th class="border_total">{{ 'Taxes'|trans }}</th>
-                <td class="border_total common_totals" id="total_taxes">{{ deliveryNote.common.taxAmount|number_format(2, '.', ',') }}€</td>
-            </tr>
+            {% endif %}
+            {% for tax in deliveryNote.common.getTaxAmountArray %}
+                {% if tax.amount %}
+                    <tr id="add_line_link_li" class="not_delete">
+                        <td colspan="4">
+                        </td>
+                        <th class="border_total">{{ tax.tax.name|trans }} ({{ tax.tax.value|trans }}%)</th>
+                        <td class="border_total common_totals" style="text-align: right;">{{ tax.amount|number_format(2, '.', ',') }}€</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             <tr id="add_line_link_li" class="not_delete">
                 <td colspan="4">
                 </td>
@@ -115,20 +120,20 @@
             {{ deliveryNote.footnote|raw }}
         </div>
 
+        {% if (print != true) %}
         <div class="list_primary_buttons">
-            {% if (deliveryNote.id) and (deliveryNote.status != 0) and (print != true) and not deliveryNote.status < 2 %}
+            {% if (deliveryNote.id) and (deliveryNote.status != 0) and not deliveryNote.status < 2 %}
                 <a href="{{ path('delivery_note_open', {'id': deliveryNote.id}) }}" class="btn btn-warning"><i class="icon-folder-open"></i> {{ 'Open and edit'|trans }}</a>
             {% endif %}
-            {% if (print != true) %}
-                {% if deliveryNote.status > 1 %}
-                    <a href="{{ path('invoice_view', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}" alt="{{ 'View invoices'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
-                {% endif %}
-                {% if deliveryNote.relatedQuote  %}
-                    <a href="{{ path('quote_view', {'id': deliveryNote.relatedQuote.id }) }}" alt="{{ 'View quote'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View quote'|trans }}</a>
-                {% endif %}
-                <a href="{{ path('delivery_note_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
-                <a href="{{ path('delivery_note_print', {'id': deliveryNote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
+            {% if deliveryNote.status > 1 %}
+                <a href="{{ path('invoice_view', {'id': deliveryNote.id, 'type': 'deliveryNote' }) }}" alt="{{ 'View invoices'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View invoice'|trans }}</a>
             {% endif %}
+            {% if deliveryNote.relatedQuote  %}
+                <a href="{{ path('quote_view', {'id': deliveryNote.relatedQuote.id }) }}" alt="{{ 'View quote'|trans }}" class="btn btn-small btn-info"><i class="icon-file"></i> {{ 'View quote'|trans }}</a>
+            {% endif %}
+            <a href="{{ path('delivery_note_list') }}" alt="{{ 'Back to list'|trans }}" class="btn btn-small btn-success"><i class="icon-list"></i> {{ 'Back to list'|trans }}</a>
+            <a href="{{ path('delivery_note_print', {'id': deliveryNote.id }) }}" alt="{{ 'Print'|trans }}" class="btn btn-small"><i class="icon-print"></i> {{ 'Print'|trans }}</a>
         </div>
+        {% endif %}
         <div style="clear:both;"></div>
     </div>

@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    $('.payments').on('submit', '.paymentForm', function(e) {
+    $('body').on('submit', '.payments .paymentForm', function(e) {
         $(':submit', this).attr('disabled', true);
         e.preventDefault();
         id = $(this).attr('id').replace('paymentForm','');
@@ -11,12 +11,11 @@ jQuery(document).ready(function() {
             success: function(data)
             {
                 $('#payments'+id+' .modal-body').html(data);
-                $(':submit', this).removeAttr('disabled');
             }
         });
     });
 
-    $('.payments').on('click', '.deletePayment', function(e) {
+    $('body').on('click', '.payments .deletePayment', function(e) {
         e.preventDefault();
         var action = $(this).attr('href');
         id = $(this).attr('id').replace('deletePayment','');
@@ -30,5 +29,4 @@ jQuery(document).ready(function() {
             }
         });
     });
-
 });

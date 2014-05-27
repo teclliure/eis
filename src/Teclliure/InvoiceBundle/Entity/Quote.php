@@ -403,4 +403,11 @@ class Quote {
     {
         return $this->related_delivery_notes;
     }
+
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->common = clone $this->common;
+        }
+    }
 }

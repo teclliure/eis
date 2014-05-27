@@ -41,7 +41,7 @@
                 {% endif %}
             </div>
         </div>
-        <form id="invoiceForm" action="{% if quote.common.id %}{{ path('quote_edit', {'id': quote.id }) }}{% else %}{{ path('quote_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
+        <form id="invoiceForm" action="{% if quote.id %}{{ path('quote_edit', {'id': quote.id }) }}{% else %}{{ path('quote_add') }}{% endif %}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
 
             <h3>{{ 'Customer'|trans }}</h3>
