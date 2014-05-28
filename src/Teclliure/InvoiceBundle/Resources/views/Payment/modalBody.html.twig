@@ -1,6 +1,7 @@
     {% if app.request.isXmlHttpRequest %}
         <script>
-            $('#invoice-{{ invoice.id }}-status').removeClass(null, 1000).addClass('invoice-status-{{ invoice.status }}', 1000);
+            $('#invoice-{{ invoice.id }}-status').removeClass().addClass('invoice-status-{{ invoice.status }}', 1000).html('{{ invoice.statusName|trans }}');
+            $('#invoice-{{ invoice.id }}-dueAmount').html('{{ invoice.dueAmount|number_format(2, '.', ',') }}€');
         </script>
     {% endif %}
     {% for flashMessage in app.session.flashbag.get('info') %}

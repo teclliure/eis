@@ -26,9 +26,9 @@
             <td>{{ invoice.common.customerName }}</td>
             <td>{{ invoice.issueDate|date('d/m/Y') }}</td>
             <td>{{ invoice.dueDate|date('d/m/Y') }}</td>
-            <td>{{ invoice.dueAmount|number_format(2, '.', ',') }} €</td>
-            <td class="invoice-status-{{ invoice.status }}">{{ invoice.statusName|trans }}</td>
-            <td>{{ invoice.grossAmount|number_format(2, '.', ',') }} €</td>
+            <td id="invoice-{{ invoice.id }}-dueAmount">{{ invoice.dueAmount|number_format(2, '.', ',') }}€</td>
+            <td id="invoice-{{ invoice.id }}-status" class="invoice-status-{{ invoice.status }}">{{ invoice.statusName|trans }}</td>
+            <td>{{ invoice.grossAmount|number_format(2, '.', ',') }}€</td>
             <td>
                 {% if invoice.status == 0  %}
                 <a href="{{ path('invoice_edit', {'id': invoice.id }) }}" alt="{{ 'Edit'|trans }}" class="btn btn-mini"><i class="icon-edit"></i> {{ 'Edit'|trans }}</a>

@@ -40,7 +40,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function getInvoices($limit = 10, $page = 1, $filters = array()) {
+    public function getInvoices($limit = 10, $page = 1, $filters = array(), $sort = null) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
                         ->select('i, c')
                         ->from('TeclliureInvoiceBundle:Invoice','i')
@@ -71,7 +71,6 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
                     ->setParameter('id', $filters['i_id']);
                 unset ($filters['i_id']);
             }
-
 
             foreach ($filters as $key=>$filter) {
                 if ($filter) {

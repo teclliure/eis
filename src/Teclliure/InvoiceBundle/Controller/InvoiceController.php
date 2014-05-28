@@ -12,6 +12,15 @@ class InvoiceController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $sortArray = array();
+        $sort = $request->get('sort');
+        $sortOrder = $request->get('direction');
+        if ($sort) {
+          if (!$sortOrder) {
+            $sortOrder = 'desc';
+          }
+          $sortArray[] = array('sort'=>$sort, 'sortOrder'=>$sortOrder);
+        }
         $searchData = array();
         $basicSearchForm = $this->createForm(new SearchType(), array());
         $basicSearchForm->handleRequest($request);
@@ -24,7 +33,7 @@ class InvoiceController extends Controller
             $searchData = $extendedSearchForm->getData();
         }
         $invoiceService = $this->get('invoice_service');
-        $invoices = $invoiceService->getInvoices(10,  $this->get('request')->query->get('page', 1), $searchData);
+        $invoices = $invoiceService->getInvoices(10,  $this->get('request')->query->get('page', 1), $searchData, $sortArray);
         if ($request->isXmlHttpRequest()) {
             return $this->render('TeclliureInvoiceBundle:Invoice:invoiceList.html.twig', array(
                 'searchData'            => serialize($searchData),
