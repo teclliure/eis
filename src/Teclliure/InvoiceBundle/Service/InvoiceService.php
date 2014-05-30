@@ -158,15 +158,14 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
     public function getInvoicesView($limit = 10, $page = 1, $id, $type = null, $searchData = array()) {
         if ($type == 'deliveryNote') {
             $deliveryNote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:DeliveryNote')->find($id);
-            // $searchData = array_merge(array('i_related_delivery_note'=>$deliveryNote), clone($searchData));
-            $searchData = array('i_related_delivery_note'=>$deliveryNote);
+            $searchData ['i_related_delivery_note'] = $deliveryNote;
         }
         else if ($type == 'quote') {
             $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($id);
-            $searchData = array('i_related_quote'=>$quote);
+            $searchData ['i_related_quote'] = $quote;
         }
         else {
-            $searchData = array('i_id'=>$id);
+            $searchData ['i_id'] = $id;
         }
         $invoices = $this->getInvoices($limit, $page, $searchData);
 
@@ -183,6 +182,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
     public function createInvoice() {
         $invoice = new Invoice();
         $this->putDefaults($invoice);
+
         return $invoice;
     }
 
@@ -196,10 +196,12 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             $issueDate = new \DateTime('now');
             $invoice->setIssueDate($issueDate);
         }
+
         if (!$invoice->getDueDate()) {
             $dueDate = new \DateTime('now');
             $invoice->setDueDate($dueDate->modify('+1 month'));
         }
+
         if (!$invoice->getSerie()) {
             if ($this->getConfig()->get('default_serie')) {
                 $serie = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Serie')->find($this->getConfig()->get('default_serie'));
@@ -208,17 +210,22 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
                 }
             }
         }
+
         if (!$common->getCustomerCountry()) {
             if ($this->getConfig()->get('default_country')) {
                 $common->setCustomerCountry($this->getConfig()->get('default_country'));
             }
         }
+
         if ($this->getConfig()->get('default_footnote_invoice') && !$invoice->getFootnote()) {
             $invoice->setFootnote($this->getConfig()->get('default_footnote_invoice'));
         }
+
         if (!$invoice->getCommon()) {
             $invoice->setCommon($common);
         }
+
+        return $invoice;
     }
 
     /**

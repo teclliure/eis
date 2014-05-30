@@ -32,9 +32,11 @@ All the installation instructions are located in [documentation](https://github.
 
 TODO
 ----
+
 - Send by email
-- More Unit testing
-- BDD
+- Move all Doctrine query to repository and inject it http://php-and-symfony.matthiasnoback.nl/2014/05/inject-a-repository-instead-of-an-entity-manager
+- Refactor managers to use http://php-and-symfony.matthiasnoback.nl/2014/05/inject-the-manager-registry-instead-of-the-entity-manager
+- Refactor to a more event-listener design to decouple
 
 License
 ------
