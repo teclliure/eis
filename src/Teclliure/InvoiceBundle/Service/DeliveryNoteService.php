@@ -226,30 +226,19 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
 
-        // TODO: Change Status with events
-        /*if ($common->getQuote() && $common->getQuote()->getStatus() < 3) {
-            $common->getQuote()->setStatus(3);
-        }
-        */
         if ($relatedQuote) {
             $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($relatedQuote);
             $deliveryNote->setRelatedQuote($quote);
         }
-        $this->updateCustomerFromCommon($deliveryNote->getCommon());
+        // Dispatch Event
+        $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_PRE_SAVED, new DeliveryNoteEvent($deliveryNote));
 
         $em = $this->getEntityManager();
         $em->persist($deliveryNote);
         $em->flush();
 
         // Dispatch Event
-        $closeEvent = new DeliveryNoteEvent($deliveryNote);
-        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_SAVED, $closeEvent);
-
-        if ($closeEvent->isPropagationStopped()) {
-            // Things to do if stopped
-        } else {
-            // Things to do if not stopped
-        }
+        $saveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_SAVED, new DeliveryNoteEvent($deliveryNote));
     }
 
     /**

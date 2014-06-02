@@ -216,21 +216,16 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
-        $this->updateCustomerFromCommon($quote->getCommon());
+
+        // Dispatch Event
+        $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_PRE_SAVED, new QuoteEvent($quote));
 
         $em = $this->getEntityManager();
         $em->persist($quote);
         $em->flush();
 
         // Dispatch Event
-        $closeEvent = new QuoteEvent($quote);
-        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_SAVED, $closeEvent);
-
-        if ($closeEvent->isPropagationStopped()) {
-            // Things to do if stopped
-        } else {
-            // Things to do if not stopped
-        }
+        $saveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_SAVED, new QuoteEvent($quote));
     }
 
     /**

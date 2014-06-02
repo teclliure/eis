@@ -515,4 +515,49 @@ class InvoiceServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals((array)$expected, (array)$actual, 'Error putting defaults to invoice');
     }
 
+    /*public function testSaveInvoice_methodsCall()
+    {
+        $invoiceService = $this->getInvoiceService();
+
+        $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
+        $commonMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Common')->getMock();
+        $commonLine = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\CommonLine')->getMock();
+
+        $invoiceMock->expects($this->any())
+            ->method('getCommon')
+            ->with()
+            ->will($this->returnValue($commonMock));
+
+        $commonMock->expects($this->once())
+            ->method('getCommonLines')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));
+
+        $commonLine->expects($this->once())
+            ->method('getCommonLines')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));
+
+        $commonLine->expects($this->once())
+            ->method('getId')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));
+
+        $invoiceService->saveInvoice($invoiceMock);
+    }*/
+
+/*    public function testUpdateCustomerFromCommon_methodsCall ($commonMock = null) {
+        $invoiceService = $this->getInvoiceService();
+        $customerMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Model\InvoiceCustomerInterface')->getMock();
+        if (!$commonMock) {
+            $commonMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Common')->getMock();
+        }
+
+        $commonMock->expects($this->once())
+            ->method('getCustomer')
+            ->with()
+            ->will($this->returnValue($customerMock));
+
+        $invoiceService->updateCustomerFromCommon($commonMock);
+    }*/
 }

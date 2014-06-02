@@ -133,58 +133,6 @@ class CommonService implements PaginatorAwareInterface {
         return $this->customChecker;
     }
 
-    /**
-     * Create a new customer
-     *
-     * Create a new customer if the identification doesn't exists
-     *
-     * @param Customer
-     *
-     * @api 0.1
-     */
-    protected function updateCustomerFromCommon(Common $common) {
-        // FIXME: Change this call to a CustomerService call and don't use Customer class directly
-        $customer = $common->getCustomer();
-        if (!$customer) {
-            $customer = $this->getEntityManager()->getRepository('TeclliureCustomerBundle:Customer')->findOneBy(array('identification'=>$common->getCustomerIdentification()));
-            if ($customer) {
-                $common->setCustomer($customer);
-            }
-            else {
-                $customer = new Customer();
-                $customer->setIdentification($common->getCustomerIdentification());
-                $customer->setLegalName($common->getCustomerName());
-                $customer->setAddress($common->getCustomerAddress());
-                $customer->setZipCode($common->getCustomerZipCode());
-                $customer->setCity($common->getCustomerCity());
-                $customer->setState($common->getCustomerState());
-                $customer->setCountry($common->getCustomerCountry());
-
-                $common->setCustomer($customer);
-            }
-        }
-        else {
-            if (!$customer->getLegalName()) {
-                $customer->setLegalName($common->getCustomerName());
-            }
-            if (!$customer->getAddress()) {
-                $customer->setAddress($common->getCustomerAddress());
-            }
-            if (!$customer->getZipCode()) {
-                $customer->setZipCode($common->getCustomerZipCode());
-            }
-            if (!$customer->getCity()) {
-                $customer->setCity($common->getCustomerCity());
-            }
-            if (!$customer->getState()) {
-                $customer->setState($common->getCustomerState());
-            }
-            if (!$customer->getCountry()) {
-                $customer->setCountry($common->getCustomerCountry());
-            }
-        }
-    }
-
     public function getRelatedObject($type, $id) {
         $relatedObject = null;
         if ($type == 'deliveryNote') {

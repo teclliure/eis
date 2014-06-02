@@ -264,14 +264,6 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         else {
             throw new Exception('Only invoices with status draft could be edited');
         }
-        // TODO: Change Status with events
-        /*if ($common->getQuote() && $common->getQuote()->getStatus() != 4) {
-            $common->getQuote()->setStatus(4);
-        }
-        if ($common->getDeliveryNote() && $common->getDeliveryNote()->getStatus() != 2) {
-            $common->getDeliveryNote()->setStatus(2);
-        }*/
-        $this->updateCustomerFromCommon($invoice->getCommon());
 
         if ($relatedQuote) {
             $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($relatedQuote);
@@ -281,20 +273,22 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             $deliveryNote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:DeliveryNote')->find($relatedDeliveryNote);
             $invoice->setRelatedDeliveryNote($deliveryNote);
         }
+
+        // Dispatch Event
+        $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_PRE_SAVED, new InvoiceEvent($invoice));
+
         $em = $this->getEntityManager();
-        // print count($common->getCommonLines());
         $em->persist($invoice);
         $em->flush();
 
         // Dispatch Event
-        $closeEvent = new InvoiceEvent($invoice);
-        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_SAVED, $closeEvent);
+        $saveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_SAVED, new InvoiceEvent($invoice));
 
-        if ($closeEvent->isPropagationStopped()) {
+        /*if ($saveEvent->isPropagationStopped()) {
             // Things to do if stopped
         } else {
             // Things to do if not stopped
-        }
+        }*/
     }
 
     /**
@@ -400,16 +394,12 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
             }
         }
         else {
-            // die($result['number']);
             $number = (int)$result['number']+1;
         }
         $number = $date->format('Y').str_pad($number, 8, '0', STR_PAD_LEFT);
         if ($serie && $serie->getShort()) {
             $number = $serie->getShort().$number;
         }
-        // var_dump($result);
-        // print_r ($result);
-        // die ('NumInvoice'.$number);
 
         return $number;
     }

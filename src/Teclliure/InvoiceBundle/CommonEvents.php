@@ -34,6 +34,35 @@ final class CommonEvents
      */
     const DELIVERY_NOTE_CLOSED = 'delivery_note.closed';
 
+    /**
+     * This event occurs when a invoice is going to be saved
+     *
+     * The event listener receives an
+     * Teclliure\InvoiceBundle\Event\InvoiceEvent instance.
+     *
+     * @var string
+     */
+    const INVOICE_PRE_SAVED = 'invoice.presaved';
+
+    /**
+     * This event occurs when a quote is going to be saved
+     *
+     * The event listener receives an
+     * Teclliure\InvoiceBundle\Event\QuoteEvent instance.
+     *
+     * @var string
+     */
+    const QUOTE_PRE_SAVED = 'quote.presaved';
+
+    /**
+     * This event occurs when a delivery note is going to be saved
+     *
+     * The event listener receives an
+     * Teclliure\InvoiceBundle\Event\DeliveryEvent instance.
+     *
+     * @var string
+     */
+    const DELIVERY_NOTE_PRE_SAVED = 'delivery_note.presaved';
 
     /**
      * This event occurs when a invoice is saved
