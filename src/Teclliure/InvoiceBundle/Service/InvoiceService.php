@@ -307,6 +307,7 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         $invoice->setStatus(1);
 
         // We get WRITE lock to avoid duplicated invoice numbers
+
         $em = $this->getEntityManager();
         $em->getConnection()->exec('LOCK TABLE invoice i0_ WRITE;');
         if (!$invoice->getNumber()) {
@@ -318,14 +319,13 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         $em->getConnection()->exec('UNLOCK TABLES;');
 
         // Dispatch Event
-        $closeEvent = new CommonEvent($invoice->getCommon());
-        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_CLOSED, $closeEvent);
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::INVOICE_CLOSED, new CommonEvent($invoice->getCommon()));
 
-        if ($closeEvent->isPropagationStopped()) {
+        /*if ($closeEvent->isPropagationStopped()) {
             // Things to do if stopped
         } else {
             // Things to do if not stopped
-        }
+        }*/
     }
 
     /**
@@ -372,7 +372,6 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
         $queryParams['endDate'] = new \DateTime('@'.mktime (0, 0, 0, 12, 32, $date->format('Y')));
 
         // Filter by serie
-        $where = '';
         if ($serie) {
             $where = 'AND i.serie = '.$serie->getId();
         }

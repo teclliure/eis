@@ -6,6 +6,10 @@ use Teclliure\InvoiceBundle\Entity\DeliveryNote;
 use Teclliure\InvoiceBundle\Service\InvoiceService;
 use Teclliure\InvoiceBundle\Entity\Invoice;
 use Teclliure\InvoiceBundle\Entity\Common;
+use Teclliure\InvoiceBundle\CommonEvents;
+use Teclliure\InvoiceBundle\Event\CommonEvent;
+use Teclliure\InvoiceBundle\Event\InvoiceEvent;
+use Symfony\Component\Security\Acl\Exception\Exception;
 
 class InvoiceServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -515,36 +519,245 @@ class InvoiceServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals((array)$expected, (array)$actual, 'Error putting defaults to invoice');
     }
 
-    /*public function testSaveInvoice_methodsCall()
+    /**
+     *
+     *
+     */
+    public function testSaveInvoice_methodsCall()
     {
         $invoiceService = $this->getInvoiceService();
 
         $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
         $commonMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Common')->getMock();
-        $commonLine = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\CommonLine')->getMock();
+        $commonLineMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\CommonLine')->getMock();
 
         $invoiceMock->expects($this->any())
             ->method('getCommon')
             ->with()
             ->will($this->returnValue($commonMock));
 
-        $commonMock->expects($this->once())
+
+        /*$commonMock->expects($this->once())
             ->method('getCommonLines')
             ->with()
             ->will($this->returnValue(array($commonLine)));
 
-        $commonLine->expects($this->once())
-            ->method('getCommonLines')
-            ->with()
-            ->will($this->returnValue(array($commonLine)));
 
-        $commonLine->expects($this->once())
+        $commonLineMock->expects($this->once())
             ->method('getId')
             ->with()
-            ->will($this->returnValue(array($commonLine)));
+            ->will($this->returnValue(array($commonLine)));*/
+
+        $invoiceMock->expects($this->any())
+            ->method('getStatus')
+            ->with()
+            ->will($this->returnValue(0));
+
+        $invoiceMock->expects($this->any())
+            ->method('setBaseAmount')
+            ->with();
+
+        $commonMock->expects($this->once())
+            ->method('getBaseAmount')
+            ->with()
+            ->will($this->returnValue(array(10)));
 
         $invoiceService->saveInvoice($invoiceMock);
-    }*/
+    }
+
+    /**
+     *
+     * @expectedException Exception
+     * @expectedExceptionMessage Only invoices with status draft could be edited
+     *
+     */
+    public function testSaveInvoice_methodsCallException()
+    {
+        $invoiceService = $this->getInvoiceService();
+
+        $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
+        $commonMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Common')->getMock();
+
+        $invoiceMock->expects($this->any())
+            ->method('getCommon')
+            ->with()
+            ->will($this->returnValue($commonMock));
+
+        /*$commonMock->expects($this->once())
+            ->method('getCommonLines')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));
+
+
+        $commonLineMock->expects($this->once())
+            ->method('getId')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));*/
+
+        $invoiceMock->expects($this->once())
+            ->method('getStatus')
+            ->with()
+            ->will($this->returnValue(1));
+
+        $invoiceService->saveInvoice($invoiceMock);
+    }
+
+    /**
+     *
+     *
+     */
+    public function testSaveInvoice_EventsLaunch()
+    {
+        $invoiceService = $this->getInvoiceService();
+
+        $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
+        $commonMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Common')->getMock();
+
+        $invoiceMock->expects($this->any())
+            ->method('getCommon')
+            ->with()
+            ->will($this->returnValue($commonMock));
+
+
+        /*$commonMock->expects($this->once())
+            ->method('getCommonLines')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));
+
+
+        $commonLineMock->expects($this->once())
+            ->method('getId')
+            ->with()
+            ->will($this->returnValue(array($commonLine)));*/
+
+        $invoiceMock->expects($this->any())
+            ->method('setBaseAmount')
+            ->with();
+
+        $commonMock->expects($this->once())
+            ->method('getBaseAmount')
+            ->with()
+            ->will($this->returnValue(array(10)));
+
+        $this->eventDispatcherMock->expects($this->at(0))
+            ->method('dispatch')
+            ->with(CommonEvents::INVOICE_PRE_SAVED, new InvoiceEvent($invoiceMock));
+
+        $this->eventDispatcherMock->expects($this->at(1))
+            ->method('dispatch')
+            ->with(CommonEvents::INVOICE_SAVED, new InvoiceEvent($invoiceMock));
+
+        $this->emMock->expects($this->once())
+            ->method('persist')
+            ->with($invoiceMock);
+
+        $this->emMock->expects($this->once())
+            ->method('flush');
+
+        $invoiceService->saveInvoice($invoiceMock);
+    }
+
+    /**
+     *
+     *
+     */
+    public function testCloseInvoice_EventsLaunch()
+    {
+        $invoiceService = $this->getInvoiceService();
+
+        $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
+        $commonMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Common')->getMock();
+        $connectionMock = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->emMock->expects($this->atLeastOnce())
+            ->method('getConnection')
+            ->with()
+            ->will($this->returnValue($connectionMock));
+
+        $connectionMock->expects($this->at(0))
+            ->method('exec')
+            ->with('LOCK TABLE invoice i0_ WRITE;');
+
+        $connectionMock->expects($this->at(1))
+            ->method('exec')
+            ->with('UNLOCK TABLES;');
+
+        $invoiceMock->expects($this->once())
+            ->method('getNumber')
+            ->with()
+            ->will($this->returnValue('WIHT NUMBER'));
+
+        $invoiceMock->expects($this->once())
+            ->method('getCommon')
+            ->with()
+            ->will($this->returnValue($commonMock));
+
+        $this->eventDispatcherMock->expects($this->at(0))
+            ->method('dispatch')
+            ->with(CommonEvents::INVOICE_CLOSED, new CommonEvent($commonMock));
+
+        $this->emMock->expects($this->once())
+            ->method('persist')
+            ->with($invoiceMock);
+
+        $this->emMock->expects($this->once())
+            ->method('flush');
+
+        $invoiceService->closeInvoice($invoiceMock);
+    }
+
+
+    /**
+     *
+     *
+     */
+    public function testOpenInvoice_MethodCheck()
+    {
+        $invoiceService = $this->getInvoiceService();
+
+        $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
+
+        $invoiceMock->expects($this->once())
+            ->method('getStatus')
+            ->with()
+            ->will($this->returnValue(1));
+
+        $invoiceMock->expects($this->once())
+            ->method('setStatus')
+            ->with(0)
+            ->will($this->returnValue(1));
+
+        $this->emMock->expects($this->once())
+            ->method('persist')
+            ->with($invoiceMock);
+
+        $this->emMock->expects($this->once())
+            ->method('flush');
+
+        $invoiceService->openInvoice($invoiceMock);
+    }
+
+    /**
+     *
+     * @expectedException Exception
+     * @expectedExceptionMessage Only invoices with status different than draft could be opened
+     *
+     */
+    public function testOpenInvoice_Exceptions()
+    {
+        $invoiceService = $this->getInvoiceService();
+
+        $invoiceMock = $this->getMockBuilder('\Teclliure\InvoiceBundle\Entity\Invoice')->getMock();
+
+        $invoiceMock->expects($this->once())
+            ->method('getStatus')
+            ->with()
+            ->will($this->returnValue(0));
+
+        $invoiceService->openInvoice($invoiceMock);
+    }
 
 /*    public function testUpdateCustomerFromCommon_methodsCall ($commonMock = null) {
         $invoiceService = $this->getInvoiceService();
