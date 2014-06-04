@@ -40,7 +40,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function getQuotes($limit = 10, $page = 1, $filters = array()) {
+    public function getQuotes($limit = 10, $page = 1, $filters = array(), $sort = null) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
                         ->select('q, c')
                         ->from('TeclliureInvoiceBundle:Quote','q')
@@ -95,16 +95,27 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
                 }
             }
         }
+        if ($sort && is_array($sort)) {
+            foreach ($sort as $sortItem) {
+                $queryBuilder->addOrderBy($sortItem['sort'], $sortItem['sortOrder']);
+            }
+        }
         $queryBuilder->addOrderBy('q.created', 'DESC');
         $query = $queryBuilder->getQuery();
 
-        $pagination = $this->getPaginator()->paginate(
-            $query,
-            $page,
-            $limit
-        );
+        if ($limit && $page) {
+            $result = $this->getPaginator()->paginate(
+                $query,
+                $page,
+                $limit
+            );
 
-        return $pagination;
+        }
+        else {
+            $result = $query->getResult();
+        }
+
+        return $result;
     }
 
     /**
@@ -134,9 +145,9 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function createQuote() {
-        $common = new Common();
-        $quote = new Quote();
+    public function createQuote(Quote $quote = null, Common $common = null) {
+        $quote = $quote ? : new Quote();
+        $common = $common ? : new Common();
         if ($this->getConfig()->get('default_country')) {
             $common->setCustomerCountry($this->getConfig()->get('default_country'));
         }
@@ -202,27 +213,29 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
             // We get WRITE lock to avoid duplicated quote numbers
             $em = $this->getEntityManager();
             $em->getConnection()->exec('LOCK TABLE quote q0_ WRITE;');
-            if (!$quote->getNumber()) {
-                if ($quote->getCreated()) {
-                    $createdDate = $quote->getCreated();
-                }
-                else {
-                    $createdDate = new \DateTime();
-                }
-                $nextQuoteNumber = $this->getNextQuoteNumber($createdDate);
-                $quote->setNumber($nextQuoteNumber);
+            if ($quote->getCreated()) {
+                $createdDate = $quote->getCreated();
             }
+            else {
+                $createdDate = new \DateTime();
+            }
+            $quote->setNumber($this->getNextQuoteNumber($createdDate));
+
+            // Dispatch Event
+            $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_PRE_SAVED, new QuoteEvent($quote));
+
             $em->persist($quote);
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
+        else {
+            // Dispatch Event
+            $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_PRE_SAVED, new QuoteEvent($quote));
 
-        // Dispatch Event
-        $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_PRE_SAVED, new QuoteEvent($quote));
-
-        $em = $this->getEntityManager();
-        $em->persist($quote);
-        $em->flush();
+            $em = $this->getEntityManager();
+            $em->persist($quote);
+            $em->flush();
+        }
 
         // Dispatch Event
         $saveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_SAVED, new QuoteEvent($quote));
@@ -247,14 +260,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $em->flush();
 
         // Dispatch Event
-        $closeEvent = new CommonEvent($quote->getCommon());
-        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_CLOSED, $closeEvent);
-
-        if ($closeEvent->isPropagationStopped()) {
-            // Things to do if stopped
-        } else {
-            // Things to do if not stopped
-        }
+        $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::QUOTE_CLOSED, new CommonEvent($quote->getCommon()));
     }
 
     /**
@@ -268,7 +274,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
      */
     public function denyQuote(Quote $quote) {
         if ($quote->getStatus() > 1 ) {
-            throw new Exception('Only quotes with status draft could be rejected');
+            throw new Exception('Only quotes with status draft or pending could be rejected');
         }
         $quote->setStatus(2);
         $em = $this->getEntityManager();
@@ -310,7 +316,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $deliveryNote = new DeliveryNote();
         $common = clone ($quote->getCommon());
         $deliveryNote->setCommon($common);
-        // $deliveryNote->setRelatedQuote($quote); - We set up in controller
+
         return $deliveryNote;
     }
 
@@ -329,7 +335,7 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $invoice = new Invoice();
         $common = clone ($quote->getCommon());
         $invoice->setCommon($common);
-        // $invoice->setRelatedQuote($quote); - We set up in controller
+
         return $invoice;
     }
 
@@ -353,12 +359,11 @@ class QuoteService extends CommonService implements PaginatorAwareInterface {
         $queryParams['startDate'] = new \DateTime('@'.mktime (0, 0, 0, 1, 1, $date->format('Y')));
         $queryParams['endDate'] = new \DateTime('@'.mktime (0, 0, 0, 12, 32, $date->format('Y')));
 
-
         $query = $this->em->createQuery('SELECT '.$selectSubstring.' FROM TeclliureInvoiceBundle:Quote q
         WHERE q.created >= :startDate AND q.created < :endDate ORDER BY q.number desc');
         $query->setParameters($queryParams);
         $result = $query->getOneOrNullResult();
-        // print_r ($result);
+
         if (!$result || !$result['number']) {
             $number = 1;
         }

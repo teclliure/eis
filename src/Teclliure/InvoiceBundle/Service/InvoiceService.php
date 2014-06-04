@@ -179,8 +179,8 @@ class InvoiceService extends CommonService implements PaginatorAwareInterface {
      *
      * @api 0.1
      */
-    public function createInvoice() {
-        $invoice = new Invoice();
+    public function createInvoice(Invoice $invoice = null) {
+        $invoice = $invoice ? : new Invoice();
         $this->putDefaults($invoice);
 
         return $invoice;

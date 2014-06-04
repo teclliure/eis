@@ -10,6 +10,7 @@ web/bundles/*
 web/app_test.*
 .idea
 .rsync_cache
+coverage
 
 # Configuration files
 app/config/parameters.ini
