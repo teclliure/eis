@@ -40,7 +40,7 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * @api 0.1
      */
-    public function getDeliveryNotes($limit = 10, $page = 1, $filters = array()) {
+    public function getDeliveryNotes($limit = 10, $page = 1, $filters = array(), $sort = null) {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
                         ->select('d, c')
                         ->from('TeclliureInvoiceBundle:DeliveryNote','d')
@@ -101,16 +101,27 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
                 }
             }
         }
+        if ($sort && is_array($sort)) {
+            foreach ($sort as $sortItem) {
+                $queryBuilder->addOrderBy($sortItem['sort'], $sortItem['sortOrder']);
+            }
+        }
         $queryBuilder->addOrderBy('d.created', 'DESC');
         $query = $queryBuilder->getQuery();
 
-        $pagination = $this->getPaginator()->paginate(
-            $query,
-            $page,
-            $limit
-        );
+        if ($limit && $page) {
+            $result = $this->getPaginator()->paginate(
+                $query,
+                $page,
+                $limit
+            );
 
-        return $pagination;
+        }
+        else {
+            $result = $query->getResult();
+        }
+
+        return $result;
     }
 
     /**
@@ -164,8 +175,8 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
      *
      * @api 0.1
      */
-    public function createDeliveryNote() {
-        $deliveryNote = new DeliveryNote();
+    public function createDeliveryNote(DeliveryNote $deliveryNote = null) {
+        $deliveryNote = $deliveryNote ? : new DeliveryNote();
         $this->putDefaults($deliveryNote);
         return $deliveryNote;
     }
@@ -213,6 +224,11 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
             throw new Exception('Only orders with status draft could be edited');
         }
 
+        if ($relatedQuote) {
+            $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($relatedQuote);
+            $deliveryNote->setRelatedQuote($quote);
+        }
+
         if (!$deliveryNote->getNumber()) {
             // We get WRITE lock to avoid duplicated deliveryNote numbers
             $em = $this->getEntityManager();
@@ -221,21 +237,21 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
                 $nextDeliveryNoteNumber = $this->getNextDeliveryNoteNumber(new \DateTime());
                 $deliveryNote->setNumber($nextDeliveryNoteNumber);
             }
+            // Dispatch Event
+            $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_PRE_SAVED, new DeliveryNoteEvent($deliveryNote));
+
             $em->persist($deliveryNote);
             $em->flush();
             $em->getConnection()->exec('UNLOCK TABLES;');
         }
+        else {
+            // Dispatch Event
+            $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_PRE_SAVED, new DeliveryNoteEvent($deliveryNote));
 
-        if ($relatedQuote) {
-            $quote = $this->getEntityManager()->getRepository('TeclliureInvoiceBundle:Quote')->find($relatedQuote);
-            $deliveryNote->setRelatedQuote($quote);
+            $em = $this->getEntityManager();
+            $em->persist($deliveryNote);
+            $em->flush();
         }
-        // Dispatch Event
-        $preSaveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_PRE_SAVED, new DeliveryNoteEvent($deliveryNote));
-
-        $em = $this->getEntityManager();
-        $em->persist($deliveryNote);
-        $em->flush();
 
         // Dispatch Event
         $saveEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_SAVED, new DeliveryNoteEvent($deliveryNote));
@@ -282,11 +298,11 @@ class DeliveryNoteService extends CommonService implements PaginatorAwareInterfa
         $closeEvent = new CommonEvent($deliveryNote->getCommon());
         $closeEvent = $this->getEventDispatcher()->dispatch(CommonEvents::DELIVERY_NOTE_CLOSED, $closeEvent);
 
-        if ($closeEvent->isPropagationStopped()) {
+     /*   if ($closeEvent->isPropagationStopped()) {
             // Things to do if stopped
         } else {
             // Things to do if not stopped
-        }
+        }*/
     }
 
     /**

@@ -1,3 +1,11 @@
 Classes needed for unitary checks
 
 - Teclliure/InvoiceBundle/Util/DoctrineCustomChecker
+
+Methods needed for unitary checks
+
+- DeliveryNoteService -> getDeliveryNotesView
+
+Scenarios needed for functional checks
+
+- Create invoice, quote and deliveryNotes numbers
